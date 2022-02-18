@@ -10,8 +10,7 @@
     "es6": true,
     "node": true
   },
-  "files": ["*.ts", ".*tsx"],
-  "rules": {
+    "rules": {
     "@typescript-eslint/semi": ["error"],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -26,6 +25,7 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "files": ["*.ts"]
   }
 }
