@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 
-interface Word {
+export interface Word {
   infinitive: string;
   infinitive_english: string;
   mood: string;
@@ -38,6 +38,6 @@ const wordSchema = new Schema<Word>({
   gerund_english: { type: String, required: true },
   pastparticiple: { type: String, required: true },
   pastparticiple_english: { type: String, required: true },
-});
+}, { collection: 'jehle_verb_mongo'});
 
 export const wordModel = model<Word>('Word', wordSchema);
