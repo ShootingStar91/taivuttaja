@@ -31,8 +31,22 @@ router.get('/:word-:tense-:mood/', async (req, res, next) => {
 
 router.get('/random', async (_req, res, _next) => {
   console.log("moi from random");
-  const result = await wordModel.find({ infinitive: 'correr', mood_english: 'Indicative', tense_english: 'Present' });
-  res.send(result);
+  const result = await wordModel.find({ mood_english: 'Indicative', tense_english: 'Present' });
+  console.log("result in random wordModle.find: ");
+  
+  if (result.length === 0) {
+    res.send(null);
+  } else {
+    const randomIndex = Math.floor(Math.random() * (result.length));
+    const randomedWord = result[randomIndex];
+    console.log("randomindex and word:");
+    
+    console.log(randomIndex);
+    console.log(randomedWord);
+    
+    
+    res.send(randomedWord);
+  }
 });
 
 export default router;

@@ -3,10 +3,10 @@ import { Word } from '../types';
 
 const baseUrl = 'http://localhost:3001/api/words';
 
-const getRandomWord = async (): Promise<Word[]> => {
+const getRandomWord = async (): Promise<Word | null> => {
 
   try {
-    const response = await axios.get<Word[]>(`${baseUrl}/random`);
+    const response = await axios.get<Word | null>(`${baseUrl}/random`);
     console.log("Response from getRandomWord: ", response);
     return response.data;
   } catch (error: unknown) {

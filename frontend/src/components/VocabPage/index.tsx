@@ -12,19 +12,24 @@ export const VocabPage = () => {
       wordService.getRandomWord().then((response) => {
         console.log("response: ");
         
-        console.log(response);
-        if (response.length > 0) {
-          setWord(response[0]);
-        }
+        setWord(response);
       }).catch(error => console.log(error));
     };
     getWord();
   }, []);
 
+  if (word === null) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      {word && word.infinitive_english}
+      <p>
+        {word.infinitive_english}
+      </p>
+      <p>
+        {word.infinitive}
+      </p>
     </div>
   );
 };
