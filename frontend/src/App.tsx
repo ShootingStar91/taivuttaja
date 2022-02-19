@@ -7,20 +7,22 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 const App = () => {
   return (
-    <BrowserRouter>
-        <div className="navbar">
-          <Link className="navbarLink" to="/">Home</Link>
-          <Link className="navbarLink" to="/conjugate">Conjugate</Link>
-          <Link className="navbarLink" to="/vocab">Vocab</Link>
+    <div className="mainDiv">
+      <BrowserRouter>
+          <div className="navbar">
+            <Link className="navbarLink" to="/">Home</Link>
+            <Link className="navbarLink" to="/conjugate">Conjugate</Link>
+            <Link className="navbarLink" to="/vocab">Vocab</Link>
+          </div>
+          <div className="mainArea">
+        <Routes>
+            <Route index element={<IndexPage />} />
+            <Route path="conjugate" element={<ConjugatePage />} />
+            <Route path="vocab" element={<VocabPage />} />
+        </Routes>
         </div>
-        <div className="mainArea">
-      <Routes>
-          <Route index element={<IndexPage />} />
-          <Route path="conjugate" element={<ConjugatePage />} />
-          <Route path="vocab" element={<VocabPage />} />
-      </Routes>
-      </div>
-    </BrowserRouter>
+      </BrowserRouter>
+    </div>
   );
 };
 

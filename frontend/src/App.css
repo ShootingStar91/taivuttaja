@@ -2,20 +2,21 @@ html {
   max-width: 1100px;
   background-color: rgb(255, 250, 239);
   font-family: sans-serif;
+  margin: 0 auto;
 
 }
 
 .navbar {
-  padding: 20px 10px;
-  background-color: rgb(241, 163, 89);
+  padding: 20px 50px;
+  background-color: rgb(146, 203, 250);
+  border-radius: 15px 15px 0px 0px;
 }
 
 .navbarLink {
-  color: rgb(235, 49, 49);
+  color: rgb(255, 173, 80);
   font-size: 40px;
   text-decoration: none;
 }
-
 
 .navbarLink {
   padding: 20px;
@@ -24,6 +25,30 @@ html {
 }
 
 .mainArea {
-  padding: 50px 20px;
-  background-color: rgb(240, 218, 170);
+  padding: 80px 50px;
+  background-color: rgb(220, 251, 253);
+  border-radius: 0px 0px 15px 15px;
+  font-size: 28px;
+}
+
+input[type=text], select {
+ /* css 3 */
+ border-radius: 5px;
+ /* mozilla */
+ -moz-border-radius: 5px;
+ /* webkit */
+ -webkit-border-radius: 5px;
+ border: 0px;
+ height: 35px;
+ width: 350px;
+ padding-left: 10px;
+}
+
+button {
+  width: 365px;
+  background-color:rgb(255, 187, 39);
+  padding: 5px 15px 10px 15px;
+  height: 40px;
+  text-align: center;
+  font-size: 25px;
 }
