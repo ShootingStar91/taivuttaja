@@ -1,0 +1,29 @@
+html {
+  max-width: 1100px;
+  background-color: rgb(255, 250, 239);
+  font-family: sans-serif;
+
+}
+
+.navbar {
+  padding: 20px 10px;
+  background-color: rgb(241, 163, 89);
+}
+
+.navbarLink {
+  color: rgb(235, 49, 49);
+  font-size: 40px;
+  text-decoration: none;
+}
+
+
+.navbarLink {
+  padding: 20px;
+  color: white;
+  font-style: normal;
+}
+
+.mainArea {
+  padding: 50px 20px;
+  background-color: rgb(240, 218, 170);
+}
