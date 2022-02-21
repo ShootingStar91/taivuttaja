@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import express from 'express';
-import { wordModel } from '../models/Word';
+import { Word, wordModel } from '../models/Word';
 
 const router = express.Router();
+
+const words: Word[] = [];
 
 // /api/words/...
 
@@ -30,21 +32,16 @@ router.get('/:word-:tense-:mood/', async (req, res, next) => {
 });
 
 router.get('/random', async (_req, res, _next) => {
-  console.log("moi from random");
-  const result = await wordModel.find({ mood_english: 'Indicative', tense_english: 'Present' });
-  console.log("result in random wordModle.find: ");
+  if (words.length === 0) {
+    words.push( ... await wordModel.find({ mood_english: 'Indicative', tense_english: 'Present' }));
+    console.log(words.length);
+  }
   
-  if (result.length === 0) {
+  if (words.length === 0) {
     res.send(null);
   } else {
-    const randomIndex = Math.floor(Math.random() * (result.length));
-    const randomedWord = result[randomIndex];
-    console.log("randomindex and word:");
-    
-    console.log(randomIndex);
-    console.log(randomedWord);
-    
-    
+    const randomIndex = Math.floor(Math.random() * (words.length));
+    const randomedWord = words[randomIndex];    
     res.send(randomedWord);
   }
 });

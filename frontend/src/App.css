@@ -1,7 +1,7 @@
 html {
   max-width: 1100px;
   background-color: rgb(255, 250, 239);
-  font-family: sans-serif;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
   margin: 0 auto;
 
 }
@@ -32,16 +32,13 @@ html {
 }
 
 input[type=text], select {
- /* css 3 */
- border-radius: 5px;
- /* mozilla */
- -moz-border-radius: 5px;
- /* webkit */
- -webkit-border-radius: 5px;
- border: 0px;
- height: 35px;
- width: 350px;
- padding-left: 10px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border: 0px;
+  height: 35px;
+  width: 350px;
+  padding-left: 10px;
 }
 
 button {

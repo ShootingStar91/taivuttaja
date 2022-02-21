@@ -1,24 +1,10 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import { wordService } from '../../services/words';
+import React, { FormEvent, useState } from 'react';
 import { Word } from '../../types';
 
-export const VocabPage = () => {
+export const VocabPage = ( { word, getWord}: { word: Word | null, getWord: () => void } ) => {
 
-  const [word, setWord] = useState<Word | null>(null);
   const [currentTry, setCurrentTry] = useState<string>("");
 
-  useEffect(() => {
-    getWord();
-  }, []);
-
-  const getWord = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    wordService.getRandomWord().then((response) => {
-      console.log("response: ");
-      
-      setWord(response);
-    }).catch(error => console.log(error));
-  };
 
   const onTry = (event: FormEvent) => {
     event.preventDefault();
@@ -40,6 +26,7 @@ export const VocabPage = () => {
   };
 
   if (word === null) {
+    getWord();
     return <div>Loading...</div>;
   }
 

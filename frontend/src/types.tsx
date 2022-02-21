@@ -17,3 +17,4 @@ export interface Word {
   pastparticiple: string;
   pastparticiple_english: string;
 }
+
