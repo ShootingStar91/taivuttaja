@@ -15,6 +15,7 @@ export const VocabPage = ( { word, getWord}: { word: Word | null, getWord: () =>
       setCurrentTry("");
     } else {
       console.log("wrong");
+      
     }
   };
 
@@ -31,7 +32,7 @@ export const VocabPage = ( { word, getWord}: { word: Word | null, getWord: () =>
   }
 
   return (
-    <div>
+    <div className="vocabPage">
       <p>
         {word.infinitive_english}
       </p>
