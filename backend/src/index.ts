@@ -5,13 +5,12 @@ import wordsRouter from './routes/words';
 import userRouter from './routes/user';
 import { PORT, MONGODB_URI, SECRET } from './config';
 import cors from 'cors';
-
 const app = express();
 
 app.use(express.json());
 app.use(express.static('build'));
 app.use(middleware.logger);
-
+app.use(middleware.tokenExtractor);
 app.get('/', (_req, res) => {
   res.send('Hola mundo, desde backend');
 });
@@ -35,7 +34,7 @@ const options: cors.CorsOptions = {
 
 app.use(cors(options));
 
-// These apparently have to be AFTER cors!
+// These have to be AFTER cors!
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);
 

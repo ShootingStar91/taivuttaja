@@ -40,11 +40,16 @@ router.post(`/login/`, async (req, res) => {
     const user = await userModel.findOne( { username });
     if (user !== null) {
       bcrypt.compare(password, user.password, (_err, result) => {
+        console.log("result:");
+        
+        console.log(result);
+        
         if (result) {
           const userForToken = { username: user.username, id: user._id };
           const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: 60 * 60 });
           res.send({ token, user });
         } else {
+          console.log(`pass was ${password} real is ${user.password}`);
           res.send('wrong password');
         }
       });
