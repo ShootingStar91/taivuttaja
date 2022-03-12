@@ -1,5 +1,7 @@
 import { Word } from './types';
 
+export const baseUrl = 'http://localhost:3001/api/';
+
 export const deAccentify = (word: string): string => {
   return word.replace('á', 'a')
   .replace('é', 'e')
@@ -41,6 +43,24 @@ export const getFormDescription = (form: string): string => {
       return 'Second person plural (you all)';
     case '3p':
       return 'Third person plural (they) / Formal "you all"';
+  }
+  return "Error, form description missing!";
+};
+
+export const getForm = (form: string): string => {
+  switch (form) {
+    case '1s':
+      return 'yo';
+    case '2s':
+      return 'tu';
+    case '3s':
+      return 'ella';
+    case '1p':
+      return 'nosotros';
+    case '2p':
+      return 'vosotros';
+    case '3p':
+      return 'ellas';
   }
   return "Error, form description missing!";
 };

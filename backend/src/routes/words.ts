@@ -2,7 +2,7 @@
 
 import express from 'express';
 import { Word, wordModel } from '../models/Word';
-import middleware from '../middleware';
+
 const router = express.Router();
 
 const words: Word[] = [];
@@ -31,7 +31,7 @@ router.get('/:word-:tense-:mood/', async (req, res, next) => {
   }
 });
 
-router.get('/random', middleware.userExtractor, async (_req, res, _next) => {
+router.get('/random', async (_req, res, _next) => {
   if (words.length === 0) {
     words.push( ... await wordModel.find({ mood_english: 'Indicative', tense_english: 'Present' }));
     console.log(words.length);

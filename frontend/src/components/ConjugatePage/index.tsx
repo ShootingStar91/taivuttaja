@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import { Word } from '../../types';
-import { getWordForm, getFormDescription } from '../../utils';
+import { getWordForm, getForm, getFormDescription } from '../../utils';
 
 
 export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: () => void }) => {
@@ -77,7 +77,7 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
             <React.Fragment key={form}>
                 <tr key={form} className="conjugationRow">
                   <td><input type='text' id={index.toString()}name={form} onChange={handleChange} value={formState[form]}/></td>
-                  <td className="formDescription">{getFormDescription(form)}</td>
+                  <td className="formDescription"><div className="tooltip">{getForm(form)}<div className="tooltiptext">{getFormDescription(form)}</div></div></td>
                 </tr>
                 <tr></tr>
                 <tr></tr>

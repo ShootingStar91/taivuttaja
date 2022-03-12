@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { Word } from '../types';
+import { baseUrl } from '../utils';
 
-const baseUrl = 'http://localhost:3001/api/words';
+const url = baseUrl + 'words'; // /api/words/
+
 
 const getRandomWord = async (): Promise<Word | null> => {
 
   try {
-    const response = await axios.get<Word | null>(`${baseUrl}/random`);
+    const response = await axios.get<Word | null>(`${url}/random`);
     console.log("Response from getRandomWord: ", response);
     return response.data;
   } catch (error: unknown) {

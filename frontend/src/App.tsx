@@ -3,6 +3,7 @@ import './App.css';
 import { IndexPage } from './components/IndexPage';
 import { ConjugatePage } from './components/ConjugatePage';
 import { VocabPage } from './components/VocabPage';
+import { LoginForm } from './components/UserPage/login';
 import { wordService } from './services/words';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Word } from './types';
@@ -27,12 +28,14 @@ const App = () => {
             <Link className="navbarLink" to="/">Home</Link>
             <Link className="navbarLink" to="/conjugate">Conjugate</Link>
             <Link className="navbarLink" to="/vocab">Vocab</Link>
+            <Link className="navbarLink" to="/login">Login</Link>
           </div>
           <div className="mainArea">
         <Routes>
             <Route index element={<IndexPage />} />
             <Route path="conjugate" element={<ConjugatePage word={word} getWord={getWord}  />} />
             <Route path="vocab" element={<VocabPage word={word} getWord={getWord} />} />
+            <Route path="login" element={<LoginForm />} />
         </Routes>
         </div>
       </BrowserRouter>

@@ -5,4 +5,7 @@
 | 21.2. | 2   | Made first version of conjugations practice mode and optimized backend |
 | 22.2. | 1   | Worked on frontend forms and CSS |
 | 26.2. | 3   | Worked on frontend, field selection and checking correct answers on enter | 
-| Total hours | 14     | 
+| 9.3.  | 1   | Worked on login functionality |
+| 10.3. | 2   | Login functionality again |
+| 11.3. | 3   | Login middlewares finished, minor frontend fixes |
+| Total hours | 20     | 

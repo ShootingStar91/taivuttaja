@@ -34,7 +34,7 @@ body {
   font-size: 28px;
 }
 
-input[type=text] {
+input[type=text], input[type=password] {
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -63,4 +63,26 @@ button {
 
 .conjugationRow {
   margin: 20px;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 150px;
+  background-color: rgb(116, 66, 19);
+  color: #fff;
+  text-align: center;
+  border-radius: 3px;
+  padding: 2px 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

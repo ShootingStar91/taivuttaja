@@ -40,19 +40,16 @@ router.post(`/login/`, async (req, res) => {
     const user = await userModel.findOne( { username });
     if (user !== null) {
       bcrypt.compare(password, user.password, (_err, result) => {
-        console.log("result:");
-        
-        console.log(result);
-        
         if (result) {
           const userForToken = { username: user.username, id: user._id };
           const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: 60 * 60 });
-          res.send({ token, user });
+          res.status(200).json({ token, user: userForToken });
         } else {
-          console.log(`pass was ${password} real is ${user.password}`);
-          res.send('wrong password');
+          res.status(400).json( { error: 'Wrong password '});
         }
       });
+    } else {
+      res.status(400).json({ error: 'User not found' });
     }
   } else {
     res.status(400).json({ error: 'Login requires both username and password' });
