@@ -18,3 +18,9 @@ export interface Word {
   pastparticiple_english: string;
 }
 
+
+export interface User {
+  username: string,
+  id: string,
+  token?: string
+}

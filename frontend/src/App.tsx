@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { IndexPage } from './components/IndexPage';
 import { ConjugatePage } from './components/ConjugatePage';
@@ -7,11 +7,14 @@ import { LoginForm } from './components/UserPage/login';
 import { wordService } from './services/words';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { Word } from './types';
-
+import { checkLogin } from './services/user';
+import { useAppDispatch } from './reducers/hooks';
+import { setUser } from './reducers/user';
 const App = () => {
 
   const [word, setWord] = useState<Word | null>(null);
 
+  const dispatch = useAppDispatch();
   const getWord = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     wordService.getRandomWord().then((response) => {
@@ -20,6 +23,18 @@ const App = () => {
     }).catch(error => console.log(error));
   };
 
+  useEffect(() => {
+    console.log('checking login');
+    const loadedLoginData = checkLogin();
+    if (loadedLoginData) {
+      const token = loadedLoginData.token;
+      const loadedUser = loadedLoginData.user;
+      console.log('dispatching');
+      
+      dispatch(setUser({...loadedUser, token}));
+    }
+        
+  }, []);
 
   return (
     <div className="mainDiv">

@@ -8,4 +8,5 @@
 | 9.3.  | 1   | Worked on login functionality |
 | 10.3. | 2   | Login functionality again |
 | 11.3. | 3   | Login middlewares finished, minor frontend fixes |
-| Total hours | 20     | 
+| 12.3. | 2   | Login page to frontend started |
+| Total hours | 22     | 
