@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, KeyboardEvent, useState } from 'react';
 import { Word } from '../../types';
 import { getWordForm, getForm, getFormDescription } from '../../utils';
 
@@ -14,6 +14,11 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
   //const [skipped, setSkipped] = useState<boolean>(false);
 
+  const resetFormColors = () => {
+    forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffffff");
+  };
+
+
   const handleChange = (event: FormEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     if (value !== null) {
@@ -21,11 +26,15 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
     }
   };
 
-  const onTry = (event: FormEvent) => {
+  const onEnter = (event: FormEvent) => {
     event.preventDefault();
+    onTry(true);
+  };
+
+  const onTry = (nextField: boolean) => {
 
     const activeField = document.activeElement?.getAttribute('id');
-    if (activeField !== undefined && activeField !== null) {
+    if (activeField !== undefined && activeField !== null && nextField) {
       const activeId = parseInt(activeField);
       if (activeId < 5) {
         const nextField = document.getElementById((activeId + 1).toString());
@@ -40,21 +49,37 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
     forms.forEach(form => {
       if (formState[form] === getWordForm(word, form)) {
         console.log('Success at ' + form);
-        document.getElementsByName(form)[0].style.backgroundColor = "#ffffff";
+        document.getElementsByName(form)[0].style.backgroundColor = "#33cc33";
       } else {
+        const color = formState[form] === "" ? "#ffffff" : "#ffebeb";
         fail = true;
-        document.getElementsByName(form)[0].style.backgroundColor = "#ffebeb";
+        document.getElementsByName(form)[0].style.backgroundColor = color;
       }
     });
     if (!fail) {
       setFormState({ ...initialState });
       getWord();
+      resetFormColors();
+      const nextField = document.getElementById("0");
+      nextField?.focus();
+
+    }
+  };
+
+  const onKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+    if (e.key === "Tab") {
+      const activeField = document.activeElement?.getAttribute('id');
+      if (activeField !== null && activeField !== undefined && activeField === "5") {
+        e.preventDefault();
+      }
+      onTry(false);
     }
   };
 
   const onSkip = () => {
     setFormState({ ...initialState });
     getWord();
+    resetFormColors();
   };
 
   if (word === null) {
@@ -71,8 +96,9 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
         {word.infinitive}
       </p>
       <div>
-        <form onSubmit={onTry} autoComplete='off'>
+        <form onSubmit={onEnter} autoComplete='off' onKeyDown={onKeyDown}>
           <table>
+            <tbody>
             {forms.map((form, index) => 
             <React.Fragment key={form}>
                 <tr key={form} className="conjugationRow">
@@ -84,7 +110,7 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
                 <tr></tr>
             </React.Fragment>
             )}
-            
+            </tbody>
           </table>
         <p><button type='submit'>Try</button></p>
         <p><button type='button' onClick={onSkip}>Skip</button></p>

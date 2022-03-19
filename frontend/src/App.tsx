@@ -6,13 +6,15 @@ import { VocabPage } from './components/VocabPage';
 import { LoginForm } from './components/UserPage/login';
 import { wordService } from './services/words';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Word } from './types';
+import { Word, User } from './types';
 import { checkLogin } from './services/user';
 import { useAppDispatch } from './reducers/hooks';
-import { setUser } from './reducers/user';
+import { removeUser, setUser as saveUser } from './reducers/user';
+
 const App = () => {
 
   const [word, setWord] = useState<Word | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const dispatch = useAppDispatch();
   const getWord = () => {
@@ -23,6 +25,16 @@ const App = () => {
     }).catch(error => console.log(error));
   };
 
+  const logout = () => {
+    dispatch(removeUser());
+    setUser(null);
+  };
+
+  const login = (user: User) => {
+    setUser(user);
+  };
+
+
   useEffect(() => {
     console.log('checking login');
     const loadedLoginData = checkLogin();
@@ -31,11 +43,12 @@ const App = () => {
       const loadedUser = loadedLoginData.user;
       console.log('dispatching');
       
-      dispatch(setUser({...loadedUser, token}));
+      dispatch(saveUser({...loadedUser, token}));
     }
         
   }, []);
-
+  console.log('before app return, user: ', user);
+  
   return (
     <div className="mainDiv">
       <BrowserRouter>
@@ -43,14 +56,15 @@ const App = () => {
             <Link className="navbarLink" to="/">Home</Link>
             <Link className="navbarLink" to="/conjugate">Conjugate</Link>
             <Link className="navbarLink" to="/vocab">Vocab</Link>
-            <Link className="navbarLink" to="/login">Login</Link>
+            {user === null ? <Link className="navbarLink" to="/login">Login</Link> :
+                                  <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
           </div>
           <div className="mainArea">
         <Routes>
             <Route index element={<IndexPage />} />
             <Route path="conjugate" element={<ConjugatePage word={word} getWord={getWord}  />} />
             <Route path="vocab" element={<VocabPage word={word} getWord={getWord} />} />
-            <Route path="login" element={<LoginForm />} />
+            <Route path="login" element={<LoginForm onLogin={login} />} />
         </Routes>
         </div>
       </BrowserRouter>

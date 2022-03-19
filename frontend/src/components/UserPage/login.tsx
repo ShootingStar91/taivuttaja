@@ -2,9 +2,12 @@ import React, { FormEvent, useState } from "react";
 import { useAppSelector } from "../../reducers/hooks";
 import { selectUser } from "../../reducers/user";
 import { userService } from "../../services/user";
+import { User } from "../../types";
+import { useNavigate } from "react-router-dom";
 
-export const LoginForm = () => {
+export const LoginForm = ({onLogin}: {onLogin: (user: User) => void}) => {
 
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [notification, setNotification] = useState('');
@@ -15,11 +18,17 @@ export const LoginForm = () => {
     event.preventDefault();
     const result = await userService.tryLogin(username, password);
     if (result !== null && result !== undefined) {
+      console.log("result on login:");
+      
+      console.log(result);
       setNotification(result);
       setTimeout(() => { setNotification(""); }, 5000);
     } else {
+      console.log("result on login:");
+      console.log(result);
       setNotification("");
-      // login successful. dispatch here with reducer to update user and change page that way
+      onLogin(user.user as User);
+      navigate('/conjugate');
     }
   };
 

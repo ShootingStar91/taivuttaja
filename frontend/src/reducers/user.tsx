@@ -19,6 +19,7 @@ export const userSlice = createSlice({
     },
     removeUser: state => {
       state.user = undefined;
+      window.localStorage.clear();
     }
   }
 });
