@@ -47,6 +47,7 @@ const App = () => {
     }
         
   }, []);
+  
   console.log('before app return, user: ', user);
   
   return (

@@ -4,6 +4,8 @@ import { getWordForm, getForm, getFormDescription } from '../../utils';
 
 
 export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: () => void }) => {
+
+  const [notification, setNotification] = useState<string>("");
   
   const forms = ['1s', '2s', '3s', '1p', '2p', '3p'];
 
@@ -57,19 +59,25 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
       }
     });
     if (!fail) {
-      setFormState({ ...initialState });
-      getWord();
-      resetFormColors();
-      const nextField = document.getElementById("0");
-      nextField?.focus();
+      setNotification("¡Todo correcto!");
+      setTimeout(() => {
+        setNotification("");
+        setFormState({ ...initialState });
+        getWord();
+        resetFormColors();
+        const nextField = document.getElementById("0");
+        nextField?.focus();
+  
+      }, 2000);
 
     }
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+    
     if (e.key === "Tab") {
       const activeField = document.activeElement?.getAttribute('id');
-      if (activeField !== null && activeField !== undefined && activeField === "5") {
+      if (activeField !== null && activeField !== undefined && activeField === "5" && !e.shiftKey) {
         e.preventDefault();
       }
       onTry(false);
@@ -116,6 +124,8 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
         <p><button type='button' onClick={onSkip}>Skip</button></p>
         </form>
       </div>
+      {notification !== "" && <div className="notificationDiv"><p className="notification">{notification}</p></div>}
+
     </div>
   );
 };

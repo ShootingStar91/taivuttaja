@@ -10,7 +10,7 @@ export const LoginForm = ({onLogin}: {onLogin: (user: User) => void}) => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [notification, setNotification] = useState('');
+  const [notification, setNotification] = useState<string>("");
   const user = useAppSelector(selectUser);
   console.log(user.user?.username);
   
@@ -42,7 +42,7 @@ export const LoginForm = ({onLogin}: {onLogin: (user: User) => void}) => {
 
   return (
     <div>
-      {notification !== '' && <div className='notification'>{notification}</div>}
+      {notification !== "" && <div className="notificationDiv"><p className="notification">{notification}</p></div>}
       <form onSubmit={tryLogin}>
         <p><label>Username</label></p><p><input type='text' onChange={handleUsernameChange} value={username}></input></p>
         <p><label>Password</label></p><p><input type='password' onChange={handlePasswordChange} value={password}></input></p>

@@ -1,6 +1,6 @@
 | Date | Hours | Description |
 | ---- | ------| ----------- |
-| 18.2.| 4     | Set up project structure and backend, uploaded database, connected to it |
+| 18.2. | 4     | Set up project structure and backend, uploaded database, connected to it |
 | 19.2. | 4   | Set up frontend, connected to backend, put some CSS. Made a simple vocabulary practice mode, where you get a random word. |
 | 21.2. | 2   | Made first version of conjugations practice mode and optimized backend |
 | 22.2. | 1   | Worked on frontend forms and CSS |
@@ -9,4 +9,7 @@
 | 10.3. | 2   | Login functionality again |
 | 11.3. | 3   | Login middlewares finished, minor frontend fixes |
 | 12.3. | 2   | Login page to frontend started |
-| Total hours | 22     | 
+| 14.3. | 3   | Added redux to handle user on frontend |
+| 17.3. | 1   | Added logout |
+| 18.3. | 3   | Tweaked user experience: conjugate form fields switching on enter/tab, notifications |
+| Total hours | 29     | 
