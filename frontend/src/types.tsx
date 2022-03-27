@@ -22,5 +22,19 @@ export interface Word {
 export interface User {
   username: string,
   id: string,
-  token?: string
+  token?: string,
+  wordLists?: string[],
+}
+
+
+export interface WordList {
+  title: string,
+  words: StrippedWord[],
+  owner: User,
+}
+
+export interface StrippedWord {
+  english: string,
+  spanish: string,
+  id: string
 }

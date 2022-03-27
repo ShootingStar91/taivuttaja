@@ -2,10 +2,12 @@
 
 import express from 'express';
 import { Word, wordModel } from '../models/Word';
+import { StrippedWord } from '../types';
 
 const router = express.Router();
 
 const words: Word[] = [];
+const strippedWords: StrippedWord[] = [];
 
 // /api/words/...
 
@@ -45,5 +47,23 @@ router.get('/random', async (_req, res, _next) => {
     res.send(randomedWord);
   }
 });
+
+
+router.get('/allwordsstripped', async (_req, res, _next) => {
+  if (strippedWords.length === 0) {
+    const result = await wordModel.find({ tense_english: 'Present', mood_english: 'Indicative' }, 'infinitive infinitive_english');
+    if (result) {
+      result.forEach((word) => {
+        const strippedWord: StrippedWord = { english: word.infinitive_english, spanish: word.infinitive, id: word._id.toString() };
+        strippedWords.push(strippedWord);
+      });
+    }
+  }
+  console.log("returning " + strippedWords.length + " words");
+  
+  res.send(strippedWords);
+});
+
+
 
 export default router;

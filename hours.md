@@ -12,4 +12,7 @@
 | 14.3. | 3   | Added redux to handle user on frontend |
 | 17.3. | 1   | Added logout |
 | 18.3. | 3   | Tweaked user experience: conjugate form fields switching on enter/tab, notifications |
-| Total hours | 29     | 
+| 23.3. | 1   | Building user page to frontend, and service for getting/creating wordlists |
+| 25.3. | 1   | Continued wordlist page and service |
+| 27.3. | 3   | Continued wordlist on frontend, and worked on backend handling of wordlists |
+| Total hours | 34     | 

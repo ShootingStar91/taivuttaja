@@ -10,6 +10,8 @@ import { Word, User } from './types';
 import { checkLogin } from './services/user';
 import { useAppDispatch } from './reducers/hooks';
 import { removeUser, setUser as saveUser } from './reducers/user';
+import { UserPage } from './components/UserPage';
+import { WordListView } from './components/UserPage/wordlist';
 
 const App = () => {
 
@@ -57,6 +59,7 @@ const App = () => {
             <Link className="navbarLink" to="/">Home</Link>
             <Link className="navbarLink" to="/conjugate">Conjugate</Link>
             <Link className="navbarLink" to="/vocab">Vocab</Link>
+            <Link className="navbarLink" to="/userpage">User page</Link>
             {user === null ? <Link className="navbarLink" to="/login">Login</Link> :
                                   <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
           </div>
@@ -66,6 +69,8 @@ const App = () => {
             <Route path="conjugate" element={<ConjugatePage word={word} getWord={getWord}  />} />
             <Route path="vocab" element={<VocabPage word={word} getWord={getWord} />} />
             <Route path="login" element={<LoginForm onLogin={login} />} />
+            <Route path="userpage" element={<UserPage />} />
+            <Route path="wordlist/:id" element={<WordListView />} />
         </Routes>
         </div>
       </BrowserRouter>
