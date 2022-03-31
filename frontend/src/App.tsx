@@ -57,6 +57,7 @@ const App = () => {
       console.log('dispatching');
       
       dispatch(saveUser({...loadedUser, token}));
+      setUser(loadedUser);
     }
         
   }, []);
@@ -70,7 +71,7 @@ const App = () => {
             <Link className="navbarLink" to="/">Home</Link>
             <Link className="navbarLink" to="/conjugate">Conjugate</Link>
             <Link className="navbarLink" to="/vocab">Vocab</Link>
-            <Link className="navbarLink" to="/userpage">User page</Link>
+            {user !== null && <Link className="navbarLink" to="/userpage">User page</Link>}
             {user === null ? <Link className="navbarLink" to="/login">Login</Link> :
                                   <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
           </div>
