@@ -6,11 +6,17 @@ import { Provider } from 'react-redux';
 import store from './reducers/store';
 
 
-ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>,
-  document.getElementById('root')
-);
+const renderApp = () => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Provider>,
+    document.getElementById('root')
+  );
+};
+
+renderApp();
+
+store.subscribe(renderApp);

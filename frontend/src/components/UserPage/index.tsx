@@ -12,16 +12,16 @@ export const UserPage = () => {
   const [name, setName] = useState<string>("");
   const [wordLists, setWordLists] = useState<WordList[]>([]);
 
-  useEffect(() => {
-    if (user && user.user && user.user.id) {
-      wordListService.getWordLists(user.user.id).then((data) => {
+  useEffect(() => {    
+    if (user && user.token) {
+      wordListService.getWordLists(user.token).then((data) => {
         setWordLists(data);
       })
       .catch((error) => {
         console.log(error);
       });
     }
-  }, []);
+  }, [user]);
 
   const onNameChange = (event: FormEvent<HTMLInputElement>) => {
     setName(event.currentTarget.value);
@@ -32,29 +32,28 @@ export const UserPage = () => {
     console.log(name);
     console.log(user);
     
-    if (user.user && user.user.token) {
-      // Create wordlist (send it to server)
-      // Open the wordlist editing page with id gotten from server
-      const newWordList: WordList = { title: name, words: [], owner: user.user};
-      const result = await wordListService.createWordlist(newWordList, user.user.token);
-      console.log("RESULT FROM CREATEWORDLIST");
-      console.log(result);      
+    if (user && user.token) {
+      const newWordList: WordList = { title: name, words: [], owner: user};
+      const result = await wordListService.createWordlist(newWordList, user.token);
       const id = result.data._id as string;
       navigate(`/wordlist/${id}`);
     }
   };
-
+  console.log(wordLists);
+  
   return (
     <div>
       <h3>Your wordlists</h3>
       {wordLists.length > 0 ? 
-        wordLists.map((list) => <div key={list.title}>{list.title}</div>) 
+        wordLists.map((list) => <div key={list.title}>
+          {list._id ? <a href={"wordlist/" + list._id}>{list.title}</a> :
+                     list.title}
+                     </div>) 
         : <p>No wordlists found</p>}
       <h3>New wordlist</h3>
-      <p>        
         <form onSubmit={newWordList}><p>Name: <input type="text" onChange={onNameChange}></input></p>
         <p><button type='submit'>Create</button></p>
-</form></p>
+</form>
       <h3>User settings</h3>
       <p>Email here</p>
       <p>Change password</p>

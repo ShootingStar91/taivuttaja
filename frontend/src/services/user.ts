@@ -14,29 +14,26 @@ const tryLogin = async (username: string, password: string) => {
   try {
     const result = await axios.post<LoginResponse>(`${url}/login`, { username, password });
     if (result.data) {
-      window.localStorage.setItem('loggedUser', JSON.stringify(result.data));
-      return null;
+      const user: User = { username: result.data.user.username, 
+                           id: result.data.user.id,
+                           token: result.data.token }; 
+      return user;
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.data.error) {
-        return error.response?.data.error as string; 
+        console.log("Error on login:");
+        console.log(error.response.data.error);
       }
-      return "Error in login";
     }
   }
-  return null;
 };
 
 export const checkLogin = () => {
-  const loginResponseJSON = window.localStorage.getItem('loggedUser');
-  if (loginResponseJSON) {
-    const loginResponse = JSON.parse(loginResponseJSON) as LoginResponse;
-    console.log("returning");
-    console.log(loginResponse);
-    
-    
-    return loginResponse;
+  const user = window.localStorage.getItem('loggedUser');
+  if (user) {
+     return JSON.parse(user) as User;
+
   }
   return;
 };

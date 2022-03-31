@@ -1,9 +1,12 @@
 import React, { FormEvent, useState } from "react";
 import userService from "../../services/user";
 import { useNavigate } from "react-router-dom";
+import { setUser } from "../../reducers/user";
+import { useAppDispatch } from "../../reducers/hooks";
 
-export const LoginForm = ({onLogin}: {onLogin: () => void}) => {
+export const LoginForm = () => {
 
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,16 +14,15 @@ export const LoginForm = ({onLogin}: {onLogin: () => void}) => {
   
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
-    const error = await userService.tryLogin(username, password);
+    const user = await userService.tryLogin(username, password);
 
-    if (error !== null && error !== undefined) {
-      console.log("error on login:");
-      console.log(error);
-      setNotification(error);
+    if (!user) {
+      setNotification("Could not login. Check username and password");
       setTimeout(() => { setNotification(""); }, 5000);
     } else {
       setNotification("");
-      onLogin();
+      window.localStorage.setItem('loggedUser', JSON.stringify(user));
+      dispatch(setUser( { ...user } ));
       navigate('/conjugate');
     }
   };

@@ -4,12 +4,12 @@ import { baseUrl } from "../utils";
 
 const url = baseUrl + 'wordlists'; // /api/wordlists/
 
-const createWordlist = (wordList: WordList, userToken: string) => {
-  console.log("sending createwordlist. token:" + userToken);
-  
-  const result = axios.post(url + '/create', { wordlist: wordList }, { headers: { Authorization: 'bearer ' + userToken}} );
-  console.log("got back from createwordlist");
-  
+const getHeader = (token: string) => {
+  return { headers: { Authorization: 'bearer ' + token}};
+};
+
+const createWordlist = (wordList: WordList, token: string) => {
+  const result = axios.post(url + '/create', { wordlist: wordList }, getHeader(token));  
   return result;
 };
 
@@ -18,9 +18,9 @@ const addWord = (word: Word, wordListId: string) => {
   return result;
 };
 
-const getWordLists = async (userId: string) => {
+const getWordLists = async (token: string) => {
   try {
-    const response = await axios.get<WordList[]>(url + `/${userId}`);
+    const response = await axios.get<WordList[]>(url + `/`, getHeader(token));
     return response.data;
   } catch (error: unknown) {
     console.log("error in getWordLists");
@@ -29,9 +29,9 @@ const getWordLists = async (userId: string) => {
   }
 };
 
-const getWordList = async (id: string, userToken: string) => {
+const getWordList = async (id: string, token: string) => {
   try {    
-    const response = await axios.get<WordList>(url + `/${id}`, { headers: { Authorization: 'bearer ' + userToken}} );
+    const response = await axios.get<WordList>(url + `/${id}`, getHeader(token));
     return response.data;
   } catch (error: unknown) {
     console.log("error in getWordList");

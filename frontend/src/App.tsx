@@ -6,22 +6,20 @@ import { VocabPage } from './components/VocabPage';
 import { LoginForm } from './components/UserPage/login';
 import { wordService } from './services/words';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Word, User } from './types';
+import { Word } from './types';
 import { checkLogin } from './services/user';
-import { useAppDispatch } from './reducers/hooks';
-import { removeUser, setUser as saveUser } from './reducers/user';
+import { useAppDispatch, useAppSelector } from './reducers/hooks';
+import { removeUser, selectUser, setUser } from './reducers/user';
 import { UserPage } from './components/UserPage';
 import { WordListView } from './components/UserPage/wordlist';
-import userService from './services/user';
 
 const App = () => {
 
   const [word, setWord] = useState<Word | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const user = useAppSelector(selectUser);
 
   const dispatch = useAppDispatch();
   const getWord = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     wordService.getRandomWord().then((response) => {
       console.log("response: ");
       setWord(response);
@@ -29,35 +27,15 @@ const App = () => {
   };
 
   const logout = () => {
+    console.log("dispatching removeuser from app tsx");
+    
     dispatch(removeUser());
-    setUser(null);
   };
-
-  const login = () => {
-    const user = userService.checkLogin();
-    if (!user) {
-      console.log("login() got undefined user from checkLogin");
-      return;
-    }
-    setUser(user.user);
-    console.log("user in 'login'");
-    console.log(user);
-    if (user) {
-      dispatch(saveUser({...user.user, token: user.token }));
-    }
-  };
-
 
   useEffect(() => {
-    console.log('checking login');
-    const loadedLoginData = checkLogin();
-    if (loadedLoginData) {
-      const token = loadedLoginData.token;
-      const loadedUser = loadedLoginData.user;
-      console.log('dispatching');
-      
-      dispatch(saveUser({...loadedUser, token}));
-      setUser(loadedUser);
+    const loadedUser = checkLogin();
+    if (loadedUser) {      
+      dispatch(setUser(loadedUser));
     }
         
   }, []);
@@ -71,8 +49,8 @@ const App = () => {
             <Link className="navbarLink" to="/">Home</Link>
             <Link className="navbarLink" to="/conjugate">Conjugate</Link>
             <Link className="navbarLink" to="/vocab">Vocab</Link>
-            {user !== null && <Link className="navbarLink" to="/userpage">User page</Link>}
-            {user === null ? <Link className="navbarLink" to="/login">Login</Link> :
+            {user && <Link className="navbarLink" to="/userpage">User page</Link>}
+            {!user ? <Link className="navbarLink" to="/login">Login</Link> :
                                   <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
           </div>
           <div className="mainArea">
@@ -80,7 +58,7 @@ const App = () => {
             <Route index element={<IndexPage />} />
             <Route path="conjugate" element={<ConjugatePage word={word} getWord={getWord}  />} />
             <Route path="vocab" element={<VocabPage word={word} getWord={getWord} />} />
-            <Route path="login" element={<LoginForm onLogin={login} />} />
+            <Route path="login" element={<LoginForm />} />
             <Route path="userpage" element={<UserPage />} />
             <Route path="wordlist/:id" element={<WordListView />} />
         </Routes>

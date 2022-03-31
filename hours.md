@@ -16,5 +16,5 @@
 | 25.3. | 1   | Continued wordlist page and service |
 | 27.3. | 3   | Continued wordlist on frontend, and worked on backend handling of wordlists |
 | 30.3. | 2   | More backend handling of wordlists, tense & mood types added, authorization put to use |
-| 31.3. | 2   | Started to fix problems with login and other bugs |
-| Total hours | 38     | 
+| 31.3. | 4   | Improved logic of login on frontend, listing wordlists of user works with links to page of individual wordlist. Wordlist edit not yet done. |
+| Total hours | 40     | 

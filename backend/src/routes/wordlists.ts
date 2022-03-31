@@ -5,6 +5,21 @@ import middleware from '../middleware';
 
 const router = express.Router();
 
+
+router.get('/', middleware.userExtractor, async (req, res, next) => {
+  if (!req.user || !req.user._id) {
+    const err = new Error('Supply valid user token');
+    res.status(400);
+    return next(err);
+  }
+  const userId = req.user._id;  
+  const result = await wordlistModel.find({ owner: userId });
+  
+  if (result === null) {
+    res.json([]);
+  }  
+  res.json(result);
+});
 router.get('/:id', middleware.userExtractor, async (req, res, next) => {
   if (!req.user || !req.user._id) {
     const err = new Error('Supply valid user token');
@@ -18,7 +33,10 @@ router.get('/:id', middleware.userExtractor, async (req, res, next) => {
   }
   const id = req.params.id;
   const userId = req.user._id;
-
+  console.log("looking with id");
+  console.log(id);
+  
+  
   const result = await wordlistModel.findById(id);
   
   if (result === null) {

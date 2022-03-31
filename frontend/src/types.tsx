@@ -31,6 +31,7 @@ export interface WordList {
   title: string,
   words: StrippedWord[],
   owner: User,
+  _id?: string,
 }
 
 export interface StrippedWord {

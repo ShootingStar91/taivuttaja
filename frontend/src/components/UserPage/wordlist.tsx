@@ -13,14 +13,14 @@ export const WordListView = () => {
   const [word, setWord] = useState<string>("");
   const [allWords, setAllWords] = useState<StrippedWord[] | undefined>();
   const user = useAppSelector(selectUser);
-  
+
   useEffect(() => {
-    if (!id || !user.user || !user.user.token) { return; }
-    wordListService.getWordList(id, user.user.token).then((data) => {
+    if (!id || !user || !user.token) { return; }
+    wordListService.getWordList(id, user.token).then((data) => {
       setWordlist(data);
     }).catch((error) => console.log(error));
 
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     wordService.getStrippedWords().then((data) => {
