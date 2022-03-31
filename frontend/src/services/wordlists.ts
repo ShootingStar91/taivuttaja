@@ -4,13 +4,17 @@ import { baseUrl } from "../utils";
 
 const url = baseUrl + 'wordlists'; // /api/wordlists/
 
-const createWordlist = (wordList: WordList) => {
-  const result = axios.put(url + '/create', wordList);
+const createWordlist = (wordList: WordList, userToken: string) => {
+  console.log("sending createwordlist. token:" + userToken);
+  
+  const result = axios.post(url + '/create', { wordlist: wordList }, { headers: { Authorization: 'bearer ' + userToken}} );
+  console.log("got back from createwordlist");
+  
   return result;
 };
 
 const addWord = (word: Word, wordListId: string) => {
-  const result = axios.put(url + `/add?=${wordListId}`, word);
+  const result = axios.post(url + `/add?=${wordListId}`, word);
   return result;
 };
 
@@ -25,9 +29,9 @@ const getWordLists = async (userId: string) => {
   }
 };
 
-const getWordList = async (id: string) => {
-  try {
-    const response = await axios.get<WordList>(url + `/${id}`);
+const getWordList = async (id: string, userToken: string) => {
+  try {    
+    const response = await axios.get<WordList>(url + `/${id}`, { headers: { Authorization: 'bearer ' + userToken}} );
     return response.data;
   } catch (error: unknown) {
     console.log("error in getWordList");

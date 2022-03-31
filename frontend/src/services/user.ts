@@ -8,8 +8,8 @@ interface LoginResponse {
   user: User
 }
 
-const tryLogin = async (username: string, password: string) => {
 
+const tryLogin = async (username: string, password: string) => {
 
   try {
     const result = await axios.post<LoginResponse>(`${url}/login`, { username, password });
@@ -41,6 +41,7 @@ export const checkLogin = () => {
   return;
 };
 
-export const userService = {
-  tryLogin
+export default {
+  tryLogin,
+  checkLogin
 };

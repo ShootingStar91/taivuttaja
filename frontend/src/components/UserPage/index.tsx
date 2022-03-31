@@ -30,12 +30,16 @@ export const UserPage = () => {
   const newWordList = async (event: FormEvent) => {
     event.preventDefault();
     console.log(name);
-    if (user.user) {
+    console.log(user);
+    
+    if (user.user && user.user.token) {
       // Create wordlist (send it to server)
       // Open the wordlist editing page with id gotten from server
       const newWordList: WordList = { title: name, words: [], owner: user.user};
-      const result = await wordListService.createWordlist(newWordList);
-      const id = result.data as string;
+      const result = await wordListService.createWordlist(newWordList, user.user.token);
+      console.log("RESULT FROM CREATEWORDLIST");
+      console.log(result);      
+      const id = result.data._id as string;
       navigate(`/wordlist/${id}`);
     }
   };

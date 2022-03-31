@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { wordListService } from "../../services/wordlists";
 import { StrippedWord, WordList } from "../../types";
 import { wordService } from "../../services/words";
+import { useAppSelector } from "../../reducers/hooks";
+import { selectUser } from "../../reducers/user";
 
 export const WordListView = () => {
 
@@ -10,10 +12,11 @@ export const WordListView = () => {
   const [wordlist, setWordlist] = useState<WordList | undefined>();
   const [word, setWord] = useState<string>("");
   const [allWords, setAllWords] = useState<StrippedWord[] | undefined>();
-
+  const user = useAppSelector(selectUser);
+  
   useEffect(() => {
-    if (!id) { return; }
-    wordListService.getWordList(id).then((data) => {
+    if (!id || !user.user || !user.user.token) { return; }
+    wordListService.getWordList(id, user.user.token).then((data) => {
       setWordlist(data);
     }).catch((error) => console.log(error));
 
@@ -28,7 +31,7 @@ export const WordListView = () => {
     }).catch((error) => {
       console.log(error);
     });
-}, []);
+  }, []);
 
 
   const onWordChange = (event: FormEvent<HTMLInputElement>) => {

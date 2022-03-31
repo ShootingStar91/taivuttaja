@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import middleware from './middleware';
 import wordsRouter from './routes/words';
 import userRouter from './routes/user';
+import wordlistsRouter from './routes/wordlists';
 import { PORT, MONGODB_URI, SECRET } from './config';
 import cors from 'cors';
 //import { wordModel } from './models/Word';
@@ -39,6 +40,7 @@ app.use(cors(options));
 // These have to be AFTER cors!
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);
+app.use('/api/wordlists', wordlistsRouter);
 /*
 const test = () => {
   const moods = ['Indicative', 'Subjunctive', 'Imperative'];

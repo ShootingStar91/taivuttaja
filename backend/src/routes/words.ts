@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import express from 'express';
-import { Word, wordModel } from '../models/Word';
+import { wordModel } from '../models/Word';
+import { Word } from '../types';
 import { StrippedWord } from '../types';
 
 const router = express.Router();

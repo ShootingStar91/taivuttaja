@@ -12,6 +12,7 @@ import { useAppDispatch } from './reducers/hooks';
 import { removeUser, setUser as saveUser } from './reducers/user';
 import { UserPage } from './components/UserPage';
 import { WordListView } from './components/UserPage/wordlist';
+import userService from './services/user';
 
 const App = () => {
 
@@ -32,8 +33,18 @@ const App = () => {
     setUser(null);
   };
 
-  const login = (user: User) => {
-    setUser(user);
+  const login = () => {
+    const user = userService.checkLogin();
+    if (!user) {
+      console.log("login() got undefined user from checkLogin");
+      return;
+    }
+    setUser(user.user);
+    console.log("user in 'login'");
+    console.log(user);
+    if (user) {
+      dispatch(saveUser({...user.user, token: user.token }));
+    }
   };
 
 
