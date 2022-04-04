@@ -16,6 +16,13 @@ body {
   background-color: rgb(146, 203, 250);
 }
 
+.infoBar {
+  padding: 5px 50px;
+  background-color: rgb(45, 98, 141);
+  font-size: 18px;
+  color: white;
+}
+
 .navbarLink {
   color: rgb(255, 173, 80);
   font-size: 28px;

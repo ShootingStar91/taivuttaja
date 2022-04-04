@@ -8,6 +8,9 @@ interface LoginResponse {
   user: User
 }
 
+const createUser = async (username: string, password: string) => {
+  return await axios.post<User>(`${url}/create`, { username, password });
+};
 
 const tryLogin = async (username: string, password: string) => {
 
@@ -40,5 +43,6 @@ export const checkLogin = () => {
 
 export default {
   tryLogin,
-  checkLogin
+  checkLogin,
+  createUser
 };

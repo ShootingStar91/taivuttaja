@@ -53,6 +53,7 @@ const App = () => {
             {!user ? <Link className="navbarLink" to="/login">Login</Link> :
                                   <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
           </div>
+          {user && <div className="infoBar">Logged in as {user.username}</div>}
           <div className="mainArea">
         <Routes>
             <Route index element={<IndexPage />} />

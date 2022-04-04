@@ -16,5 +16,8 @@
 | 25.3. | 1   | Continued wordlist page and service |
 | 27.3. | 3   | Continued wordlist on frontend, and worked on backend handling of wordlists |
 | 30.3. | 2   | More backend handling of wordlists, tense & mood types added, authorization put to use |
-| 31.3. | 4   | Improved logic of login on frontend, listing wordlists of user works with links to page of individual wordlist. Wordlist edit not yet done. |
-| Total hours | 40     | 
+| 31.3. | 4   | Improved logic of login on frontend, listing wordlists of user works with links to page of individual wordlist. Wordlist editing not yet done. |
+| 1.4.  | 3   | Started to build functionality of adding words to wordlist. Added react-select to frontend, and route to backend. Still requires some work |
+| 3.4.  | 2   | Added functionality to delete words from wordlists, both frontend and backend |
+| 4.4.  | 3   | Refactored user-routes logic into user service & added data validation, made registration possible in frontend |
+| Total hours | 45     | 

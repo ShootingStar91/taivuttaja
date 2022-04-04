@@ -2,9 +2,65 @@
 import express from 'express';
 import { wordlistModel } from '../models/Wordlist';
 import middleware from '../middleware';
+import { StrippedWord } from '../types';
 
 const router = express.Router();
 
+
+router.post('/deleteword/', middleware.userExtractor, async (req, res, next) => {
+  if (!req.user || !req.user._id) {
+    const err = new Error('Supply valid user token');
+    res.status(400);
+    return next(err);
+  }
+  if (!req.body.word || !req.body.wordlistId) {
+    const err = new Error('Supply valid word and wordlist id');
+    res.status(400);
+    return next(err);
+  }
+
+  const word: string = req.body.word as string;
+  const wordlistId = req.body.wordlistId as string;
+
+  const result = await wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: req.user._id }, { $pull: { words: word } });
+  
+  if (!result) {
+    const err = new Error('Wordlist not found');
+    res.status(404);
+    return next(err);
+  }
+
+  res.status(200);
+  res.send();
+
+});
+router.post('/addword/', middleware.userExtractor, async (req, res, next) => {
+  if (!req.user || !req.user._id) {
+    const err = new Error('Supply valid user token');
+    res.status(400);
+    return next(err);
+  }
+  if (!req.body.word || !req.body.wordlistId) {
+    const err = new Error('Supply valid word and wordlist id');
+    res.status(400);
+    return next(err);
+  }
+
+  const word: StrippedWord = req.body.word as StrippedWord;
+  const wordlistId = req.body.wordlistId as string;
+  
+  const result = await wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: req.user._id }, { $push: { words: word.english } });
+  
+  if (!result) {
+    const err = new Error('Wordlist not found');
+    res.status(404);
+    return next(err);
+  }
+
+  res.status(200);
+  res.send();
+
+});
 
 router.get('/', middleware.userExtractor, async (req, res, next) => {
   if (!req.user || !req.user._id) {

@@ -51,7 +51,8 @@ export const UserPage = () => {
                      </div>) 
         : <p>No wordlists found</p>}
       <h3>New wordlist</h3>
-        <form onSubmit={newWordList}><p>Name: <input type="text" onChange={onNameChange}></input></p>
+        <form onSubmit={newWordList}><p>Name:</p>
+        <p><input type="text" onChange={onNameChange}></input></p>
         <p><button type='submit'>Create</button></p>
 </form>
       <h3>User settings</h3>

@@ -29,7 +29,7 @@ export interface User {
 
 export interface WordList {
   title: string,
-  words: StrippedWord[],
+  words: string[],
   owner: User,
   _id?: string,
 }

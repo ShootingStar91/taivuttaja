@@ -27,6 +27,34 @@ export const LoginForm = () => {
     }
   };
 
+  const tryNewUser = async () => {
+    try {
+      const result = await userService.createUser(username, password);
+      console.log("result:");
+      
+      console.log(result);
+      
+      const user = await userService.tryLogin(username, password);
+      console.log("user after login in trynewuser:");
+      console.log(user);
+      
+      
+      if (!user) {
+        setNotification("User created, but could not login! Try again soon");
+        setTimeout(() => { setNotification(""); }, 5000);
+      } else {
+        setNotification("");
+        window.localStorage.setItem('loggedUser', JSON.stringify(user));
+        dispatch(setUser( { ...user } ));
+        navigate('/conjugate');
+          
+      }
+    } catch (e: any) {
+      setNotification(e.response.data.error as string);      
+      setTimeout(() => { setNotification(""); }, 5000);
+    }
+  };
+
   const handlePasswordChange = (event: FormEvent<HTMLInputElement>) => {
     setPassword(event.currentTarget.value);
   };
@@ -41,7 +69,8 @@ export const LoginForm = () => {
       <form onSubmit={tryLogin}>
         <p><label>Username</label></p><p><input type='text' onChange={handleUsernameChange} value={username}></input></p>
         <p><label>Password</label></p><p><input type='password' onChange={handlePasswordChange} value={password}></input></p>
-        <button type='submit'>Log in</button> 
+        <p><button type='submit'>Log in</button></p>
+        <p><button type="button" onClick={tryNewUser}>Create new user</button></p>
       </form>
     </div>
   );

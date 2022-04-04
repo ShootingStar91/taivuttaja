@@ -5,12 +5,13 @@ import { StrippedWord, WordList } from "../../types";
 import { wordService } from "../../services/words";
 import { useAppSelector } from "../../reducers/hooks";
 import { selectUser } from "../../reducers/user";
+import Select, { SingleValue } from 'react-select';
 
 export const WordListView = () => {
 
   const { id } = useParams();
   const [wordlist, setWordlist] = useState<WordList | undefined>();
-  const [word, setWord] = useState<string>("");
+  const [word, setWord] = useState<StrippedWord | null>(null);
   const [allWords, setAllWords] = useState<StrippedWord[] | undefined>();
   const user = useAppSelector(selectUser);
 
@@ -34,36 +35,55 @@ export const WordListView = () => {
   }, []);
 
 
-  const onWordChange = (event: FormEvent<HTMLInputElement>) => {
-    setWord(event.currentTarget.value);
+  const onChange = (newValue: SingleValue<{ value: StrippedWord, label: string }>) => {
+    if (!newValue) return;
+    setWord(newValue.value);
   };  
 
+  
 
-  const onSubmit = (event: FormEvent) => {
+  const addWord = async (event: FormEvent) => {
     event.preventDefault();
     if (!allWords) { return; }
     if (!wordlist) {
       console.log("Error: Wordlist not found");
       return;
     }
-    const wordResult = allWords.find(strippedWord => strippedWord.english.toLowerCase() === word.toLowerCase());
-    if (wordResult) {
-      setWordlist({ ...wordlist, words: [ ...wordlist.words, wordResult ]});   
-    } else {
-      console.log("Error fetching word");
+    if (word && wordlist._id && user && user.token
+       && !wordlist.words.includes(word.english)) {
+      // Here, also add word to wordlist on server
+      setWordlist({...wordlist, words: [...wordlist.words, word.english]});
+      await wordListService.addWord(word, wordlist._id, user.token);
     }
   };
-  if (!wordlist) {
+
+  const deleteWord = async (wordToDelete: string) => {
+    if (!wordlist?._id || !user?.token) { return; }
+    await wordListService.deleteWord(wordToDelete, wordlist?._id, user.token);
+    setWordlist({...wordlist, words: wordlist.words.filter(w => w === wordToDelete)});
+  };
+
+  if (!wordlist || !allWords) {
     return (<div>Wordlist not loaded or found.</div>);
   }
+  console.log("wordlist");
+  console.log(wordlist);
+  
+  
   return (
     <div><h3>Add words to wordlist: {wordlist.title}</h3>
-      <form onSubmit={onSubmit}>
-        <p><input type="text" onChange={onWordChange}></input></p>
-        <p><button type="submit">Add</button></p>
-      </form>
-      {wordlist.words.map(word => <p key={word.english}>{word}</p>)}
+      <Select 
+        className="basic-single"
+        classNamePrefix="select"
+        name="wordField"
+        options={allWords.map(word => { return { value: word, label: word.english }; })}
+        onChange={onChange}
+      />
+              <p><button type="button" onClick={addWord}>Add</button></p>
 
+      <div>
+        {wordlist.words.map(w => <p key={w}><a href="" onClick={() => deleteWord(w)}>Delete</a> | {w}</p>)}
+      </div>
     </div>
   );
 };
