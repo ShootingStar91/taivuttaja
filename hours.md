@@ -20,4 +20,4 @@
 | 1.4.  | 3   | Started to build functionality of adding words to wordlist. Added react-select to frontend, and route to backend. Still requires some work |
 | 3.4.  | 2   | Added functionality to delete words from wordlists, both frontend and backend |
 | 4.4.  | 3   | Refactored user-routes logic into user service & added data validation, made registration possible in frontend |
-| Total hours | 45     | 
+| Total hours | 48     | 
