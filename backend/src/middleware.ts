@@ -1,8 +1,12 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express';
-import jwt, { Secret } from 'jsonwebtoken';
+import jwt, { JsonWebTokenError, Secret } from 'jsonwebtoken';
 import { SECRET } from './config';
 import { userModel, User } from './models/User';
+
+/*
+  This allows extractors to add user and token to request
+*/
 declare module 'express-serve-static-core' {
   interface Request {
     token?: string | null,
@@ -41,12 +45,9 @@ const userExtractor = (request: express.Request, response: express.Response, nex
   }
 
   jwt.verify(request.token, SECRET as Secret, (_err, decoded) => {
-    console.log("decoded token from verify callback");
     if (!decoded) {
-      console.log("decoded token invalid");
-      return response.status(401).json( { error: 'Invalid token'});
+      throw new JsonWebTokenError("Token has expired");
     }
-    console.log(decoded);
     const id = (decoded as TokenInterface).id;
     
     userModel.findById(id).then(user => {
@@ -54,14 +55,33 @@ const userExtractor = (request: express.Request, response: express.Response, nex
         request.user = user;
         return next();
       } else {
-        return response.status(401).json({ error: 'Invalid token' });
+        throw new JsonWebTokenError("Invalid token");
       }
-      }).catch(e => console.log(e));
+      }).catch(_e => response.status(500).json({ error: 'Internal server error at user extraction' }));
     return;
   });
   return;
 };
 
+const errorHandler = (err: Error, _req: express.Request, res: express.Response, _next: Next) => {
+  if (err.name == 'CastError') {
+    return res.status(400).send({ error: "Invalid id" });
+  } else if (err.name == 'ValidationError') {
+    return res.status(400).json({ error: err.message });
+  } else if (err.name === 'JsonWebTokenError') {
+    return res.status(401).send({ error: err.message });
+  } else if (err.name === 'TokenExpiredError') {
+    return res.status(401).send({ error: 'Login expired' });
+  }
+
+  return res.status(400).send({ error: err.message });
+
+};
+
+const unknownEndpoint = (_req: express.Request, res: express.Response) => {
+  res.status(404).send({ error: 'Unknown endpoint' });
+};
+
 export default exports = {
-  logger, tokenExtractor, userExtractor
+  logger, tokenExtractor, userExtractor, errorHandler, unknownEndpoint
 };

@@ -4,12 +4,9 @@ import bcrypt from 'bcrypt';
 import { loginValidSeconds, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, SECRET } from '../config';
 import jwt, { Secret } from "jsonwebtoken";
 import { LoginResponse } from "../types";
-
+import { isString } from '../utils/validators';
 type RawUser = Omit<User, '_id'>;
 
-const isString = (text: unknown): text is string => {
-  return typeof text === 'string' || text instanceof String;
-};
 
 const createPasswordHash = async (password: string) => {
   return await bcrypt.hash(password, 10);

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+require('express-async-errors');
 
 import express from 'express';
 import { wordModel } from '../models/Word';
