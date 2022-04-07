@@ -19,11 +19,11 @@ const addWord = async (word: unknown, wordlistId: unknown, userId: string) => {
     return;
   }
   const result = await wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: userId }, { $push: { words: word } });
-  
+
   if (!result) {
     throw new Error('Wordlist not found');
   }
-
+  return result;
 };
 
 const deleteWord = async (word: unknown, wordlistId: unknown, userId: string) => {
@@ -33,7 +33,7 @@ const deleteWord = async (word: unknown, wordlistId: unknown, userId: string) =>
   }
 
   const result = await wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: userId }, { $pull: { words: word } });
-  
+
   if (!result) {
     throw new Error('Wordlist not found');
   }
@@ -47,7 +47,7 @@ const create = async (title: unknown, userId: string) => {
   }
 
   const words: string[] = [];
-  
+
   const newWordlist = new wordlistModel({ title, words, owner: userId });
   const savedWordlist = await newWordlist.save();
   if (!savedWordlist) {
@@ -60,8 +60,8 @@ const getUsersLists = async (userId: string) => {
   return await wordlistModel.find({ owner: userId });
 };
 
-const getList = async (wordlistId: unknown, userId: string) => {  
-  if (!isString(wordlistId)) { 
+const getList = async (wordlistId: unknown, userId: string) => {
+  if (!isString(wordlistId)) {
     throw new Error("Invalid parameters");
   }
   const wordlist = await wordlistModel.findOne({ _id: wordlistId, owner: userId });

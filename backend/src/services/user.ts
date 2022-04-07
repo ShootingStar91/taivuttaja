@@ -17,9 +17,9 @@ const parsePassword = (password: any) => {
     throw new Error("Password is not a valid string");
   }
   if (password.length < PASSWORD_MIN_LENGTH ||
-      password.length > PASSWORD_MAX_LENGTH) {
-        throw new Error(`Password must be between ${PASSWORD_MIN_LENGTH} and ${PASSWORD_MAX_LENGTH} characters long.`);
-      }
+    password.length > PASSWORD_MAX_LENGTH) {
+    throw new Error(`Password must be between ${PASSWORD_MIN_LENGTH} and ${PASSWORD_MAX_LENGTH} characters long.`);
+  }
   return password;
 };
 
@@ -29,8 +29,8 @@ const parseUsername = (username: any) => {
   }
   if (username.length < USERNAME_MIN_LENGTH ||
     username.length > USERNAME_MAX_LENGTH) {
-      throw new Error(`Username must be between ${USERNAME_MIN_LENGTH} and ${USERNAME_MAX_LENGTH} characters long.`);
-    }
+    throw new Error(`Username must be between ${USERNAME_MIN_LENGTH} and ${USERNAME_MAX_LENGTH} characters long.`);
+  }
   return username;
 };
 
@@ -43,7 +43,7 @@ const toNewUser = async (username: unknown, password: unknown): Promise<RawUser>
   return newUser;
 };
 
-const createUser = async (username: unknown, password: unknown) => {  
+const createUser = async (username: unknown, password: unknown) => {
   const rawUser = await toNewUser(username, password);
 
   const newUser = new userModel(rawUser);
@@ -62,7 +62,7 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Log
   if (!user) {
     throw new Error("User not found");
   }
-  
+
   bcrypt.compare(password, user.password, (_err, result) => {
     if (!result) {
       throw new Error("Invalid password");
@@ -71,7 +71,7 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Log
 
   const userForToken = { username: user.username, id: user._id };
   const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: loginValidSeconds });
-  
+
   return { user, token } as LoginResponse;
 
 };

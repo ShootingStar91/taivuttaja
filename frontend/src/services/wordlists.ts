@@ -1,4 +1,4 @@
-import { StrippedWord, WordList } from "../types";
+import { WordList } from "../types";
 import axios from "axios";
 import { baseUrl } from "../utils";
 
@@ -19,7 +19,11 @@ const createWordlist = async (wordList: WordList, token: string) => {
   }
 };
 
-const addWord = async (word: StrippedWord, wordlistId: string, token: string) => {
+const addWord = async (word: string, wordlistId: string, token: string) => {
+  console.log(word);
+  console.log(wordlistId);
+  
+  
   try {
     const result = await axios.post(url + `/addword/`, {word, wordlistId}, getHeader(token));
     return result;
@@ -40,6 +44,7 @@ const deleteWord = async (word: string, wordlistId: string, token: string) => {
     throw (error);
   }
 };
+
 const getWordLists = async (token: string) => {
   try {
     const response = await axios.get<WordList[]>(url + `/`, getHeader(token));

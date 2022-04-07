@@ -1,18 +1,23 @@
 import React, { FormEvent, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { wordListService } from "../../services/wordlists";
-import { StrippedWord, WordList } from "../../types";
+import { WordList } from "../../types";
 import { wordService } from "../../services/words";
 import { useAppSelector } from "../../reducers/hooks";
 import { selectUser } from "../../reducers/user";
 import Select, { SingleValue } from 'react-select';
 
+type WordOption = {
+  label: string,
+  value: string
+};
+
 export const WordListView = () => {
 
   const { id } = useParams();
   const [wordlist, setWordlist] = useState<WordList | undefined>();
-  const [word, setWord] = useState<StrippedWord | null>(null);
-  const [allWords, setAllWords] = useState<StrippedWord[] | undefined>();
+  const [word, setWord] = useState<WordOption | null>(null);
+  const [allWords, setAllWords] = useState<WordOption[] | undefined>();
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
@@ -25,8 +30,9 @@ export const WordListView = () => {
 
   useEffect(() => {
     wordService.getStrippedWords().then((data) => {
-      if (data) {setAllWords(data);}
-      else {
+      if (data) { 
+        setAllWords(data.map(w => { return { value: w.infinitive_english, label: w.infinitive_english }; }));
+      } else {
         console.log("Data from getStrippedWords was empty.");
       }
     }).catch((error) => {
@@ -35,12 +41,12 @@ export const WordListView = () => {
   }, []);
 
 
-  const onChange = (newValue: SingleValue<{ value: StrippedWord, label: string }>) => {
+  const onChange = (newValue: SingleValue<WordOption>) => {
     if (!newValue) return;
-    setWord(newValue.value);
-  };  
+    setWord(newValue);
+  };
 
-  
+
 
   const addWord = async (event: FormEvent) => {
     event.preventDefault();
@@ -50,36 +56,43 @@ export const WordListView = () => {
       return;
     }
     if (word && wordlist._id && user && user.token
-       && !wordlist.words.includes(word.english)) {
+      && !wordlist.words.includes(word.value)) {
+        console.log("asd");
+        
       // Here, also add word to wordlist on server
-      setWordlist({...wordlist, words: [...wordlist.words, word.english]});
-      await wordListService.addWord(word, wordlist._id, user.token);
+      setWordlist({ ...wordlist, words: [...wordlist.words, word.value] });
+      await wordListService.addWord(word.value, wordlist._id, user.token);
+      const newAllWords = allWords.filter(w => w.value !== word.value);
+      setAllWords(newAllWords);
+      console.log("all words set");
+      
     }
   };
 
   const deleteWord = async (wordToDelete: string) => {
     if (!wordlist?._id || !user?.token) { return; }
     await wordListService.deleteWord(wordToDelete, wordlist?._id, user.token);
-    setWordlist({...wordlist, words: wordlist.words.filter(w => w === wordToDelete)});
+    setWordlist({ ...wordlist, words: wordlist.words.filter(w => w === wordToDelete) });
   };
 
   if (!wordlist || !allWords) {
     return (<div>Wordlist not loaded or found.</div>);
   }
-  console.log("wordlist");
-  console.log(wordlist);
   
+  console.log("re render");
   
+
+
   return (
     <div><h3>Add words to wordlist: {wordlist.title}</h3>
-      <Select 
+      <Select
         className="basic-single"
         classNamePrefix="select"
         name="wordField"
-        options={allWords.map(word => { return { value: word, label: word.english }; })}
+        options={allWords}
         onChange={onChange}
       />
-              <p><button type="button" onClick={addWord}>Add</button></p>
+      <p><button type="button" onClick={addWord}>Add</button></p>
 
       <div>
         {wordlist.words.map(w => <p key={w}><a href="" onClick={() => deleteWord(w)}>Delete</a> | {w}</p>)}

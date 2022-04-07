@@ -1,2 +1,1 @@
-GET http://localhost:3001/api/words/random
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3R1c2VyIiwiaWQiOiI2MjJiODIzODgzOWM4MmUxNGUxNTUzMjUiLCJpYXQiOjE2NDkyNTk4MzQsImV4cCI6MTY0OTMwMzAzNH0.alo0rpXrp3DMxJRREDpOrM_ILL4N-amEi2l0bISms1Y
+GET http://localhost:3001/api/words/word/-/tense/Present/mood/Subjunctive/

@@ -11,7 +11,7 @@ export const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [notification, setNotification] = useState<string>("");
-  
+
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
     const user = await userService.tryLogin(username, password);
@@ -22,7 +22,7 @@ export const LoginForm = () => {
     } else {
       setNotification("");
       window.localStorage.setItem('loggedUser', JSON.stringify(user));
-      dispatch(setUser( { ...user } ));
+      dispatch(setUser({ ...user }));
       navigate('/conjugate');
     }
   };
@@ -31,26 +31,26 @@ export const LoginForm = () => {
     try {
       const result = await userService.createUser(username, password);
       console.log("result:");
-      
+
       console.log(result);
-      
+
       const user = await userService.tryLogin(username, password);
       console.log("user after login in trynewuser:");
       console.log(user);
-      
-      
+
+
       if (!user) {
         setNotification("User created, but could not login! Try again soon");
         setTimeout(() => { setNotification(""); }, 5000);
       } else {
         setNotification("");
         window.localStorage.setItem('loggedUser', JSON.stringify(user));
-        dispatch(setUser( { ...user } ));
+        dispatch(setUser({ ...user }));
         navigate('/conjugate');
-          
+
       }
     } catch (e: any) {
-      setNotification(e.response.data.error as string);      
+      setNotification(e.response.data.error as string);
       setTimeout(() => { setNotification(""); }, 5000);
     }
   };

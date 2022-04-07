@@ -19,11 +19,11 @@ app.use(middleware.tokenExtractor);
 
 mongoose.connect(
   MONGODB_URI as string,
-  { }).then(() => {
-      console.log('Connected to MongoDB!');
-    }).catch((error) => {
-      console.log('Error connecting to MongoDB: ' + error.message);
-    });
+  {}).then(() => {
+    console.log('Connected to MongoDB!');
+  }).catch((error) => {
+    console.log('Error connecting to MongoDB: ' + error.message);
+  });
 
 
 const allowedOrigins = ['http://localhost:3000'];

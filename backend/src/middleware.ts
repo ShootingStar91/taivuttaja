@@ -15,8 +15,8 @@ declare module 'express-serve-static-core' {
 }
 
 interface TokenInterface {
-    id: string,
-    username: string
+  id: string,
+  username: string
 }
 
 type Next = () => void | Promise<void>;
@@ -31,12 +31,12 @@ const logger = (request: express.Request, _response: express.Response, next: Nex
 
 const tokenExtractor = (request: express.Request, _response: express.Response, next: Next) => {
   const authorization = request.get('authorization');
-    request.token = (authorization && authorization.toLowerCase().startsWith('bearer '))
+  request.token = (authorization && authorization.toLowerCase().startsWith('bearer '))
     ? authorization.substring(7)
     : null;
-  
+
   void next();
-  
+
 };
 
 const userExtractor = (request: express.Request, response: express.Response, next: Next) => {
@@ -49,7 +49,7 @@ const userExtractor = (request: express.Request, response: express.Response, nex
       throw new JsonWebTokenError("Token has expired");
     }
     const id = (decoded as TokenInterface).id;
-    
+
     userModel.findById(id).then(user => {
       if (user) {
         request.user = user;
@@ -57,7 +57,7 @@ const userExtractor = (request: express.Request, response: express.Response, nex
       } else {
         throw new JsonWebTokenError("Invalid token");
       }
-      }).catch(_e => response.status(500).json({ error: 'Internal server error at user extraction' }));
+    }).catch(_e => response.status(500).json({ error: 'Internal server error at user extraction' }));
     return;
   });
   return;
