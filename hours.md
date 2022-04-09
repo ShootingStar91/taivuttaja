@@ -22,4 +22,5 @@
 | 4.4.  | 3   | Refactored user-routes logic into user service & added data validation, made registration possible in frontend |
 | 6.4.  | 4   | Backend work: Refactored logic from wordlist-routes to service, added validation. Improved error handling, wrote errorHandler-middleware and added usage of express-async-errors to avoid try-catch clutter |
 | 8.4.  | 3   | More backend refactoring: Refactored some logic from words-routes to a service, and changed randomization to happen at database. |
-| Total hours | 55     | 
+| 9.4.  | 4   | Added settings to conjugation, allowing to choose tenses and moods to include. This is a raw version that is not fully functional yet. Also other front refactorings. |
+| Total hours | 59     | 

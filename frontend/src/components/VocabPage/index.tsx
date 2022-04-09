@@ -1,10 +1,24 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
+import { wordService } from '../../services/words';
 import { Word } from '../../types';
 
-export const VocabPage = ( { word, getWord}: { word: Word | null, getWord: () => void } ) => {
+export const VocabPage = () => {
 
   const [currentTry, setCurrentTry] = useState<string>("");
+  const [word, setWord] = useState<Word | null>(null);
 
+  useEffect(() => {
+    if (!word) {
+      getWord();
+    }
+  }, []);
+
+  const getWord = () => {
+    wordService.getWord(null, null, null).then((response) => {
+      console.log("response: ");
+      setWord(response);
+    }).catch(error => console.log(error));
+  };
 
   const onTry = (event: FormEvent) => {
     event.preventDefault();

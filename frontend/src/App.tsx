@@ -1,31 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { IndexPage } from './components/IndexPage';
-import { ConjugateStart } from './components/ConjugatePage/index';
-import { ConjugatePage } from './components/ConjugatePage/ConjugatePage';
 import { VocabPage } from './components/VocabPage';
 import { LoginForm } from './components/UserPage/login';
-import { wordService } from './services/words';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Word } from './types';
 import { checkLogin } from './services/user';
 import { useAppDispatch, useAppSelector } from './reducers/hooks';
 import { removeUser, selectUser, setUser } from './reducers/user';
 import { UserPage } from './components/UserPage';
 import { WordListView } from './components/UserPage/wordlist';
+import { ConjugateIndex } from './components/ConjugatePage';
 
 const App = () => {
 
-  const [word, setWord] = useState<Word | null>(null);
   const user = useAppSelector(selectUser);
 
   const dispatch = useAppDispatch();
-  const getWord = () => {
-    wordService.getRandomWord().then((response) => {
-      console.log("response: ");
-      setWord(response);
-    }).catch(error => console.log(error));
-  };
+
 
   const logout = () => {
     console.log("dispatching removeuser from app tsx");
@@ -58,9 +49,8 @@ const App = () => {
           <div className="mainArea">
         <Routes>
             <Route index element={<IndexPage />} />
-            <Route path="conjugatestart" element={<ConjugateStart />} />
-            <Route path="conjugate" element={<ConjugatePage word={word} getWord={getWord}  />} />
-            <Route path="vocab" element={<VocabPage word={word} getWord={getWord} />} />
+            <Route path="conjugatestart" element={<ConjugateIndex />} />
+            <Route path="vocab" element={<VocabPage />} />
             <Route path="login" element={<LoginForm />} />
             <Route path="userpage" element={<UserPage />} />
             <Route path="wordlist/:id" element={<WordListView />} />

@@ -57,3 +57,15 @@ export type Mood = 'Indicative' | 'Subjunctive' | 'Imperative Affirmative'
   | 'Imperative Negative';
 
 export const moodList: Mood[] = ['Indicative', 'Subjunctive', 'Imperative Affirmative', 'Imperative Negative'];
+
+
+
+export type MoodSelections = Array<{ mood: Mood, selected: boolean }>;
+export type TenseSelections = Array<{ tense: Tense, selected: boolean }>;
+
+export type ConjugateSettings = {
+  wordlist: string | null,
+  moodSelections: MoodSelections,
+  tenseSelections: TenseSelections
+};
+

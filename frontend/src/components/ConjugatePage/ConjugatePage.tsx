@@ -1,12 +1,14 @@
-import React, { FormEvent, KeyboardEvent, useState } from 'react';
-import { Word } from '../../types';
+import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { wordService } from '../../services/words';
+import { ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription } from '../../utils';
 
 
-export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: () => void }) => {
+export const ConjugatePage = ({settings, next}: {settings: ConjugateSettings, next: () => void}) => {
 
   const [notification, setNotification] = useState<string>("");
-  
+  const [word, setWord] = useState<Word | null>(null);
+
   const forms = ['1s', '2s', '3s', '1p', '2p', '3p'];
 
   const initialState: {[fieldName: string]: string } = {};
@@ -15,6 +17,26 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
 
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
   //const [skipped, setSkipped] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!word) {
+      getWord();
+    }
+  }, []);
+
+  const getWord = () => {
+
+    const selectedTenses = settings.tenseSelections.filter(t => t.selected);
+    const tense = selectedTenses[Math.floor(Math.random() * selectedTenses.length)].tense;
+    const selectedMoods = settings.moodSelections.filter(m => m.selected);
+    const mood = selectedMoods[Math.floor(Math.random() * selectedMoods.length)].mood;
+
+    wordService.getWord(null, mood, tense).then((response) => {
+      console.log("response: ");
+      setWord(response);
+    }).catch(error => console.log(error));
+    
+  };
 
   const resetFormColors = () => {
     forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffffff");
@@ -67,7 +89,7 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
         resetFormColors();
         const nextField = document.getElementById("0");
         nextField?.focus();
-  
+        next();
       }, 2000);
 
     }
@@ -88,6 +110,7 @@ export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: (
     setFormState({ ...initialState });
     getWord();
     resetFormColors();
+    next();
   };
 
   if (word === null) {

@@ -1,135 +1,34 @@
-import React, { FormEvent, useEffect, useState, } from 'react';
-import Select, { SingleValue } from 'react-select';
-import { useAppSelector } from '../../reducers/hooks';
-import { selectUser } from '../../reducers/user';
-import { wordListService } from '../../services/wordlists';
-import { Mood, moodList, Tense, tenseList, WordList } from '../../types';
+import React, { useState, } from 'react';
+import { ConjugateSettings } from '../../types';
+import { ConjugatePage } from './ConjugatePage';
+import { ConjugateStart } from './ConjugateStart';
 
-type MoodSelections = Array<{ mood: Mood, selected: boolean }>;
-type TenseSelections = Array<{ tense: Tense, selected: boolean }>;
 
-type WordlistOption = {
-  label: string | null,
-  value?: string // id
-};
-
-export const ConjugateStart = () => {
-
-  const initialMoodSelections: MoodSelections = moodList.map((mood) => { return { mood, selected: mood === 'Indicative' ? true : false }; });
-  const initialTenseSelections: TenseSelections = tenseList.map((tense) => { return { tense, selected: tense === 'Present' ? true : false }; });
-
-  const [moodSelections, setMoodSelections] = useState<{ mood: Mood, selected: boolean }[]>(initialMoodSelections);
-  const [tenseSelections, setTenseSelections] = useState<{ tense: Tense, selected: boolean }[]>(initialTenseSelections);
-  const [wordlist, setWordlist] = useState<string | null>(null);
-  const [allWordlists, setAllWordlists] = useState<WordList[] | null>(null);
-  const user = useAppSelector(selectUser);
-
+export const ConjugateIndex = () => {
   
+  // stage = 0 if setting up session, or to indicate how many words are conjugated
+  const [stage, setStage] = useState<number>(0);
+  const [settings, setSettings] = useState<ConjugateSettings | null>(null);
 
-  useEffect(() => {
-    if (!user?.token) {
-      return;
-    }
-    wordListService.getWordLists(user.token).then((result) => {
-      setAllWordlists(result);
-    }).catch((err) => {
-      console.log("Could not load wordlists:");
-      console.log(err);
-    });
-
-  }, [user]);
-
-  const switchMoodSelection = (mood: Mood) => {
-    const newMoodSelections = moodSelections.map(m => {
-      if (m.mood !== mood) {
-        return m;
-      }
-      m.selected = !m.selected;
-      return m;
-    });
-    setMoodSelections(newMoodSelections);
+  const startConjugating = (settings: ConjugateSettings) => {
+    setSettings(settings);
+    setStage(1);
   };
 
-  const switchTenseSelection = (tense: Tense) => {
-    const newTenseSelections = tenseSelections.map(t => {
-      if (t.tense !== tense) {
-        return t;
-      }
-      t.selected = !t.selected;
-      return t;
-    });
-    setTenseSelections(newTenseSelections);
-  };
-
-  const onStart = (event: FormEvent) => {
-    event.preventDefault();
-    console.log(wordlist);
-    console.log(tenseSelections);
-    console.log(moodSelections);
-    
-    
-    
-  };
-
-  const onWordlistChange = (newValue: SingleValue<WordlistOption>) => {
-    if (newValue?.value) {
-      setWordlist(newValue.value);
+  const next = () => {
+    if (stage === 10) {
+      setStage(0);
+    } else {
+      setStage(stage + 1);
     }
   };
 
+  if (stage === 0 || settings === null) {
+    return <ConjugateStart startConjugating={startConjugating} />;
+  }
 
   return (
-    <form onSubmit={onStart}>
-      <div>
-      <div style={{display: "flex", marginBottom: "50px", fontSize: "20px"}}>
-        <div style={{flex: 1}}>
-          <h4>Moods</h4>
-          {moodList.map(mood =>
-            <div key={mood}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={moodSelections.find(m => m.mood === mood)?.selected}
-                  onChange={() => switchMoodSelection(mood)}
-                />
-                {mood}
-              </label>
-            </div>)}
-        </div>
-        <div style={{flex: 1}}>
-          <h4>Tenses</h4>
-          {tenseList.map(tense =>
-            <div key={tense}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={tenseSelections.find(t => t.tense === tense)?.selected}
-                  onChange={() => switchTenseSelection(tense)}
-                />
-                {tense}
-              </label>
-            </div>)}
-        </div>
-      </div>
-      </div>
-      <div>
-        <h4>Select wordlist or all words</h4>
-        {allWordlists !== null ? 
-          <Select 
-            className="basic-single"
-            classNamePrefix="select"
-            name="wordField"
-            options={allWordlists.map(list => {
-              return {label: list.title, value: list._id};
-            })}
-            onChange={onWordlistChange}
-          /> :
-          <p>No wordlists found. Create wordlists on user page.</p>
-      }
-      </div>
-      <div>
-        <button type='submit'>Begin</button>
-      </div>
-    </form>
+    <ConjugatePage settings={settings} next={next} />
   );
+
 };
