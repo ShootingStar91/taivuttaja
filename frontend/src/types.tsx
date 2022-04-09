@@ -44,3 +44,16 @@ export interface StrippedWord {
   infinitive: string,
   infinitive_english: string
 }
+
+
+// An ugly hack until I figure out how to keep these types in just one place and also write a typeguard for them...
+export type Tense = 'Present' | 'Imperfect' | 'Preterite' | 'Present Perfect'
+  | 'Past Perfect' | 'Future Perfect' | 'Conditional Perfect'
+  | 'Future' | 'Preterite (Archaic)' | 'Conditional';
+
+export const tenseList: Tense[] = ['Present', 'Imperfect', 'Preterite', 'Present Perfect', 'Past Perfect', 'Future Perfect', 'Conditional Perfect', 'Future', 'Preterite (Archaic)', 'Conditional'];
+
+export type Mood = 'Indicative' | 'Subjunctive' | 'Imperative Affirmative'
+  | 'Imperative Negative';
+
+export const moodList: Mood[] = ['Indicative', 'Subjunctive', 'Imperative Affirmative', 'Imperative Negative'];

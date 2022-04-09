@@ -1,131 +1,135 @@
-import React, { FormEvent, KeyboardEvent, useState } from 'react';
-import { Word } from '../../types';
-import { getWordForm, getForm, getFormDescription } from '../../utils';
+import React, { FormEvent, useEffect, useState, } from 'react';
+import Select, { SingleValue } from 'react-select';
+import { useAppSelector } from '../../reducers/hooks';
+import { selectUser } from '../../reducers/user';
+import { wordListService } from '../../services/wordlists';
+import { Mood, moodList, Tense, tenseList, WordList } from '../../types';
 
+type MoodSelections = Array<{ mood: Mood, selected: boolean }>;
+type TenseSelections = Array<{ tense: Tense, selected: boolean }>;
 
-export const ConjugatePage = ({ word, getWord }: { word: Word | null, getWord: () => void }) => {
+type WordlistOption = {
+  label: string | null,
+  value?: string // id
+};
 
-  const [notification, setNotification] = useState<string>("");
+export const ConjugateStart = () => {
+
+  const initialMoodSelections: MoodSelections = moodList.map((mood) => { return { mood, selected: mood === 'Indicative' ? true : false }; });
+  const initialTenseSelections: TenseSelections = tenseList.map((tense) => { return { tense, selected: tense === 'Present' ? true : false }; });
+
+  const [moodSelections, setMoodSelections] = useState<{ mood: Mood, selected: boolean }[]>(initialMoodSelections);
+  const [tenseSelections, setTenseSelections] = useState<{ tense: Tense, selected: boolean }[]>(initialTenseSelections);
+  const [wordlist, setWordlist] = useState<string | null>(null);
+  const [allWordlists, setAllWordlists] = useState<WordList[] | null>(null);
+  const user = useAppSelector(selectUser);
+
   
-  const forms = ['1s', '2s', '3s', '1p', '2p', '3p'];
 
-  const initialState: {[fieldName: string]: string } = {};
-
-  forms.forEach(form => initialState[form] = '');
-
-  const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
-  //const [skipped, setSkipped] = useState<boolean>(false);
-
-  const resetFormColors = () => {
-    forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffffff");
-  };
-
-
-  const handleChange = (event: FormEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    if (value !== null) {
-      setFormState({ ...formState, [event.currentTarget.name]: value });
+  useEffect(() => {
+    if (!user?.token) {
+      return;
     }
-  };
-
-  const onEnter = (event: FormEvent) => {
-    event.preventDefault();
-    onTry(true);
-  };
-
-  const onTry = (nextField: boolean) => {
-
-    const activeField = document.activeElement?.getAttribute('id');
-    if (activeField !== undefined && activeField !== null && nextField) {
-      const activeId = parseInt(activeField);
-      if (activeId < 5) {
-        const nextField = document.getElementById((activeId + 1).toString());
-        nextField?.focus();
-      }
-    }
-
-
-    if (word === null) { return; }
-    console.log(formState);
-    let fail = false;
-    forms.forEach(form => {
-      if (formState[form] === getWordForm(word, form)) {
-        console.log('Success at ' + form);
-        document.getElementsByName(form)[0].style.backgroundColor = "#33cc33";
-      } else {
-        const color = formState[form] === "" ? "#ffffff" : "#ffebeb";
-        fail = true;
-        document.getElementsByName(form)[0].style.backgroundColor = color;
-      }
+    wordListService.getWordLists(user.token).then((result) => {
+      setAllWordlists(result);
+    }).catch((err) => {
+      console.log("Could not load wordlists:");
+      console.log(err);
     });
-    if (!fail) {
-      setNotification("¡Todo correcto!");
-      setTimeout(() => {
-        setNotification("");
-        setFormState({ ...initialState });
-        getWord();
-        resetFormColors();
-        const nextField = document.getElementById("0");
-        nextField?.focus();
-  
-      }, 2000);
 
-    }
-  };
+  }, [user]);
 
-  const onKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
-    
-    if (e.key === "Tab") {
-      const activeField = document.activeElement?.getAttribute('id');
-      if (activeField !== null && activeField !== undefined && activeField === "5" && !e.shiftKey) {
-        e.preventDefault();
+  const switchMoodSelection = (mood: Mood) => {
+    const newMoodSelections = moodSelections.map(m => {
+      if (m.mood !== mood) {
+        return m;
       }
-      onTry(false);
+      m.selected = !m.selected;
+      return m;
+    });
+    setMoodSelections(newMoodSelections);
+  };
+
+  const switchTenseSelection = (tense: Tense) => {
+    const newTenseSelections = tenseSelections.map(t => {
+      if (t.tense !== tense) {
+        return t;
+      }
+      t.selected = !t.selected;
+      return t;
+    });
+    setTenseSelections(newTenseSelections);
+  };
+
+  const onStart = (event: FormEvent) => {
+    event.preventDefault();
+    console.log(wordlist);
+    console.log(tenseSelections);
+    console.log(moodSelections);
+    
+    
+    
+  };
+
+  const onWordlistChange = (newValue: SingleValue<WordlistOption>) => {
+    if (newValue?.value) {
+      setWordlist(newValue.value);
     }
   };
 
-  const onSkip = () => {
-    setFormState({ ...initialState });
-    getWord();
-    resetFormColors();
-  };
-
-  if (word === null) {
-    getWord();
-    return <div>Loading...</div>;
-  }
 
   return (
-    <div>
-      <p>
-        {word.infinitive_english}
-      </p>
-      <p>
-        {word.infinitive}
-      </p>
+    <form onSubmit={onStart}>
       <div>
-        <form onSubmit={onEnter} autoComplete='off' onKeyDown={onKeyDown}>
-          <table>
-            <tbody>
-            {forms.map((form, index) => 
-            <React.Fragment key={form}>
-                <tr key={form} className="conjugationRow">
-                  <td><input type='text' id={index.toString()}name={form} onChange={handleChange} value={formState[form]}/></td>
-                  <td className="formDescription"><div className="tooltip">{getForm(form)}<div className="tooltiptext">{getFormDescription(form)}</div></div></td>
-                </tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-            </React.Fragment>
-            )}
-            </tbody>
-          </table>
-        <p><button type='submit'>Try</button></p>
-        <p><button type='button' onClick={onSkip}>Skip</button></p>
-        </form>
+      <div style={{display: "flex", marginBottom: "50px", fontSize: "20px"}}>
+        <div style={{flex: 1}}>
+          <h4>Moods</h4>
+          {moodList.map(mood =>
+            <div key={mood}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={moodSelections.find(m => m.mood === mood)?.selected}
+                  onChange={() => switchMoodSelection(mood)}
+                />
+                {mood}
+              </label>
+            </div>)}
+        </div>
+        <div style={{flex: 1}}>
+          <h4>Tenses</h4>
+          {tenseList.map(tense =>
+            <div key={tense}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={tenseSelections.find(t => t.tense === tense)?.selected}
+                  onChange={() => switchTenseSelection(tense)}
+                />
+                {tense}
+              </label>
+            </div>)}
+        </div>
       </div>
-      {notification !== "" && <div className="notificationDiv"><p className="notification">{notification}</p></div>}
-
-    </div>
+      </div>
+      <div>
+        <h4>Select wordlist or all words</h4>
+        {allWordlists !== null ? 
+          <Select 
+            className="basic-single"
+            classNamePrefix="select"
+            name="wordField"
+            options={allWordlists.map(list => {
+              return {label: list.title, value: list._id};
+            })}
+            onChange={onWordlistChange}
+          /> :
+          <p>No wordlists found. Create wordlists on user page.</p>
+      }
+      </div>
+      <div>
+        <button type='submit'>Begin</button>
+      </div>
+    </form>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { IndexPage } from './components/IndexPage';
-import { ConjugatePage } from './components/ConjugatePage';
+import { ConjugateStart } from './components/ConjugatePage/index';
+import { ConjugatePage } from './components/ConjugatePage/ConjugatePage';
 import { VocabPage } from './components/VocabPage';
 import { LoginForm } from './components/UserPage/login';
 import { wordService } from './services/words';
@@ -47,7 +48,7 @@ const App = () => {
       <BrowserRouter>
           <div className="navbar">
             <Link className="navbarLink" to="/">Home</Link>
-            <Link className="navbarLink" to="/conjugate">Conjugate</Link>
+            <Link className="navbarLink" to="/conjugatestart">Conjugate</Link>
             <Link className="navbarLink" to="/vocab">Vocab</Link>
             {user && <Link className="navbarLink" to="/userpage">User page</Link>}
             {!user ? <Link className="navbarLink" to="/login">Login</Link> :
@@ -57,6 +58,7 @@ const App = () => {
           <div className="mainArea">
         <Routes>
             <Route index element={<IndexPage />} />
+            <Route path="conjugatestart" element={<ConjugateStart />} />
             <Route path="conjugate" element={<ConjugatePage word={word} getWord={getWord}  />} />
             <Route path="vocab" element={<VocabPage word={word} getWord={getWord} />} />
             <Route path="login" element={<LoginForm />} />
