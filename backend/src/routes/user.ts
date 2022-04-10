@@ -21,5 +21,4 @@ router.post(`/login/`, async (req, res) => {
   res.status(200).send(loginResponse);
 });
 
-
 export default router;

@@ -2,6 +2,8 @@ import { Word } from './types';
 
 export const baseUrl = 'http://localhost:3001/api/';
 
+export const forms = ['1s', '2s', '3s', '1p', '2p', '3p'];
+
 export const deAccentify = (word: string): string => {
   return word.replace('á', 'a')
   .replace('é', 'e')

@@ -10,6 +10,7 @@ import { removeUser, selectUser, setUser } from './reducers/user';
 import { UserPage } from './components/UserPage';
 import { WordListView } from './components/UserPage/wordlist';
 import { ConjugateIndex } from './components/ConjugatePage';
+import { FlashCardPage } from './components/ConjugatePage/FlashCardPage';
 
 const App = () => {
 
@@ -41,6 +42,7 @@ const App = () => {
             <Link className="navbarLink" to="/">Home</Link>
             <Link className="navbarLink" to="/conjugatestart">Conjugate</Link>
             <Link className="navbarLink" to="/vocab">Vocab</Link>
+            <Link className='navbarLink' to="/flashcard">Flashcards</Link>
             {user && <Link className="navbarLink" to="/userpage">User page</Link>}
             {!user ? <Link className="navbarLink" to="/login">Login</Link> :
                                   <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
@@ -50,6 +52,7 @@ const App = () => {
         <Routes>
             <Route index element={<IndexPage />} />
             <Route path="conjugatestart" element={<ConjugateIndex />} />
+            <Route path="flashcard" element={<FlashCardPage />} />
             <Route path="vocab" element={<VocabPage />} />
             <Route path="login" element={<LoginForm />} />
             <Route path="userpage" element={<UserPage />} />

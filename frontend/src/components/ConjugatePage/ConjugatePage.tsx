@@ -1,7 +1,7 @@
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { wordService } from '../../services/words';
 import { ConjugateSettings, Word } from '../../types';
-import { getWordForm, getForm, getFormDescription } from '../../utils';
+import { getWordForm, getForm, getFormDescription, forms } from '../../utils';
 
 
 export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
@@ -12,7 +12,6 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   else console.log("word null");
   
   
-  const forms = ['1s', '2s', '3s', '1p', '2p', '3p'];
 
   const initialState: { [fieldName: string]: string } = {};
 

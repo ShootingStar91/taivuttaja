@@ -11,11 +11,12 @@ const router = express.Router();
 // /api/words/...
 
 /*
+
   get / -path will return a single word in the desired tense and mood.
   Omitting word will result in a random word.
   omit by -, example
-  /api/words/en/word/-/tense/Present/mood/Indicative/
-  first param after path is en or es for language of given word
+  /api/words/word/en/-/tense/Present/mood/Indicative/
+  after /word/ comes language of the given word param: 'en' or 'es'
 */
 
 router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
