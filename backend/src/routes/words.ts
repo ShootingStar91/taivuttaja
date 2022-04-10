@@ -3,7 +3,8 @@ require('express-async-errors');
 
 import express from 'express';
 import wordService from '../services/words';
-import { isMood, isString, isTense } from '../utils/validators';
+import { isMood, isString, isTense, isLanguage } from '../utils/validators';
+
 
 const router = express.Router();
 
@@ -13,17 +14,21 @@ const router = express.Router();
   get / -path will return a single word in the desired tense and mood.
   Omitting word will result in a random word.
   omit by -, example
-  /api/words/word/-/tense/Present/mood/Indicative/
+  /api/words/en/word/-/tense/Present/mood/Indicative/
+  first param after path is en or es for language of given word
 */
 
-router.get('/word/:word/tense/:tense/mood/:mood/', async (req, res) => {
+router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
 
   const word = req.params.word;
-
-
   const rawMood = req.params.mood;
   const rawTense = req.params.tense;
+  const lang = req.params.lang;
 
+  if (!isLanguage(lang)) {
+    throw new Error("Invalid language parameter. Give either 'en' or 'es'");
+  }
+  
   if (!rawMood || !rawTense) {
     throw new Error("Mood or tense missing");
   }
@@ -39,7 +44,7 @@ router.get('/word/:word/tense/:tense/mood/:mood/', async (req, res) => {
 
   if (isString(word) && word !== '-') {
     // Get specific word
-    const result = await wordService.getWord(word, tense, mood);
+    const result = await wordService.getWord(word, lang, tense, mood);
     return res.send(result);
   } else if (isString(word) && word === '-') {
     const word = await wordService.getRandomWord(tense, mood);
@@ -58,7 +63,7 @@ router.get('/random', async (_req, res, _next) => {
 
 router.get('/allwordsstripped', async (_req, res, _next) => {
   const result = await wordService.getStrippedWords();
-  
+
   res.send(result);
 });
 

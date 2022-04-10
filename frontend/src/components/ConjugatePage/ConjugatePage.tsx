@@ -4,14 +4,17 @@ import { ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription } from '../../utils';
 
 
-export const ConjugatePage = ({settings, next}: {settings: ConjugateSettings, next: () => void}) => {
+export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
 
   const [notification, setNotification] = useState<string>("");
   const [word, setWord] = useState<Word | null>(null);
-
+  if (word) console.log("WORD: " , word.infinitive);
+  else console.log("word null");
+  
+  
   const forms = ['1s', '2s', '3s', '1p', '2p', '3p'];
 
-  const initialState: {[fieldName: string]: string } = {};
+  const initialState: { [fieldName: string]: string } = {};
 
   forms.forEach(form => initialState[form] = '');
 
@@ -31,11 +34,16 @@ export const ConjugatePage = ({settings, next}: {settings: ConjugateSettings, ne
     const selectedMoods = settings.moodSelections.filter(m => m.selected);
     const mood = selectedMoods[Math.floor(Math.random() * selectedMoods.length)].mood;
 
-    wordService.getWord(null, mood, tense).then((response) => {
+    // If wordlist exist, random a word from there
+    const word = settings.wordlist === null ?
+      null :
+      settings.wordlist.words[Math.floor(Math.random() * settings.wordlist.words.length)];
+
+    wordService.getWord(word, 'en', mood, tense).then((response) => {
       console.log("response: ");
       setWord(response);
     }).catch(error => console.log(error));
-    
+
   };
 
   const resetFormColors = () => {
@@ -96,7 +104,7 @@ export const ConjugatePage = ({settings, next}: {settings: ConjugateSettings, ne
   };
 
   const onKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
-    
+
     if (e.key === "Tab") {
       const activeField = document.activeElement?.getAttribute('id');
       if (activeField !== null && activeField !== undefined && activeField === "5" && !e.shiftKey) {
@@ -130,21 +138,21 @@ export const ConjugatePage = ({settings, next}: {settings: ConjugateSettings, ne
         <form onSubmit={onEnter} autoComplete='off' onKeyDown={onKeyDown}>
           <table>
             <tbody>
-            {forms.map((form, index) => 
-            <React.Fragment key={form}>
-                <tr key={form} className="conjugationRow">
-                  <td><input type='text' id={index.toString()}name={form} onChange={handleChange} value={formState[form]}/></td>
-                  <td className="formDescription"><div className="tooltip">{getForm(form)}<div className="tooltiptext">{getFormDescription(form)}</div></div></td>
-                </tr>
-                <tr></tr>
-                <tr></tr>
-                <tr></tr>
-            </React.Fragment>
-            )}
+              {forms.map((form, index) =>
+                <React.Fragment key={form}>
+                  <tr key={form} className="conjugationRow">
+                    <td><input type='text' id={index.toString()} name={form} onChange={handleChange} value={formState[form]} /></td>
+                    <td className="formDescription"><div className="tooltip">{getForm(form)}<div className="tooltiptext">{getFormDescription(form)}</div></div></td>
+                  </tr>
+                  <tr></tr>
+                  <tr></tr>
+                  <tr></tr>
+                </React.Fragment>
+              )}
             </tbody>
           </table>
-        <p><button type='submit'>Try</button></p>
-        <p><button type='button' onClick={onSkip}>Skip</button></p>
+          <p><button type='submit'>Try</button></p>
+          <p><button type='button' onClick={onSkip}>Skip</button></p>
         </form>
       </div>
       {notification !== "" && <div className="notificationDiv"><p className="notification">{notification}</p></div>}

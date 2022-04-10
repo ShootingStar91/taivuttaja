@@ -17,7 +17,7 @@ export const ConjugateStart = ({ startConjugating }: {startConjugating: (setting
 
   const [moodSelections, setMoodSelections] = useState<{ mood: Mood, selected: boolean }[]>(initialMoodSelections);
   const [tenseSelections, setTenseSelections] = useState<{ tense: Tense, selected: boolean }[]>(initialTenseSelections);
-  const [wordlist, setWordlist] = useState<string | null>(null);
+  const [wordlistId, setWordlist] = useState<string | null>(null);
   const [allWordlists, setAllWordlists] = useState<WordList[] | null>(null);
   const user = useAppSelector(selectUser);
   
@@ -57,9 +57,18 @@ export const ConjugateStart = ({ startConjugating }: {startConjugating: (setting
     setTenseSelections(newTenseSelections);
   };
 
-  const onStart = (event: FormEvent) => {
+  const onStart = async (event: FormEvent) => {
     event.preventDefault();
-    
+    if (!user?.token || !wordlistId) {
+      return;
+    }
+    const wordlist = await wordListService.getWordList(wordlistId, user.token);
+
+    if (!wordlist) {
+      console.log("Error fetching wordlist");
+      return;
+    }
+
     const settings: ConjugateSettings = {
       tenseSelections,
       moodSelections,

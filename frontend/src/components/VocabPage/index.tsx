@@ -14,7 +14,7 @@ export const VocabPage = () => {
   }, []);
 
   const getWord = () => {
-    wordService.getWord(null, null, null).then((response) => {
+    wordService.getWord(null, 'en', null, null).then((response) => {
       console.log("response: ");
       setWord(response);
     }).catch(error => console.log(error));

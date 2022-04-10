@@ -64,7 +64,7 @@ export type MoodSelections = Array<{ mood: Mood, selected: boolean }>;
 export type TenseSelections = Array<{ tense: Tense, selected: boolean }>;
 
 export type ConjugateSettings = {
-  wordlist: string | null,
+  wordlist: WordList | null,
   moodSelections: MoodSelections,
   tenseSelections: TenseSelections
 };

@@ -50,3 +50,10 @@ export interface Word {
   pastparticiple: string;
   pastparticiple_english: string;
 }
+
+
+
+export enum Language {
+  English = 'en',
+  Spanish = 'es'
+}
