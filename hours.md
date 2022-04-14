@@ -23,4 +23,5 @@
 | 6.4.  | 4   | Backend work: Refactored logic from wordlist-routes to service, added validation. Improved error handling, wrote errorHandler-middleware and added usage of express-async-errors to avoid try-catch clutter |
 | 8.4.  | 3   | More backend refactoring: Refactored some logic from words-routes to a service, and changed randomization to happen at database. |
 | 9.4.  | 4   | Added settings to conjugation, allowing to choose tenses and moods to include. This is a raw version that is not fully functional yet. Also other front refactorings. |
-| Total hours | 59     | 
+| 10.4. | 2   | Added conjugation to limit words to chosen wordlist only. Added a flashcard page. |
+| Total hours | 61     | 
