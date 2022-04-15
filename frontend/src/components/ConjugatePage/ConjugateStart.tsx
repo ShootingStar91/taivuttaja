@@ -1,16 +1,16 @@
-import React, { FormEvent, useEffect, useState, } from 'react';
+import React, { useEffect, useState, } from 'react';
 import Select, { SingleValue } from 'react-select';
 import { useAppSelector } from '../../reducers/hooks';
 import { selectUser } from '../../reducers/user';
 import { wordListService } from '../../services/wordlists';
-import { ConjugateSettings, Mood, moodList, MoodSelections, Tense, tenseList, TenseSelections, WordList } from '../../types';
+import { ConjugateMode, ConjugateSettings, Mood, moodList, MoodSelections, Tense, tenseList, TenseSelections, WordList } from '../../types';
 
 type WordlistOption = {
   label: string | null,
   value?: string // id
 };
 
-export const ConjugateStart = ({ startConjugating }: {startConjugating: (settings: ConjugateSettings) => void}) => {
+export const ConjugateStart = ({ startConjugating }: { startConjugating: (settings: ConjugateSettings) => void }) => {
 
   const initialMoodSelections: MoodSelections = moodList.map((mood) => { return { mood, selected: mood === 'Indicative' ? true : false }; });
   const initialTenseSelections: TenseSelections = tenseList.map((tense) => { return { tense, selected: tense === 'Present' ? true : false }; });
@@ -20,7 +20,7 @@ export const ConjugateStart = ({ startConjugating }: {startConjugating: (setting
   const [wordlistId, setWordlist] = useState<string | null>(null);
   const [allWordlists, setAllWordlists] = useState<WordList[] | null>(null);
   const user = useAppSelector(selectUser);
-  
+
 
   useEffect(() => {
     if (!user?.token) {
@@ -57,27 +57,34 @@ export const ConjugateStart = ({ startConjugating }: {startConjugating: (setting
     setTenseSelections(newTenseSelections);
   };
 
-  const onStart = async (event: FormEvent) => {
-    event.preventDefault();
-    if (!user?.token || !wordlistId) {
+  const onStart = async (mode: ConjugateMode) => {
+    console.log(user);
+
+    if (!user?.token) {
       return;
     }
-    const wordlist = await wordListService.getWordList(wordlistId, user.token);
 
-    if (!wordlist) {
-      console.log("Error fetching wordlist");
-      return;
+    let wordlist = null;
+
+    if (wordlistId) {
+      wordlist = await wordListService.getWordList(wordlistId, user.token);
+
+      if (!wordlist) {
+        console.log("Error fetching wordlist");
+        return;
+      }
     }
 
     const settings: ConjugateSettings = {
       tenseSelections,
       moodSelections,
-      wordlist
+      wordlist,
+      mode: mode
     };
 
     startConjugating(settings);
-    
-    
+
+
   };
 
   const onWordlistChange = (newValue: SingleValue<WordlistOption>) => {
@@ -88,56 +95,58 @@ export const ConjugateStart = ({ startConjugating }: {startConjugating: (setting
 
 
   return (
-    <form onSubmit={onStart}>
+    <form>
       <div>
-      <div style={{display: "flex", marginBottom: "50px", fontSize: "20px"}}>
-        <div style={{flex: 1}}>
-          <h4>Moods</h4>
-          {moodList.map(mood =>
-            <div key={mood}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={moodSelections.find(m => m.mood === mood)?.selected}
-                  onChange={() => switchMoodSelection(mood)}
-                />
-                {mood}
-              </label>
-            </div>)}
-        </div>
-        <div style={{flex: 1}}>
-          <h4>Tenses</h4>
-          {tenseList.map(tense =>
-            <div key={tense}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={tenseSelections.find(t => t.tense === tense)?.selected}
-                  onChange={() => switchTenseSelection(tense)}
-                />
-                {tense}
-              </label>
-            </div>)}
+        <div style={{ display: "flex", marginBottom: "50px", fontSize: "20px" }}>
+          <div style={{ flex: 1 }}>
+            <h4>Moods</h4>
+            {moodList.map(mood =>
+              <div key={mood}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={moodSelections.find(m => m.mood === mood)?.selected}
+                    onChange={() => switchMoodSelection(mood)}
+                  />
+                  {mood}
+                </label>
+              </div>)}
+          </div>
+          <div style={{ flex: 1 }}>
+            <h4>Tenses</h4>
+            {tenseList.map(tense =>
+              <div key={tense}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={tenseSelections.find(t => t.tense === tense)?.selected}
+                    onChange={() => switchTenseSelection(tense)}
+                  />
+                  {tense}
+                </label>
+              </div>)}
+          </div>
         </div>
       </div>
-      </div>
-      <div>
+      {user && <div>
         <h4>Select wordlist or all words</h4>
-        {allWordlists !== null ? 
-          <Select 
+        {allWordlists !== null ?
+          <Select
             className="basic-single"
             classNamePrefix="select"
             name="wordField"
             options={allWordlists.map(list => {
-              return {label: list.title, value: list._id};
+              return { label: list.title, value: list._id };
             })}
             onChange={onWordlistChange}
           /> :
           <p>No wordlists found. Create wordlists on user page.</p>
-      }
-      </div>
+        }
+      </div>}
       <div>
-        <button type='submit'>Begin</button>
+        <button type="button" onClick={() => onStart(ConjugateMode.Full)}>All forms</button>
+        <button type="button" onClick={() => onStart(ConjugateMode.Single)}>Single</button>
+        <button type="button" onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button>
       </div>
     </form>
   );

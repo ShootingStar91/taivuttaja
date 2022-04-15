@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import express from 'express';
+import express, { Response } from 'express';
 import middleware from '../middleware';
 import wordlistService from '../services/wordlists';
 require('express-async-errors');
@@ -7,11 +7,7 @@ require('express-async-errors');
 const router = express.Router();
 
 
-router.post('/deleteword/', middleware.userExtractor, async (req, res) => {
-  if (!req.user) {
-    res.status(400).send({ error: "User not found" });
-    return;
-  }
+router.post('/deleteword/', middleware.userExtractor, async (req, res: Response) => {
 
   await wordlistService.deleteWord(req.body.word, req.body.wordlistId, req.user._id);
   res.status(200).send();
@@ -19,10 +15,6 @@ router.post('/deleteword/', middleware.userExtractor, async (req, res) => {
 });
 
 router.post('/addword/', middleware.userExtractor, async (req, res) => {
-  if (!req.user) {
-    res.status(400).send({ error: "User not found" });
-    return;
-  }
 
   const result = await wordlistService.addWord(req.body.word, req.body.wordlistId, req.user._id);
   if (!result) {
@@ -35,11 +27,6 @@ router.post('/addword/', middleware.userExtractor, async (req, res) => {
 
 router.get('/', middleware.userExtractor, async (req, res) => {
   // Returns all owners wordlists
-  if (!req.user) {
-    res.status(400).send({ error: "User not found" });
-    return;
-  }
-
   const result = await wordlistService.getUsersLists(req.user._id);
   res.json(result);
 
@@ -47,25 +34,20 @@ router.get('/', middleware.userExtractor, async (req, res) => {
 
 
 router.get('/:id', middleware.userExtractor, async (req, res) => {
-  if (!req.user) {
-    res.status(400).send({ error: "User not found" });
-    return;
-  }
-
   const result = await wordlistService.getList(req.params.id, req.user._id);
   res.json(result);
 
 });
 
 router.post('/create/', middleware.userExtractor, async (req, res) => {
-  if (!req.user) {
-    res.status(400).send({ error: "User not found" });
-    return;
-  }
-
   await wordlistService.create(req.body.name, req.user._id);
   res.status(200).send();
 
+});
+
+router.post('/delete/', middleware.userExtractor, async (req, res) => {
+  await wordlistService.deleteWordlist(req.body.wordlistId, req.user._id);
+  res.status(200).send();
 });
 
 export default router;

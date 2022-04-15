@@ -1,5 +1,5 @@
 import React, { FormEvent, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { wordListService } from "../../services/wordlists";
 import { WordList } from "../../types";
 import { wordService } from "../../services/words";
@@ -14,6 +14,7 @@ type WordOption = {
 
 export const WordListView = () => {
 
+  const navigate = useNavigate();
   const { id } = useParams();
   const [wordlist, setWordlist] = useState<WordList | undefined>();
   const [word, setWord] = useState<WordOption | null>(null);
@@ -46,6 +47,20 @@ export const WordListView = () => {
     setWord(newValue);
   };
 
+  const deleteWordlistButton = () => {
+
+    if (wordlist?._id && user?.token && confirm('Are you sure you want to permanently delete wordlist?')) {
+      wordListService.deleteWordlist(wordlist._id, user.token).then((response) => {
+        if (response) {
+          console.log("Wordlist deleted");
+          navigate('/userpage/');
+        } else {
+          console.log("Error deleting wordlist");
+          
+        }
+      }).catch((e) => console.log(e));
+    }
+  };
 
 
   const addWord = async (event: FormEvent) => {
@@ -96,6 +111,9 @@ export const WordListView = () => {
 
       <div>
         {wordlist.words.map(w => <p key={w}><a href="" onClick={() => deleteWord(w)}>Delete</a> | {w}</p>)}
+      </div>
+      <div>
+        <button type="button" onClick={deleteWordlistButton}>Delete list</button>
       </div>
     </div>
   );

@@ -63,9 +63,16 @@ export const moodList: Mood[] = ['Indicative', 'Subjunctive', 'Imperative Affirm
 export type MoodSelections = Array<{ mood: Mood, selected: boolean }>;
 export type TenseSelections = Array<{ tense: Tense, selected: boolean }>;
 
+// Modes for conjugation page, single form, flashcard (no typing) or full (type all forms)
+export enum ConjugateMode {
+  Single,
+  Flashcard,
+  Full
+}
+
 export type ConjugateSettings = {
   wordlist: WordList | null,
   moodSelections: MoodSelections,
-  tenseSelections: TenseSelections
+  tenseSelections: TenseSelections,
+  mode: ConjugateMode
 };
-

@@ -39,10 +39,21 @@ const deleteWord = async (word: string, wordlistId: string, token: string) => {
     const result = await axios.post(url + `/deleteword/`, {word, wordlistId}, getHeader(token));
     return result;
   } catch (error: unknown) {
-    console.log("error in getWordLists");
+    console.log("error in deleteWord");
     console.log(error);
     throw (error);
   }
+};
+
+const deleteWordlist = async (wordlistId: string, token: string) => {
+  try {
+    const result = await axios.post(url + '/delete/', {wordlistId}, getHeader(token));
+    return result;
+  } catch (error: unknown) {
+    console.log("error in deleteWordlist");
+    console.log(error);
+    throw (error);
+  } 
 };
 
 const getWordLists = async (token: string) => {
@@ -72,5 +83,6 @@ export const wordListService = {
   addWord,
   deleteWord,
   getWordLists,
-  getWordList
+  getWordList,
+  deleteWordlist
 };

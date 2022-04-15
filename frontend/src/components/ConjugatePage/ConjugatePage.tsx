@@ -1,7 +1,7 @@
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { wordService } from '../../services/words';
 import { ConjugateSettings, Word } from '../../types';
-import { getWordForm, getForm, getFormDescription, forms } from '../../utils';
+import { getWordForm, getForm, getFormDescription, forms, getRandomForm } from '../../utils';
 
 
 export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
@@ -28,10 +28,8 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
 
   const getWord = () => {
 
-    const selectedTenses = settings.tenseSelections.filter(t => t.selected);
-    const tense = selectedTenses[Math.floor(Math.random() * selectedTenses.length)].tense;
-    const selectedMoods = settings.moodSelections.filter(m => m.selected);
-    const mood = selectedMoods[Math.floor(Math.random() * selectedMoods.length)].mood;
+    const { tense, mood } = getRandomForm(settings.tenseSelections, settings.moodSelections);
+
 
     // If wordlist exist, random a word from there
     const word = settings.wordlist === null ?

@@ -4,13 +4,14 @@ import jwt, { JsonWebTokenError, Secret } from 'jsonwebtoken';
 import { SECRET } from './config';
 import { userModel, User } from './models/User';
 
+
 /*
   This allows extractors to add user and token to request
 */
 declare module 'express-serve-static-core' {
   interface Request {
     token?: string | null,
-    user?: User,
+    user: User,
   }
 }
 

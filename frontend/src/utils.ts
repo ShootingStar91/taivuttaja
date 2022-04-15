@@ -1,4 +1,4 @@
-import { Word } from './types';
+import { MoodSelections, TenseSelections, Word } from './types';
 
 export const baseUrl = 'http://localhost:3001/api/';
 
@@ -6,10 +6,10 @@ export const forms = ['1s', '2s', '3s', '1p', '2p', '3p'];
 
 export const deAccentify = (word: string): string => {
   return word.replace('á', 'a')
-  .replace('é', 'e')
-  .replace('ó', 'o')
-  .replace('ú', 'u')
-  .replace('í', 'i');
+    .replace('é', 'e')
+    .replace('ó', 'o')
+    .replace('ú', 'u')
+    .replace('í', 'i');
 };
 
 
@@ -66,3 +66,12 @@ export const getForm = (form: string): string => {
   }
   return "Error, form description missing!";
 };
+
+export const getRandomForm = (tenseSelections: TenseSelections, moodSelections: MoodSelections) => {
+  const selectedTenses = tenseSelections.filter(t => t.selected);
+  const tense = selectedTenses[Math.floor(Math.random() * selectedTenses.length)].tense;
+  const selectedMoods = moodSelections.filter(m => m.selected);
+  const mood = selectedMoods[Math.floor(Math.random() * selectedMoods.length)].mood;
+  return { mood, tense };
+};
+

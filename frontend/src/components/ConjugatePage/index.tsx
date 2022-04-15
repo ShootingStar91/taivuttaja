@@ -1,6 +1,7 @@
 import React, { useState, } from 'react';
-import { ConjugateSettings } from '../../types';
+import { ConjugateMode, ConjugateSettings } from '../../types';
 import { ConjugatePage } from './ConjugatePage';
+import { ConjugateSingle } from './ConjugateSingle';
 import { ConjugateStart } from './ConjugateStart';
 
 
@@ -13,6 +14,8 @@ export const ConjugateIndex = () => {
   const startConjugating = (settings: ConjugateSettings) => {
     setSettings(settings);
     setStage(1);
+    console.log("moi");
+    
   };
 
   const next = () => {
@@ -22,13 +25,17 @@ export const ConjugateIndex = () => {
       setStage(stage + 1);
     }
   };
-
+  console.log(settings);
+  
   if (stage === 0 || settings === null) {
     return <ConjugateStart startConjugating={startConjugating} />;
   }
 
-  return (
-    <ConjugatePage settings={settings} next={next} />
-  );
-
+  if (settings.mode === ConjugateMode.Full) {
+    return <ConjugatePage settings={settings} next={next} />;
+  }
+  
+  return <ConjugateSingle settings={settings} />;
+  
+  
 };

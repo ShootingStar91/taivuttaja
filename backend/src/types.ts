@@ -1,5 +1,7 @@
 import { User } from "./models/User";
 
+import { Request } from "express";
+
 export interface WordList {
   _id: string,
   title: string,
@@ -56,4 +58,8 @@ export interface Word {
 export enum Language {
   English = 'en',
   Spanish = 'es'
+}
+
+export interface AuthenticatedRequest extends Request {
+  user: User;
 }
