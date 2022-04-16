@@ -16,7 +16,6 @@ export const isWordArray = (words: unknown): words is string[] => {
 const addWord = async (word: unknown, wordlistId: unknown, userId: string) => {
   if (!isString(word) || !isString(wordlistId)) {
     throw new Error("Invalid parameters");
-    return;
   }
   const result = await wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: userId }, { $push: { words: word } });
 
@@ -29,7 +28,6 @@ const addWord = async (word: unknown, wordlistId: unknown, userId: string) => {
 const deleteWord = async (word: unknown, wordlistId: unknown, userId: string) => {
   if (!isString(word) || !isString(wordlistId)) {
     throw new Error("Invalid parameters");
-    return;
   }
 
   const result = await wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: userId }, { $pull: { words: word } });
@@ -43,7 +41,6 @@ const deleteWord = async (word: unknown, wordlistId: unknown, userId: string) =>
 const deleteWordlist = async (wordlistId: unknown, userId: string) => {
   if (!isString(wordlistId)) {
     throw new Error("Invalid parameters");
-    return;
   }
 
   const result = await wordlistModel.findOneAndRemove({ _id: wordlistId, owner: userId});
@@ -57,7 +54,6 @@ const deleteWordlist = async (wordlistId: unknown, userId: string) => {
 const create = async (title: unknown, userId: string) => {
   if (!isString(title) || title.length < WORDLIST_TITLE_MIN || title.length > WORDLIST_TITLE_MAX) {
     throw new Error(`Wordlist title must be a valid string of length ${WORDLIST_TITLE_MIN}-${WORDLIST_TITLE_MAX}`);
-    return;
   }
 
   const words: string[] = [];

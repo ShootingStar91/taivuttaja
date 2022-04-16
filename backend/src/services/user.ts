@@ -5,6 +5,7 @@ import { loginValidSeconds, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_M
 import jwt, { Secret } from "jsonwebtoken";
 import { LoginResponse } from "../types";
 import { isString } from '../utils/validators';
+import { wordlistModel } from "../models/Wordlist";
 type RawUser = Omit<User, '_id'>;
 
 
@@ -76,7 +77,20 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Log
 
 };
 
+const deleteUser = async (user: User) => {
+  
+  await wordlistModel.remove({ owner: user._id });
+  
+  const result = await userModel.deleteOne({ owner: user._id });
+
+  if (!result) {
+    throw new Error("Could not find such user");
+  }
+
+};
+
 export default {
   createUser,
-  tryLogin
+  tryLogin,
+  deleteUser
 };

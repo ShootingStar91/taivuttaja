@@ -5,6 +5,7 @@ require('express-async-errors');
 import express from 'express';
 import userService from '../services/user';
 import { LoginResponse } from '../types';
+import middleware from '../middleware';
 
 const router = express.Router();
 
@@ -19,6 +20,11 @@ router.post(`/create/`, async (req, res) => {
 router.post(`/login/`, async (req, res) => {
   const loginResponse: LoginResponse = await userService.tryLogin(req.body.username, req.body.password);
   res.status(200).send(loginResponse);
+});
+
+router.post('/deleteuser/', middleware.userExtractor, async (req, res) => {
+  await userService.deleteUser(req.user);
+  res.status(200).send();
 });
 
 export default router;
