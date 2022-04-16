@@ -19,43 +19,39 @@ const App = () => {
 
 
   const logout = () => {
-    console.log("dispatching removeuser from app tsx");
-    
     dispatch(removeUser());
   };
 
   useEffect(() => {
     const loadedUser = checkLogin();
-    if (loadedUser) {      
+    if (loadedUser) {
       dispatch(setUser(loadedUser));
     }
-        
+
   }, []);
-  
-  console.log('before app return, user: ', user);
-  
+
   return (
     <div className="mainDiv">
       <BrowserRouter>
-          <div className="navbar">
-            <Link className="navbarLink" to="/">Home</Link>
-            <Link className="navbarLink" to="/conjugatestart">Conjugate</Link>
-            <Link className="navbarLink" to="/vocab">Vocab</Link>
-            {user && <Link className="navbarLink" to="/userpage">User page</Link>}
-            {!user ? <Link className="navbarLink" to="/login">Login</Link> :
-                                  <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
-          </div>
-          {user && <div className="infoBar">Logged in as {user.username}</div>}
-          <div className="mainArea">
+        <div className="navbar">
+          <Link className="navbarLink" to="/">Home</Link>
+          <Link className="navbarLink" to="/conjugatestart">Conjugate</Link>
+          <Link className="navbarLink" to="/vocab">Vocab</Link>
+          {user && <Link className="navbarLink" to="/userpage">User page</Link>}
+          {!user ? <Link className="navbarLink" to="/login">Login</Link> :
+            <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
+        </div>
+        {user && <div className="infoBar">Logged in as {user.username}</div>}
+        <div className="mainArea">
 
-        <Routes>
+          <Routes>
             <Route index element={<IndexPage />} />
             <Route path="conjugatestart" element={<ConjugateIndex />} />
             <Route path="vocab" element={<VocabPage />} />
             <Route path="login" element={<LoginForm />} />
             <Route path="userpage" element={<UserPage />} />
             <Route path="wordlist/:id" element={<WordListView />} />
-        </Routes>
+          </Routes>
         </div>
       </BrowserRouter>
     </div>

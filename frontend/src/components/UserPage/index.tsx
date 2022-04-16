@@ -1,9 +1,10 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../reducers/hooks";
-import { selectUser } from "../../reducers/user";
+import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
+import { removeUser, selectUser } from "../../reducers/user";
 import { wordListService } from "../../services/wordlists";
 import { WordList } from "../../types";
+import userService from '../../services/user';
 
 export const UserPage = () => {
   
@@ -11,7 +12,8 @@ export const UserPage = () => {
   const user = useAppSelector(selectUser);
   const [name, setName] = useState<string>("");
   const [wordLists, setWordLists] = useState<WordList[]>([]);
-
+  const dispatch = useAppDispatch();
+  
   useEffect(() => {    
     if (user && user.token) {
       wordListService.getWordLists(user.token).then((data) => {
@@ -25,6 +27,22 @@ export const UserPage = () => {
 
   const onNameChange = (event: FormEvent<HTMLInputElement>) => {
     setName(event.currentTarget.value);
+  };
+
+  const deleteUserButton = async () => {
+    if (!user?.token) {
+      console.log("Error: User null or undefined on user page");
+      return;
+    }
+    const answer = confirm("Are you sure you want to delete all your user data? This includes your username, saved progress and all wordlists. This cannot be undone");
+    if (answer) {
+      const result = await userService.deleteUser(user.token);
+      if (result) {
+        dispatch(removeUser());
+        alert("All user data deleted.");
+        navigate('/');
+      }
+    }
   };
 
   const newWordList = async (event: FormEvent) => {
@@ -56,9 +74,7 @@ export const UserPage = () => {
         <p><button type='submit'>Create</button></p>
 </form>
       <h3>User settings</h3>
-      <p>Email here</p>
-      <p>Change password</p>
-      <p>Delete all data</p>
+      <button type='button' onClick={deleteUserButton}>Delete all user data</button>
     </div>
   );
 };

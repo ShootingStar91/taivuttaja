@@ -79,10 +79,17 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Log
 
 const deleteUser = async (user: User) => {
   
-  await wordlistModel.remove({ owner: user._id });
+  const deleteWlResult = await wordlistModel.deleteMany({ owner: user._id });
+  console.log("result of deleting wordlists");
+  console.log(deleteWlResult);
   
-  const result = await userModel.deleteOne({ owner: user._id });
+  
 
+  const result = await userModel.deleteOne({ owner: user._id });
+  console.log("result of user deleteOne");
+  
+  console.log(result);
+  
   if (!result) {
     throw new Error("Could not find such user");
   }
@@ -94,3 +101,4 @@ export default {
   tryLogin,
   deleteUser
 };
+

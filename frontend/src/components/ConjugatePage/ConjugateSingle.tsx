@@ -45,7 +45,6 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
       }
 
     }).catch(error => console.log(error));
-    // random its conjugation
   };
 
   const onClick = () => {

@@ -40,8 +40,8 @@ router.get('/:id', middleware.userExtractor, async (req, res) => {
 });
 
 router.post('/create/', middleware.userExtractor, async (req, res) => {
-  await wordlistService.create(req.body.name, req.user._id);
-  res.status(200).send();
+  const savedWordlist = await wordlistService.create(req.body.wordlist.title, req.user._id);
+  res.status(200).send(savedWordlist);
 
 });
 

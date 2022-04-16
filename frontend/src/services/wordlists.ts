@@ -1,16 +1,15 @@
 import { WordList } from "../types";
 import axios from "axios";
 import { baseUrl } from "../utils";
+import { getHeader } from "./util";
 
 const url = baseUrl + 'wordlists'; // /api/wordlists/
 
-const getHeader = (token: string) => {
-  return { headers: { Authorization: 'bearer ' + token}};
-};
 
-const createWordlist = async (wordList: WordList, token: string) => {
+
+const createWordlist = async (wordlist: WordList, token: string) => {
   try {
-    const result = await axios.post(url + '/create', { wordlist: wordList }, getHeader(token));
+    const result = await axios.post<WordList>(url + '/create', { wordlist }, getHeader(token));
     return result;
   } catch (error: unknown) {
     console.log("error in createWordlist");

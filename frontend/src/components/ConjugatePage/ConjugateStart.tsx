@@ -144,9 +144,9 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
         }
       </div>}
       <div>
-        <button type="button" onClick={() => onStart(ConjugateMode.Full)}>All forms</button>
-        <button type="button" onClick={() => onStart(ConjugateMode.Single)}>Single</button>
-        <button type="button" onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button>
+        <p><button type="button" onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
+        <p><button type="button" onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>
+        <p><button type="button" onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button></p>
       </div>
     </form>
   );
