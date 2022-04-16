@@ -25,5 +25,5 @@
 | 9.4.  | 4   | Added settings to conjugation, allowing to choose tenses and moods to include. This is a raw version that is not fully functional yet. Also other front refactorings. |
 | 10.4. | 2   | Added conjugation to limit words to chosen wordlist only. Added a flashcard page. |
 | 14.4. | 2   | Worked on single word mode of conjugation, and refactored frontend in the process | 
-| 15.5. | 3   | Continued on single word mode, added flag icons, added wordlist deletion to front- and backend, refactored backend routes to not need user-assertion |
-| Total hours | 66     | 
+| 15.5. | 4   | Continued on single word mode, added flag icons, added wordlist deletion to front and backend, refactored backend routes to not need user-assertion |
+| Total hours | 67     | 
