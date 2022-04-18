@@ -63,3 +63,10 @@ export enum Language {
 export interface AuthenticatedRequest extends Request {
   user: User;
 }
+
+export class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ValidationError';
+  }
+}

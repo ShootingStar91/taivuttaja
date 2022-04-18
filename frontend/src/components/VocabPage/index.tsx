@@ -15,7 +15,6 @@ export const VocabPage = () => {
 
   const getWord = () => {
     wordService.getWord(null, 'en', null, null).then((response) => {
-      console.log("response: ");
       setWord(response);
     }).catch(error => console.log(error));
   };
@@ -29,7 +28,6 @@ export const VocabPage = () => {
       setCurrentTry("");
     } else {
       console.log("wrong");
-      
     }
   };
 
@@ -39,9 +37,8 @@ export const VocabPage = () => {
       setCurrentTry(value);
     }
   };
-
+  
   if (word === null) {
-    getWord();
     return <div>Loading...</div>;
   }
 

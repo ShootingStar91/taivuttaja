@@ -1,0 +1,1 @@
+export const NOTIFICATION_DELAY = 6000;

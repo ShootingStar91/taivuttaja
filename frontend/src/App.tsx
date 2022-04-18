@@ -10,6 +10,7 @@ import { removeUser, selectUser, setUser } from './reducers/user';
 import { UserPage } from './components/UserPage';
 import { WordListView } from './components/UserPage/wordlist';
 import { ConjugateIndex } from './components/ConjugatePage';
+import { Notification } from './components/Notification';
 
 const App = () => {
 
@@ -26,10 +27,11 @@ const App = () => {
     const loadedUser = checkLogin();
     if (loadedUser) {
       dispatch(setUser(loadedUser));
+      
     }
 
   }, []);
-
+  
   return (
     <div className="mainDiv">
       <BrowserRouter>
@@ -43,7 +45,7 @@ const App = () => {
         </div>
         {user && <div className="infoBar">Logged in as {user.username}</div>}
         <div className="mainArea">
-
+        <Notification />
           <Routes>
             <Route index element={<IndexPage />} />
             <Route path="conjugatestart" element={<ConjugateIndex />} />

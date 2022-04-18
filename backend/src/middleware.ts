@@ -3,7 +3,7 @@ import express from 'express';
 import jwt, { JsonWebTokenError, Secret } from 'jsonwebtoken';
 import { SECRET } from './config';
 import { userModel, User } from './models/User';
-
+import { MongoServerError } from 'mongodb';
 
 /*
   This allows extractors to add user and token to request
@@ -42,7 +42,7 @@ const tokenExtractor = (request: express.Request, _response: express.Response, n
 
 const userExtractor = (request: express.Request, response: express.Response, next: Next) => {
   if (request.token === undefined || request.token === null) {
-    return response.status(401).json({ error: 'Invalid or missing token' });
+    throw new JsonWebTokenError("Invalid token");
   }
 
   jwt.verify(request.token, SECRET as Secret, (_err, decoded) => {
@@ -65,14 +65,21 @@ const userExtractor = (request: express.Request, response: express.Response, nex
 };
 
 const errorHandler = (err: Error, _req: express.Request, res: express.Response, _next: Next) => {
-  if (err.name == 'CastError') {
+  
+  if (err.name === 'CastError') {
     return res.status(400).send({ error: "Invalid id" });
-  } else if (err.name == 'ValidationError') {
+  } else if (err.name === 'ValidationError') {
     return res.status(400).json({ error: err.message });
   } else if (err.name === 'JsonWebTokenError') {
     return res.status(401).send({ error: err.message });
   } else if (err.name === 'TokenExpiredError') {
     return res.status(401).send({ error: 'Login expired' });
+  } else if (err.name === 'MongoServerError') {
+    const mongoError = err as MongoServerError;
+    if (mongoError.code === 11000) {
+      return res.status(400).send({ error: "Username already exists" });
+    }
+    return res.status(400).send({ error: "Error in database" });
   }
 
   return res.status(400).send({ error: err.message });
