@@ -10,9 +10,9 @@ export const Notification = () => {
   }
 
   return (
-    <div>
-      {message}
+    <div className="notificationDiv">
+      <p className="notification">{message}</p>
     </div>
   );
 
-};
+};  

@@ -3,7 +3,7 @@ import userService from "../../services/user";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../reducers/user";
 import { useAppDispatch } from "../../reducers/hooks";
-import { clearNotification, setNotification } from "../../reducers/notification";
+import { showNotification } from "../../reducers/notification";
 
 export const LoginForm = () => {
 
@@ -13,21 +13,14 @@ export const LoginForm = () => {
   const [password, setPassword] = useState('');
   //const [notification, setNotification] = useState<string>("");
 
-  const showNotification = (message: string) => {
-    dispatch(setNotification(message));
-    setTimeout(() => {
-      dispatch(clearNotification());
-    }, 5000);
-  };
-
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
     const user = await userService.tryLogin(username, password);
 
     if (!user) {
-      showNotification("Could not login. Check username and password");
+      void dispatch(showNotification("Could not login. Check username and password"));
     } else {
-      setNotification("");
+      void dispatch(showNotification(""));
       window.localStorage.setItem('loggedUser', JSON.stringify(user));
       dispatch(setUser({ ...user }));
       navigate('/conjugate');
@@ -46,14 +39,14 @@ export const LoginForm = () => {
       console.log(user);
 
       if (!user) {
-        showNotification("User created, but could not login! Try again soon");
+        void dispatch(showNotification("User created, but could not login! Try again soon"));
       } else {
         window.localStorage.setItem('loggedUser', JSON.stringify(user));
         dispatch(setUser({ ...user }));
         navigate('/conjugate');
       }
     } catch (e: any) {
-      dispatch(setNotification(e.response.data.error as string));
+      void dispatch(showNotification(e.response.data.error as string));
     }
   };
 
@@ -64,7 +57,6 @@ export const LoginForm = () => {
   const handleUsernameChange = (event: FormEvent<HTMLInputElement>) => {
     setUsername(event.currentTarget.value);
   };
-  // {notification !== "" && <div className="notificationDiv"><p className="notification">{notification}</p></div>}
 
   return (
     <div>
