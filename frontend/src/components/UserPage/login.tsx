@@ -11,7 +11,6 @@ export const LoginForm = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  //const [notification, setNotification] = useState<string>("");
 
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();

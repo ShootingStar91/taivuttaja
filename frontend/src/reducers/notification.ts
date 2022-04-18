@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { NOTIFICATION_DELAY } from "../config";
-import { RootState } from './store';
+import { AppDispatch, RootState } from './store';
 
 export interface NotificationState {
   message: string;
@@ -15,31 +15,25 @@ const initialState: NotificationState = {
 const delay = (time: number) => {
   return new Promise(resolve => setTimeout(resolve, time));
 };
-/*
-export const clearAndShow = (message: string) => (dispatch: AppDispatch, getState: () => NotificationState ) => {
-  console.log("called clearAndShow msg: " , message);
-  dispatch(setNotification(message));
-  const state = getState();
-  const id = state.id;
-  delay(NOTIFICATION_DELAY).then((_res) => {
-    dispatch(clearNotification(id));
-  }).catch(e => console.log(e));
-};
-*/
 
-export const showNotification = createAsyncThunk(
-  'notification/add',
-  async (message: string, thunkAPI) => {
-    const state = thunkAPI.getState() as NotificationState;
-    thunkAPI.dispatch(setNotification(message));
-    const id = state.id;
-    await delay(NOTIFICATION_DELAY);
-    const currentState = thunkAPI.getState() as NotificationState;
-    if (currentState.id === id) {
-      thunkAPI.dispatch(setNotification(""));
+export const showNotification = createAsyncThunk<
+  void, string, {
+    dispatch: AppDispatch,
+    state: RootState,
+  }>
+  (
+    'notification/add',
+    async (message: string, thunkAPI) => {
+      thunkAPI.dispatch(setNotification(message));
+      const state = thunkAPI.getState();
+      const id = state.notification.id;
+      await delay(NOTIFICATION_DELAY);
+      const currentState = thunkAPI.getState();
+      if (currentState.notification.id === id) {
+        thunkAPI.dispatch(setNotification(""));
+      }
     }
-  }
-);
+  );
 
 export const notificationSlice = createSlice({
   name: 'notification',
