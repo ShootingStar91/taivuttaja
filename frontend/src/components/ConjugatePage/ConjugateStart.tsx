@@ -1,9 +1,10 @@
 import React, { useEffect, useState, } from 'react';
 import Select, { SingleValue } from 'react-select';
-import { useAppSelector } from '../../reducers/hooks';
+import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
+import { showNotification } from '../../reducers/notification';
 import { selectUser } from '../../reducers/user';
 import { wordListService } from '../../services/wordlists';
-import { ConjugateMode, ConjugateSettings, Mood, moodList, MoodSelections, Tense, tenseList, TenseSelections, WordList } from '../../types';
+import { ConjugateMode, ConjugateSettings, Mood, moodList, MoodSelections, Tense, tenseList, TenseSelections, validCombinations, WordList } from '../../types';
 
 type WordlistOption = {
   label: string | null,
@@ -17,10 +18,11 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
   const [moodSelections, setMoodSelections] = useState<{ mood: Mood, selected: boolean }[]>(initialMoodSelections);
   const [tenseSelections, setTenseSelections] = useState<{ tense: Tense, selected: boolean }[]>(initialTenseSelections);
+  const [availableTenses, setAvailableTenses] = useState<Tense[]>(tenseList);
   const [wordlistId, setWordlist] = useState<string | null>(null);
   const [allWordlists, setAllWordlists] = useState<WordList[] | null>(null);
   const user = useAppSelector(selectUser);
-
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!user?.token) {
@@ -36,6 +38,8 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   }, [user]);
 
   const switchMoodSelection = (mood: Mood) => {
+    console.log("switched");
+    
     const newMoodSelections = moodSelections.map(m => {
       if (m.mood !== mood) {
         return m;
@@ -44,6 +48,12 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       return m;
     });
     setMoodSelections(newMoodSelections);
+    
+    const validTenses = tenseList.filter( tense => 
+                                        validCombinations.filter(c => newMoodSelections.filter(sel => sel.selected).map(sel => sel.mood).includes(c.mood)).map(comb => comb.tense).includes(tense)
+                                        );
+    
+    setAvailableTenses(validTenses);
   };
 
   const switchTenseSelection = (tense: Tense) => {
@@ -59,6 +69,11 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
   const onStart = async (mode: ConjugateMode) => {
     console.log(user);
+
+    if (!tenseSelections.find(s => s.selected) || !moodSelections.find(s => s.selected)) {
+      void dispatch(showNotification("Select at least one mood and tense"));
+      return;
+    }
 
     if (!user?.token) {
       return;
@@ -114,7 +129,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
           </div>
           <div style={{ flex: 1 }}>
             <h4>Tenses</h4>
-            {tenseList.map(tense =>
+            {availableTenses.map(tense =>
               <div key={tense}>
                 <label>
                   <input
@@ -143,6 +158,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
           <p>No wordlists found. Create wordlists on user page.</p>
         }
       </div>}
+      <h4>Begin by choosing mode</h4>
       <div>
         <p><button type="button" onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
         <p><button type="button" onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>

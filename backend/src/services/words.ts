@@ -15,7 +15,6 @@ const getRandomWord = async (tense: Tense, mood: Mood) => {
   if (!wordArray || wordArray.length !== 1) {
     throw new Error("Error randoming word");
   }
-  console.log("array len", wordArray.length);
 
   return wordArray[0];
 };

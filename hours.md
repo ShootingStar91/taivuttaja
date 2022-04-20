@@ -26,4 +26,7 @@
 | 10.4. | 2   | Added conjugation to limit words to chosen wordlist only. Added a flashcard page. |
 | 14.4. | 2   | Worked on single word mode of conjugation, and refactored frontend in the process | 
 | 15.5. | 4   | Continued on single word mode, added flag icons, added wordlist deletion to front and backend, refactored backend routes to not need user-assertion |
-| Total hours | 67     | 
+| 16.4. | 3   | Improved backend error handling, started moving notifications into redux. Goal is to have it centralized in Redux and to prevent new notifications being deleted too soon because of older ones |
+| 17.4. | 1   | Continued on working with moving notification into redux, but it seems very difficult |
+| 18.4. | 1   | Finally got notification working with Redux Toolkits createAsyncThunk |
+| Total hours | 72     | 

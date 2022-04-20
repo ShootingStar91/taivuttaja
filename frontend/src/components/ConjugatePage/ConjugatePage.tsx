@@ -1,4 +1,6 @@
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
+import { selectNotification, showNotification } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription, forms, getRandomForm } from '../../utils';
@@ -6,11 +8,9 @@ import { getWordForm, getForm, getFormDescription, forms, getRandomForm } from '
 
 export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
 
-  const [notification, setNotification] = useState<string>("");
   const [word, setWord] = useState<Word | null>(null);
-  if (word) console.log("WORD: " , word.infinitive);
-  else console.log("word null");
-  
+  const dispatch = useAppDispatch();
+  const notification = useAppSelector(selectNotification);
   
 
   const initialState: { [fieldName: string]: string } = {};
@@ -77,7 +77,6 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     let fail = false;
     forms.forEach(form => {
       if (formState[form] === getWordForm(word, form)) {
-        console.log('Success at ' + form);
         document.getElementsByName(form)[0].style.backgroundColor = "#33cc33";
       } else {
         const color = formState[form] === "" ? "#ffffff" : "#ffebeb";
@@ -86,16 +85,13 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
       }
     });
     if (!fail) {
-      setNotification("¡Todo correcto!");
-      setTimeout(() => {
-        setNotification("");
-        setFormState({ ...initialState });
-        getWord();
-        resetFormColors();
-        const nextField = document.getElementById("0");
-        nextField?.focus();
-        next();
-      }, 2000);
+      void dispatch(showNotification("¡Todo correcto!"));
+      setFormState({ ...initialState });
+      getWord();
+      resetFormColors();
+      const nextField = document.getElementById("0");
+      nextField?.focus();
+      next();
 
     }
   };
