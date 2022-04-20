@@ -54,6 +54,10 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
                                         );
     
     setAvailableTenses(validTenses);
+    
+    // Remove tense selections that are no longer valid
+    const newTenseSelections = tenseSelections.map(s => validTenses.includes(s.tense) ? s : { tense: s.tense, selected: false });
+    setTenseSelections(newTenseSelections);
   };
 
   const switchTenseSelection = (tense: Tense) => {
@@ -65,6 +69,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       return t;
     });
     setTenseSelections(newTenseSelections);
+    console.log(newTenseSelections);
   };
 
   const onStart = async (mode: ConjugateMode) => {

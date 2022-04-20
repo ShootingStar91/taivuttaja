@@ -41,8 +41,6 @@ router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
     throw new Error("Mood or tense invalid");
   }
 
-  console.log(`Getting word ${word}, mood ${mood}, tense ${tense}`);
-
   if (isString(word) && word !== '-') {
     // Get specific word
     const result = await wordService.getWord(word, lang, tense, mood);

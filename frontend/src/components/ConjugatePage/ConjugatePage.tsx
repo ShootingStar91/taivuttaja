@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
 import { selectNotification, showNotification } from '../../reducers/notification';
@@ -10,12 +11,12 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
 
   const [word, setWord] = useState<Word | null>(null);
   const dispatch = useAppDispatch();
-  const notification = useAppSelector(selectNotification);
-  
-
+  const [emptyForms, setEmptyForms] = useState<string[]>([]);
   const initialState: { [fieldName: string]: string } = {};
+  const [lastId, setLastId] = useState<string | null>(null);
 
   forms.forEach(form => initialState[form] = '');
+  if (lastId) console.log(`lastid ${lastId}`);
 
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
   //const [skipped, setSkipped] = useState<boolean>(false);
@@ -25,6 +26,28 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
       getWord();
     }
   }, []);
+
+  useEffect(() => {
+    // Check which forms are an empty string. Make those green and blocked from typing
+    if (!word) return;
+    const newEmptyForms: string[] = [];
+    forms.forEach(form => {
+      if (getWordForm(word, form) === "") {
+        document.getElementsByName(form)[0].style.backgroundColor = "#878787"; // color for blocked text inputs
+        newEmptyForms.push(form);
+      }
+    });
+
+    // A bit ugly but here we check what is the id of the last active input field
+    const emptyFormsAsNumbers = emptyForms.map(f => parseInt(f.charAt(0)));
+    for (let i = 5; i >= 0; i--) {
+      if (emptyFormsAsNumbers.includes(i)) {
+        setLastId(i.toString());
+        return;
+      }
+    }
+    setEmptyForms(newEmptyForms);
+  }, [word]);
 
   const getWord = () => {
 
@@ -39,9 +62,11 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     wordService.getWord(word, 'en', mood, tense).then((response) => {
       console.log("response: ");
       setWord(response);
+
     }).catch(error => console.log(error));
 
   };
+
 
   const resetFormColors = () => {
     forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffffff");
@@ -65,7 +90,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     const activeField = document.activeElement?.getAttribute('id');
     if (activeField !== undefined && activeField !== null && nextField) {
       const activeId = parseInt(activeField);
-      if (activeId < 5) {
+      if (activeId < 5 - emptyForms.length) {
         const nextField = document.getElementById((activeId + 1).toString());
         nextField?.focus();
       }
@@ -77,7 +102,9 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     let fail = false;
     forms.forEach(form => {
       if (formState[form] === getWordForm(word, form)) {
-        document.getElementsByName(form)[0].style.backgroundColor = "#33cc33";
+        if (getWordForm(word, form) !== "") {
+          document.getElementsByName(form)[0].style.backgroundColor = "#33cc33";
+        }
       } else {
         const color = formState[form] === "" ? "#ffffff" : "#ffebeb";
         fail = true;
@@ -118,7 +145,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     getWord();
     return <div>Loading...</div>;
   }
-
+  console.log(emptyForms);
   return (
     <div>
       <p>
@@ -134,7 +161,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
               {forms.map((form, index) =>
                 <React.Fragment key={form}>
                   <tr key={form} className="conjugationRow">
-                    <td><input type='text' id={index.toString()} name={form} onChange={handleChange} value={formState[form]} /></td>
+                    <td><input type='text' id={index.toString()} name={form} onChange={emptyForms.includes(form) ? undefined : handleChange} value={formState[form]} disabled={emptyForms.includes(form) ? true : undefined} /></td>
                     <td className="formDescription"><div className="tooltip">{getForm(form)}<div className="tooltiptext">{getFormDescription(form)}</div></div></td>
                   </tr>
                   <tr></tr>
@@ -148,8 +175,6 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
           <p><button type='button' onClick={onSkip}>Skip</button></p>
         </form>
       </div>
-      {notification !== "" && <div className="notificationDiv"><p className="notification">{notification}</p></div>}
-
     </div>
   );
 };

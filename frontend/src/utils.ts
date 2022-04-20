@@ -12,7 +12,10 @@ export const deAccentify = (word: string): string => {
     .replace('í', 'i');
 };
 
-
+/**
+ * Get the form of word by giving string, for example '2s' will
+ * return word.form_2s
+ */
 export const getWordForm = (word: Word, form: string) => {
   switch (form) {
     case '1s':
