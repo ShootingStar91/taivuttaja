@@ -14,8 +14,6 @@ export const ConjugateIndex = () => {
   const startConjugating = (settings: ConjugateSettings) => {
     setSettings(settings);
     setStage(1);
-    console.log("moi");
-    
   };
 
   const next = () => {

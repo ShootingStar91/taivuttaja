@@ -35,9 +35,10 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
         console.log("getWord failed");
         return;
       }
-      console.log("response: ");
       setWord(response);
-      const randomedForm = forms[Math.floor(Math.random() * forms.length)];
+      // Random a form only from those that are not empty
+      const validForms = forms.filter(f => getWordForm(response, f) !== "");
+      const randomedForm = validForms[Math.floor(Math.random() * validForms.length)];
       setForm(randomedForm);
       const rightAnswer = getWordForm(response, randomedForm);
       if (rightAnswer) {

@@ -38,8 +38,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   }, [user]);
 
   const switchMoodSelection = (mood: Mood) => {
-    console.log("switched");
-    
+   
     const newMoodSelections = moodSelections.map(m => {
       if (m.mood !== mood) {
         return m;
@@ -73,20 +72,16 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   };
 
   const onStart = async (mode: ConjugateMode) => {
-    console.log(user);
 
     if (!tenseSelections.find(s => s.selected) || !moodSelections.find(s => s.selected)) {
       void dispatch(showNotification("Select at least one mood and tense"));
       return;
     }
 
-    if (!user?.token) {
-      return;
-    }
 
     let wordlist = null;
 
-    if (wordlistId) {
+    if (user?.token && wordlistId) {
       wordlist = await wordListService.getWordList(wordlistId, user.token);
 
       if (!wordlist) {
