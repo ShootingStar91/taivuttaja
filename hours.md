@@ -29,4 +29,5 @@
 | 16.4. | 3   | Improved backend error handling, started moving notifications into redux. Goal is to have it centralized in Redux and to prevent new notifications being deleted too soon because of older ones |
 | 17.4. | 1   | Continued on working with moving notification into redux, but it seems very difficult |
 | 18.4. | 1   | Finally got notification working with Redux Toolkits createAsyncThunk |
-| Total hours | 72     | 
+| 20.4. | 3   | Added logic to prevent choosing combinations of mood and tense that are impossible. Also dealt with situations where some forms are empty, like 1st and 2nd person singular in imperative |
+| Total hours | 75     | 
