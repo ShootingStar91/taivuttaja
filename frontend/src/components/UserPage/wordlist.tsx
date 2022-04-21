@@ -52,7 +52,6 @@ export const WordListView = () => {
     if (wordlist?._id && user?.token && confirm('Are you sure you want to permanently delete wordlist?')) {
       wordListService.deleteWordlist(wordlist._id, user.token).then((response) => {
         if (response) {
-          console.log("Wordlist deleted");
           navigate('/userpage/');
         } else {
           console.log("Error deleting wordlist");
@@ -72,14 +71,12 @@ export const WordListView = () => {
     }
     if (word && wordlist._id && user && user.token
       && !wordlist.words.includes(word.value)) {
-        console.log("asd");
         
       // Here, also add word to wordlist on server
       setWordlist({ ...wordlist, words: [...wordlist.words, word.value] });
       await wordListService.addWord(word.value, wordlist._id, user.token);
       const newAllWords = allWords.filter(w => w.value !== word.value);
       setAllWords(newAllWords);
-      console.log("all words set");
       
     }
   };
@@ -94,9 +91,6 @@ export const WordListView = () => {
     return (<div>Wordlist not loaded or found.</div>);
   }
   
-  console.log("re render");
-  
-
 
   return (
     <div><h3>Add words to wordlist: {wordlist.title}</h3>

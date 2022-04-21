@@ -4,13 +4,13 @@ import { IndexPage } from './components/IndexPage';
 import { VocabPage } from './components/VocabPage';
 import { LoginForm } from './components/UserPage/login';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { checkLogin } from './services/user';
 import { useAppDispatch, useAppSelector } from './reducers/hooks';
 import { removeUser, selectUser, setUser } from './reducers/user';
 import { UserPage } from './components/UserPage';
 import { WordListView } from './components/UserPage/wordlist';
 import { ConjugateIndex } from './components/ConjugatePage';
 import { Notification } from './components/Notification';
+import userService from './services/user';
 
 const App = () => {
 
@@ -24,7 +24,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    const loadedUser = checkLogin();
+    const loadedUser = userService.checkLogin();
     if (loadedUser) {
       dispatch(setUser(loadedUser));
       

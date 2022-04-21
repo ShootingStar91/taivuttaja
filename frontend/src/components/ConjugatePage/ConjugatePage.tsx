@@ -5,6 +5,7 @@ import { selectNotification, showNotification } from '../../reducers/notificatio
 import { wordService } from '../../services/words';
 import { ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription, forms, getRandomForm } from '../../utils';
+import { EnglishFlag, SpanishFlag } from '../Flags';
 
 
 export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
@@ -43,7 +44,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     for (let i = 5; i >= 0; i--) {
       if (emptyFormsAsNumbers.includes(i)) {
         setLastId(i.toString());
-        return;
+        break;
       }
     }
     setEmptyForms(newEmptyForms);
@@ -60,7 +61,6 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
       settings.wordlist.words[Math.floor(Math.random() * settings.wordlist.words.length)];
 
     wordService.getWord(word, 'en', mood, tense).then((response) => {
-      console.log("response: ");
       setWord(response);
 
     }).catch(error => console.log(error));
@@ -98,7 +98,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
 
 
     if (word === null) { return; }
-    console.log(formState);
+
     let fail = false;
     forms.forEach(form => {
       if (formState[form] === getWordForm(word, form)) {
@@ -142,17 +142,19 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   };
 
   if (word === null) {
-    getWord();
     return <div>Loading...</div>;
   }
-  console.log(emptyForms);
+
   return (
     <div>
       <p>
-        {word.infinitive_english}
+        <SpanishFlag /> <b>{word.infinitive}</b>
       </p>
       <p>
-        {word.infinitive}
+        <EnglishFlag /> {word.infinitive_english}
+      </p>
+      <p>
+        {word.mood_english} {word.tense_english.toLowerCase()}
       </p>
       <div>
         <form onSubmit={onEnter} autoComplete='off' onKeyDown={onKeyDown}>

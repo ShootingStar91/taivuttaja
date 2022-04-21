@@ -1,4 +1,5 @@
 export interface Word {
+  _id: string;
   infinitive: string;
   infinitive_english: string;
   mood: string;

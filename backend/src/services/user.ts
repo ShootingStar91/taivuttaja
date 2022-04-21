@@ -3,9 +3,10 @@ import { User, userModel } from "../models/User";
 import bcrypt from 'bcrypt';
 import { loginValidSeconds, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, SECRET } from '../config';
 import jwt, { Secret } from "jsonwebtoken";
-import { LoginResponse, ValidationError } from "../types";
+import { DoneWord, LoginResponse, ValidationError } from "../types";
 import { isString } from '../utils/validators';
 import { wordlistModel } from "../models/Wordlist";
+import { doneWordModel } from "../models/DoneWord";
 
 type RawUser = Omit<User, '_id'>;
 
@@ -87,9 +88,31 @@ const deleteUser = async (user: User) => {
 
 };
 
+const addDoneWord = async (wordId: unknown, user: User) => {
+  if (!isString(wordId)) {
+    throw new ValidationError("Invalid wordId");
+  }
+  const rawDoneWord: DoneWord = {word: wordId, date: new Date(), user: user._id };
+  const newDoneWord = new doneWordModel(rawDoneWord);
+  const result = await newDoneWord.save();
+  if (!result) {
+    throw new Error("Could not add done word");
+  }
+};
+
+const getDoneWords = async (user: User) => {
+  const result = await doneWordModel.find({ user: user._id });
+  if (!result) {
+    throw new Error("Could not get done words");
+  }
+  return result;
+};
+
 export default {
   createUser,
   tryLogin,
-  deleteUser
+  deleteUser,
+  addDoneWord,
+  getDoneWords
 };
 

@@ -17,7 +17,6 @@ const getWord = async (wordParam: string | null, langParam: string, moodParam: M
   
   try {
     const response = await axios.get<Word | null>(`${url}/word/${lang}/${word}/tense/${tense}/mood/${mood}`);
-    console.log("Response from getRandomWord: ", response);
     return response.data;
   } catch (error: unknown) {
     console.log("error in getrandomword");

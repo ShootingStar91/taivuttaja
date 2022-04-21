@@ -27,4 +27,14 @@ router.post('/deleteuser/', middleware.userExtractor, async (req, res) => {
   res.status(200).send();
 });
 
+router.post('/doneword/', middleware.userExtractor, async (req, res) => {
+  await userService.addDoneWord(req.body.wordId, req.user);
+  res.status(200).send();
+});
+
+router.get('/donewords/', middleware.userExtractor, async (req, res) => {
+  const result = await userService.getDoneWords(req.user);
+  res.status(200).send(result);
+});
+
 export default router;

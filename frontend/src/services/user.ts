@@ -35,12 +35,12 @@ const tryLogin = async (username: string, password: string) => {
   }
 };
 
-export const deleteUser = async (token: string) => {
+const deleteUser = async (token: string) => {
   const result = await axios.post<User>(`${url}/deleteuser/`, {}, getHeader(token));
   return result;
 };
 
-export const checkLogin = () => {
+const checkLogin = () => {
   const user = window.localStorage.getItem('loggedUser');
   if (user) {
     return JSON.parse(user) as User;
@@ -49,6 +49,7 @@ export const checkLogin = () => {
   return;
 };
 
+/*
 export const changePassword = async (password: string, token: string) => {
   try {
     const result = await axios.post<User>(`${url}/deleteuser/`, { password }, getHeader(token));
@@ -57,10 +58,30 @@ export const changePassword = async (password: string, token: string) => {
     return e;
   }
 };
+*/
+
+const setDailyGoal = async (goal: number, token: string) => {
+  console.log(goal, token);
+  const result = await axios.post('/setgoal/', { goal }, getHeader(token));
+  console.log(result);
+};
+
+const addDoneWord = async (wordId: string, token: string) => {
+  await axios.post('/doneword/',  {wordId}, getHeader(token));
+};
+
+const getDoneWords = async (token: string) => {
+  const result = await axios.get('/doneword/',  getHeader(token));
+  return result;
+};
+
 
 export default {
   tryLogin,
   checkLogin,
   createUser,
-  deleteUser
+  deleteUser,
+  setDailyGoal,
+  addDoneWord,
+  getDoneWords
 };

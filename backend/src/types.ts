@@ -70,3 +70,9 @@ export class ValidationError extends Error {
     this.name = 'ValidationError';
   }
 }
+
+export interface DoneWord {
+  word: string,
+  date: Date,
+  user: string,
+}

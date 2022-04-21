@@ -42,7 +42,7 @@ export const LoginForm = () => {
       } else {
         window.localStorage.setItem('loggedUser', JSON.stringify(user));
         dispatch(setUser({ ...user }));
-        navigate('/conjugate');
+        navigate('/conjugatestart');
       }
     } catch (e: any) {
       void dispatch(showNotification(e.response.data.error as string));
