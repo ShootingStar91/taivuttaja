@@ -1,10 +1,11 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
-import { removeUser, selectUser } from "../../reducers/user";
+import { removeUser, selectUser, setGoal } from "../../reducers/user";
 import { wordListService } from "../../services/wordlists";
 import { WordList } from "../../types";
 import userService from '../../services/user';
+import { showNotification } from "../../reducers/notification";
 
 export const UserPage = () => {
 
@@ -13,7 +14,8 @@ export const UserPage = () => {
   const [name, setName] = useState<string>("");
   const [wordLists, setWordLists] = useState<WordList[]>([]);
   const dispatch = useAppDispatch();
-  const [dailyGoal, setDailyGoal] = useState<string>();
+  const [dailyGoal, setDailyGoal] = useState<string>("50");
+  const [password, setPassword] = useState<string>("");
 
   useEffect(() => {
     if (user && user.token) {
@@ -51,7 +53,11 @@ export const UserPage = () => {
     if (!user?.token || !dailyGoal) {
       return;
     }
-    await userService.setDailyGoal(parseInt(dailyGoal), user.token);
+    const result = await userService.setGoal(parseInt(dailyGoal), user.token);
+    dispatch(setGoal(parseInt(dailyGoal)));
+    if (result) {
+      void dispatch(showNotification("Daily goal set!"));
+    }
   };
 
   const changeDailyGoal = (event: FormEvent<HTMLInputElement>) => {
@@ -59,6 +65,23 @@ export const UserPage = () => {
     const newDailyGoal = event.currentTarget.value;
     if (newDailyGoal) {
       setDailyGoal(newDailyGoal);
+    }
+  };
+
+  const onChangePassword = (event: FormEvent<HTMLInputElement>) => {
+    const pw = event.currentTarget.value;
+    if (pw) {
+      setPassword(pw);
+    }
+  };
+
+  const changePassword = async () => {
+    if (!user?.token) {
+      return;
+    }
+    const result = await userService.changePassword(password, user.token);
+    if (result) {
+      void dispatch(showNotification("Password changed"));
     }
   };
 
@@ -82,8 +105,8 @@ export const UserPage = () => {
     <div>
       <h3>Daily goal</h3>
       <form onSubmit={onSetDailyGoal}><p>Set daily goal:</p>
-        <p><input type="text" onChange={changeDailyGoal}></input></p>
-        <p><button type='submit'>Set</button></p>
+        <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{width: "200px"}}></input> {dailyGoal}</p>
+        <p><button type='submit'>Save</button></p>
       </form>
       <h3>Your wordlists</h3>
       {wordLists.length > 0 ?
@@ -97,8 +120,14 @@ export const UserPage = () => {
         <p><input type="text" onChange={onNameChange}></input></p>
         <p><button type='submit'>Create</button></p>
       </form>
+      <h3>User info</h3>
+      Words practiced in total: {user?.doneWords}
       <h3>User settings</h3>
+      <form><p><input type="password" value={password} onChange={onChangePassword}></input></p>
+      <p><button type='button' onClick={changePassword}>Change password</button></p></form>
+      <h3>Delete user</h3>
       <button type='button' onClick={deleteUserButton}>Delete all user data</button>
     </div>
   );
 };
+

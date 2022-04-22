@@ -16,12 +16,16 @@ const createUser = async (username: string, password: string) => {
 const tryLogin = async (username: string, password: string) => {
 
   try {
-    const result = await axios.post<LoginResponse>(`${url}/login`, { username, password });
+    const result = await axios.post<LoginResponse>(`${url}/login/`, { username, password });
     if (result.data) {
+      const response = await axios.get<Date[]>(`${url}/donewords/`, getHeader(result.data.token));
+      const doneWords = response.data.filter(date => date.getDate() === new Date().getDate()).length;
       const user: User = {
         username: result.data.user.username,
         id: result.data.user.id,
-        token: result.data.token
+        token: result.data.token,
+        goal: result.data.user.goal,
+        doneWords
       };
       return user;
     }
@@ -49,29 +53,27 @@ const checkLogin = () => {
   return;
 };
 
-/*
 export const changePassword = async (password: string, token: string) => {
   try {
-    const result = await axios.post<User>(`${url}/deleteuser/`, { password }, getHeader(token));
+    const result = await axios.post<User>(`${url}/changepassword/`, { password }, getHeader(token));
     return result;
   } catch (e) {
     return e;
   }
 };
-*/
 
-const setDailyGoal = async (goal: number, token: string) => {
-  console.log(goal, token);
-  const result = await axios.post('/setgoal/', { goal }, getHeader(token));
-  console.log(result);
+
+const setGoal = async (goal: number, token: string) => {
+  const result = await axios.post(`${url}/goal/`, { goal }, getHeader(token));
+  return result;  
 };
 
 const addDoneWord = async (wordId: string, token: string) => {
-  await axios.post('/doneword/',  {wordId}, getHeader(token));
+  await axios.post(`${url}/doneword/`,  {wordId}, getHeader(token));
 };
 
 const getDoneWords = async (token: string) => {
-  const result = await axios.get('/doneword/',  getHeader(token));
+  const result = await axios.get(`${url}/doneword/`,  getHeader(token));
   return result;
 };
 
@@ -81,7 +83,8 @@ export default {
   checkLogin,
   createUser,
   deleteUser,
-  setDailyGoal,
+  setGoal,
   addDoneWord,
-  getDoneWords
+  getDoneWords,
+  changePassword
 };

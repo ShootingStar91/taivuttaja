@@ -38,7 +38,7 @@ export const LoginForm = () => {
       console.log(user);
 
       if (!user) {
-        void dispatch(showNotification("User created, but could not login! Try again soon"));
+        void dispatch(showNotification("User created, but could not login! Try to login again"));
       } else {
         window.localStorage.setItem('loggedUser', JSON.stringify(user));
         dispatch(setUser({ ...user }));

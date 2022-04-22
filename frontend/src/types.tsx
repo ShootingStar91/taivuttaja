@@ -20,11 +20,14 @@ export interface Word {
 }
 
 
+
 export interface User {
   username: string,
   id: string,
+  goal?: number,
   token?: string,
   wordLists?: string[],
+  doneWords: number,
 }
 
 

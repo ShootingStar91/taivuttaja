@@ -37,4 +37,15 @@ router.get('/donewords/', middleware.userExtractor, async (req, res) => {
   res.status(200).send(result);
 });
 
+router.post('/goal/', middleware.userExtractor, async (req, res) => {
+  const result = await userService.setGoal(req.body.goal, req.user);
+  res.status(200).send(result);
+});
+
+router.post('/changepassword/', middleware.userExtractor, async (req, res) => {
+  const result = await userService.changePassword(req.body.password, req.user);
+  res.status(200).send(result);
+});
+
+
 export default router;

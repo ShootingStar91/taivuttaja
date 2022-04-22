@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
-import { selectNotification, showNotification } from '../../reducers/notification';
+import { showNotification } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription, forms, getRandomForm } from '../../utils';
 import { EnglishFlag, SpanishFlag } from '../Flags';
+import userService from '../../services/user';
+import { addDoneWord, selectUser } from '../../reducers/user';
 
 
 export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
@@ -15,9 +17,9 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   const [emptyForms, setEmptyForms] = useState<string[]>([]);
   const initialState: { [fieldName: string]: string } = {};
   const [lastId, setLastId] = useState<string | null>(null);
-
+  const user = useAppSelector(selectUser);
+  
   forms.forEach(form => initialState[form] = '');
-  if (lastId) console.log(`lastid ${lastId}`);
 
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
   //const [skipped, setSkipped] = useState<boolean>(false);
@@ -113,6 +115,12 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     });
     if (!fail) {
       void dispatch(showNotification("¡Todo correcto!"));
+      console.log(user);
+      
+      if (user?.token) {
+        void userService.addDoneWord(word._id, user.token);
+        dispatch(addDoneWord());
+      }
       setFormState({ ...initialState });
       getWord();
       resetFormColors();

@@ -15,3 +15,4 @@ export const isMood = (text: unknown): text is Mood => {
 export const isLanguage = (text: unknown): text is Language => {
   return isString(text) && text === Language.English || text === Language.Spanish;
 };
+

@@ -77,11 +77,11 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Log
 };
 
 const deleteUser = async (user: User) => {
-  
+
   await wordlistModel.deleteMany({ owner: user._id });
 
   const result = await userModel.deleteOne({ owner: user._id });
-    
+
   if (!result) {
     throw new Error("Could not find such user");
   }
@@ -92,7 +92,7 @@ const addDoneWord = async (wordId: unknown, user: User) => {
   if (!isString(wordId)) {
     throw new ValidationError("Invalid wordId");
   }
-  const rawDoneWord: DoneWord = {word: wordId, date: new Date(), user: user._id };
+  const rawDoneWord: DoneWord = { word: wordId, date: new Date(), user: user._id };
   const newDoneWord = new doneWordModel(rawDoneWord);
   const result = await newDoneWord.save();
   if (!result) {
@@ -108,11 +108,28 @@ const getDoneWords = async (user: User) => {
   return result;
 };
 
+const setGoal = async (goal: unknown, user: User) => {
+  if (!Number.isInteger(goal)) {
+    throw new ValidationError("Invalid goal parameter");
+  }
+  const result = await userModel.updateOne({ _id: user._id }, { goal });
+  return result;
+};
+
+const changePassword = async (rawPassword: unknown, user: User) => {
+  const password = await createPasswordHash(parsePassword(rawPassword));
+
+  const result = await userModel.updateOne({ _id: user._id }, { password });
+  return result;
+};
+
 export default {
   createUser,
   tryLogin,
   deleteUser,
   addDoneWord,
-  getDoneWords
+  getDoneWords,
+  setGoal,
+  changePassword
 };
 

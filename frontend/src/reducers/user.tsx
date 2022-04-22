@@ -3,7 +3,7 @@ import { User } from '../types';
 import { RootState } from './store';
 
 interface UserState {
-  user: User | undefined
+  user: User | undefined,
 }
 
 const initialState: UserState = {
@@ -15,16 +15,32 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {
-      return {...state, user: action.payload};
+      return { ...state, user: action.payload };
     },
     removeUser: state => {
       state.user = undefined;
       window.localStorage.clear();
+    },
+    setGoal: (state, action: PayloadAction<number>) => {
+      if (!state.user) {
+        return;
+      }
+      const newUser = { ...state.user, goal: action.payload };
+      return { ...state, user: newUser };
+    },
+    addDoneWord: (state) => {
+      console.log("Adding done word. state:");
+      console.log(state);
+      
+
+      if (!state.user) { return; }
+      
+      return { ...state, user: {...state.user, doneWords: state.user.doneWords + 1}};
     }
   }
 });
 
-export const { setUser, removeUser } = userSlice.actions;
+export const { setUser, removeUser, setGoal, addDoneWord } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;
 

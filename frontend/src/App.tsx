@@ -11,6 +11,7 @@ import { WordListView } from './components/UserPage/wordlist';
 import { ConjugateIndex } from './components/ConjugatePage';
 import { Notification } from './components/Notification';
 import userService from './services/user';
+import { InfoBar } from './components/InfoBar';
 
 const App = () => {
 
@@ -43,7 +44,7 @@ const App = () => {
           {!user ? <Link className="navbarLink" to="/login">Login</Link> :
             <Link className="navbarLink" to="/" onClick={logout}>Logout</Link>}
         </div>
-        {user && <div className="infoBar">Logged in as {user.username}</div>}
+        <InfoBar />
         <div className="mainArea">
         <Notification />
           <Routes>

@@ -30,4 +30,6 @@
 | 17.4. | 1   | Continued on working with moving notification into redux, but it seems very difficult |
 | 18.4. | 1   | Finally got notification working with Redux Toolkits createAsyncThunk |
 | 20.4. | 3   | Added logic to prevent choosing combinations of mood and tense that are impossible. Also dealt with situations where some forms are empty, like 1st and 2nd person singular in imperative |
-| Total hours | 75     | 
+| 21.4. | 2   | Started building backend functionality for setting daily goal |
+| 22.4. | 3   | Functionality for counting how many words are done, and showing progress towards daily goal. Added password changing |
+| Total hours | 80     | 
