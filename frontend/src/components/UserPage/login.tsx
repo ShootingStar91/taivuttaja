@@ -14,34 +14,31 @@ export const LoginForm = () => {
 
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
-    try {
-      const user = await userService.tryLogin(username, password);
-      if (!user) {
-        void dispatch(showNotification("Could not login. Check username and password"));
-      } else {
-        void dispatch(showNotification(""));
-        window.localStorage.setItem('loggedUser', JSON.stringify(user));
-        dispatch(setUser({ ...user }));
-        navigate('/conjugate');
-      }
+    const [error, user] = await userService.tryLogin(username, password);
+    if (!user) {
+      void dispatch(showNotification(error));
+      return;
     }
-    catch (e: any) {
-      void dispatch(showNotification(e.response.data.error as string));
-    }
+    void dispatch(showNotification("Login successful!"));
+    window.localStorage.setItem('loggedUser', JSON.stringify(user));
+    dispatch(setUser({ ...user }));
+    navigate('/conjugate');
+
   };
 
   const tryNewUser = async () => {
     try {
       await userService.createUser(username, password);
-      const user = await userService.tryLogin(username, password);
+      const [error, user] = await userService.tryLogin(username, password);
 
       if (!user) {
-        void dispatch(showNotification("User created, but could not login! Try to login again"));
-      } else {
-        window.localStorage.setItem('loggedUser', JSON.stringify(user));
-        dispatch(setUser({ ...user }));
-        navigate('/conjugatestart');
+        void dispatch(showNotification(error));
+        return;
       }
+      window.localStorage.setItem('loggedUser', JSON.stringify(user));
+      dispatch(setUser({ ...user }));
+      navigate('/conjugatestart');
+
     } catch (e: any) {
       void dispatch(showNotification(e.response.data.error as string));
     }

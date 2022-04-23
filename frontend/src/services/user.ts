@@ -4,7 +4,6 @@ import { User } from "../types";
 import { getHeader } from "./util";
 const url = baseUrl + 'user';
 
-
 const createUser = async (username: string, password: string) => {
   return await axios.post<User>(`${url}/create`, { username, password });
 };
@@ -28,13 +27,16 @@ const getReadyUser = async (user: User) => {
   return fullUser;
 };
 
-const tryLogin = async (username: string, password: string) => {
-
-  const result = await axios.post<User>(`${url}/login/`, { username, password });
-  if (result.data) {
-    return await getReadyUser(result.data);
+const tryLogin = async (username: string, password: string): Promise<[string, User | undefined]> => {
+  try {
+    const result = await axios.post<User>(`${url}/login/`, { username, password });
+    if (result.data) {
+      return ["", await getReadyUser(result.data)];
+    }
+  } catch (e: any) {
+    return [(e as Error).message, undefined];
   }
-  throw new Error("Could not login");
+  return ["Could not login", undefined];
 };
 
 const deleteUser = async (token: string) => {
