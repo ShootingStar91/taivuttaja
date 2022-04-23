@@ -79,9 +79,14 @@ export const UserPage = () => {
     if (!user?.token) {
       return;
     }
-    const result = await userService.changePassword(password, user.token);
-    if (result) {
-      void dispatch(showNotification("Password changed"));
+    try {
+      const result = await userService.changePassword(password, user.token);
+
+      if (result) {
+        void dispatch(showNotification("Password changed"));
+      }
+    } catch (e: any) {
+      void dispatch(showNotification(e.response.data.error as string));
     }
   };
 
@@ -105,7 +110,7 @@ export const UserPage = () => {
     <div>
       <h3>Daily goal</h3>
       <form onSubmit={onSetDailyGoal}><p>Set daily goal:</p>
-        <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{width: "200px"}}></input> {dailyGoal}</p>
+        <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> {dailyGoal}</p>
         <p><button type='submit'>Save</button></p>
       </form>
       <h3>Your wordlists</h3>
@@ -124,7 +129,7 @@ export const UserPage = () => {
       Words practiced in total: {user?.doneWords}
       <h3>User settings</h3>
       <form><p><input type="password" value={password} onChange={onChangePassword}></input></p>
-      <p><button type='button' onClick={changePassword}>Change password</button></p></form>
+        <p><button type='button' onClick={changePassword}>Change password</button></p></form>
       <h3>Delete user</h3>
       <button type='button' onClick={deleteUserButton}>Delete all user data</button>
     </div>

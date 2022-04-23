@@ -18,8 +18,6 @@ router.post(`/create/`, async (req, res) => {
 
 router.post(`/login/`, async (req, res) => {
   const user = await userService.tryLogin(req.body.username, req.body.password);
-  console.log("USER:" , user);
-  
   res.status(200).send(user);
 });
 

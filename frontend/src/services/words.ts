@@ -14,27 +14,19 @@ const getWord = async (wordParam: string | null, langParam: string, moodParam: M
   const tense: Tense = tenseParam !== null ? tenseParam : 'Present';
   const word: string = wordParam !== null ? wordParam : '-';
   const lang = langParam;
-  
-  try {
-    const response = await axios.get<Word | null>(`${url}/word/${lang}/${word}/tense/${tense}/mood/${mood}`);
-    return response.data;
-  } catch (error: unknown) {
-    console.log("error in getrandomword");
-    console.log(error);
-    throw (error);
-  }
+
+  const response = await axios.get<Word | null>(`${url}/word/${lang}/${word}/tense/${tense}/mood/${mood}`);
+  return response.data;
+
 };
 
 const getStrippedWords = async (): Promise<StrippedWord[] | null> => {
-  try {
-    const response = await axios.get<StrippedWord[] | null>(`${url}/allwordsstripped`);
-    console.log("Response from getStrippedWords: ", response);
-    return response.data;
-  } catch (error: unknown) {
-    console.log("error in getStrippedWords");
-    console.log(error);
-    throw (error);
-  }};
+  
+  const response = await axios.get<StrippedWord[] | null>(`${url}/allwordsstripped`);
+  console.log("Response from getStrippedWords: ", response);
+  return response.data;
+
+};
 
 export const wordService = {
   getWord,

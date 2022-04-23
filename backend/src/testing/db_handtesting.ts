@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 // Temporary snippets for gathering all valid combinations of moods and tenses existing in the database
 
-import { wordModel } from "./models/Word";
-import { tenseList, moodList } from "./types";
+import { wordModel } from "../models/Word";
+import { tenseList, moodList } from "../types";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const checkValidMoodTenses = () => {

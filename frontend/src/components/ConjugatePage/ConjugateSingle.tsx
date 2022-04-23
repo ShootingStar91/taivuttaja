@@ -1,4 +1,6 @@
 import React, { FormEvent, useEffect, useState, KeyboardEvent } from "react";
+import { useAppDispatch } from "../../reducers/hooks";
+import { showNotification } from "../../reducers/notification";
 import { wordService } from "../../services/words";
 import { ConjugateMode, ConjugateSettings, Mood, Tense, Word } from "../../types";
 import { forms, getForm, getRandomForm, getWordForm } from "../../utils";
@@ -13,7 +15,8 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   const [attempt, setAttempt] = useState<string>("");
   const [tense, setTense] = useState<Tense | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
-
+  const dispatch = useAppDispatch();
+  
   useEffect(() => {
     void newWord();
   }, []);
@@ -45,7 +48,7 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
         setAnswer(rightAnswer);
       }
 
-    }).catch(error => console.log(error));
+    }).catch(error => void dispatch(showNotification((error as Error).message)));
   };
 
   const onClick = () => {

@@ -30,20 +30,7 @@ const App = () => {
     if (loadedUser) {
       dispatch(setUser(loadedUser));
     }
-    
-    /*if (loadedUser?.token) {
-      userService.relog(loadedUser.token).then((result) => {
-        if (result) {
-          window.localStorage.setItem('loggedUser', JSON.stringify(result));
-          dispatch(setUser(result));
-        } else {
-          logout();
-        }
-      }).catch((e) => {
-        void dispatch(showNotification((e as Error).message));
-        logout();
-      });
-    }*/
+
   }, []);
 
   return (

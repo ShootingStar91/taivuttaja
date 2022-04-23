@@ -16,7 +16,6 @@ const getReadyUser = async (user: User) => {
   const response = await axios.get<Date[]>(`${url}/donewords/`, getHeader(user.token));
   if (!response) {
     throw new Error("Could not get donewords");
-    return;
   }
   const doneWords = response.data.filter(date => date.getDate() === new Date().getDate()).length;
   const fullUser: User = {
@@ -52,12 +51,8 @@ const checkLogin = () => {
 };
 
 export const changePassword = async (password: string, token: string) => {
-  try {
     const result = await axios.post<User>(`${url}/changepassword/`, { password }, getHeader(token));
     return result;
-  } catch (e) {
-    return e;
-  }
 };
 
 const relog = async (token: string) => {

@@ -14,29 +14,26 @@ export const LoginForm = () => {
 
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
-    const user = await userService.tryLogin(username, password);
-    console.log("USER RETURNED FROM SERVER", user);
-    
-    if (!user) {
-      void dispatch(showNotification("Could not login. Check username and password"));
-    } else {
-      void dispatch(showNotification(""));
-      window.localStorage.setItem('loggedUser', JSON.stringify(user));
-      dispatch(setUser({ ...user }));
-      navigate('/conjugate');
+    try {
+      const user = await userService.tryLogin(username, password);
+      if (!user) {
+        void dispatch(showNotification("Could not login. Check username and password"));
+      } else {
+        void dispatch(showNotification(""));
+        window.localStorage.setItem('loggedUser', JSON.stringify(user));
+        dispatch(setUser({ ...user }));
+        navigate('/conjugate');
+      }
+    }
+    catch (e: any) {
+      void dispatch(showNotification(e.response.data.error as string));
     }
   };
 
   const tryNewUser = async () => {
     try {
-      const result = await userService.createUser(username, password);
-      console.log("result:");
-
-      console.log(result);
-
+      await userService.createUser(username, password);
       const user = await userService.tryLogin(username, password);
-      console.log("user after login in trynewuser:");
-      console.log(user);
 
       if (!user) {
         void dispatch(showNotification("User created, but could not login! Try to login again"));
