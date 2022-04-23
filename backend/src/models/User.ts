@@ -5,7 +5,8 @@ export interface User {
   _id: string;
   goal?: number;
   username: string;
-  password: string;
+  password?: string;
+  token?: string;
 }
 
 const userSchema = new Schema<User>({

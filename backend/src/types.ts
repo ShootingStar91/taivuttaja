@@ -9,10 +9,6 @@ export interface WordList {
   owner: User,
 }
 
-export interface LoginResponse {
-  user: User,
-  token?: string,
-}
 
 export interface StrippedWord {
   infinitive_english: string,

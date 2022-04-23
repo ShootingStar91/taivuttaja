@@ -12,7 +12,6 @@ import { ConjugateIndex } from './components/ConjugatePage';
 import { Notification } from './components/Notification';
 import userService from './services/user';
 import { InfoBar } from './components/InfoBar';
-import { showNotification } from './reducers/notification';
 
 const App = () => {
 
@@ -23,22 +22,28 @@ const App = () => {
 
   const logout = () => {
     dispatch(removeUser());
+    window.localStorage.clear();
   };
 
   useEffect(() => {
     const loadedUser = userService.checkLogin();
-    if (loadedUser?.token) {
+    if (loadedUser) {
+      dispatch(setUser(loadedUser));
+    }
+    
+    /*if (loadedUser?.token) {
       userService.relog(loadedUser.token).then((result) => {
         if (result) {
+          window.localStorage.setItem('loggedUser', JSON.stringify(result));
           dispatch(setUser(result));
         } else {
           logout();
         }
       }).catch((e) => {
         void dispatch(showNotification((e as Error).message));
-        logout;
+        logout();
       });
-    }
+    }*/
   }, []);
 
   return (

@@ -15,7 +15,8 @@ export const LoginForm = () => {
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
     const user = await userService.tryLogin(username, password);
-
+    console.log("USER RETURNED FROM SERVER", user);
+    
     if (!user) {
       void dispatch(showNotification("Could not login. Check username and password"));
     } else {

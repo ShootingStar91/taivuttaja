@@ -32,6 +32,8 @@ const logger = (request: express.Request, _response: express.Response, next: Nex
 
 const tokenExtractor = (request: express.Request, _response: express.Response, next: Next) => {
   const authorization = request.get('authorization');
+  console.log("AUTHORIZATION: " , authorization);
+  
   request.token = (authorization && authorization.toLowerCase().startsWith('bearer '))
     ? authorization.substring(7)
     : null;
@@ -41,6 +43,7 @@ const tokenExtractor = (request: express.Request, _response: express.Response, n
 };
 
 const userExtractor = (request: express.Request, response: express.Response, next: Next) => {
+  
   if (request.token === undefined || request.token === null) {
     throw new JsonWebTokenError("Invalid token");
   }
@@ -50,7 +53,8 @@ const userExtractor = (request: express.Request, response: express.Response, nex
       throw new JsonWebTokenError("Token has expired");
     }
     const id = (decoded as TokenInterface).id;
-
+    console.log("id:" , id);
+    
     userModel.findById(id).then(user => {
       if (user) {
         request.user = user;

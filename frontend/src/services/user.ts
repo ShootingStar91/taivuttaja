@@ -4,35 +4,38 @@ import { User } from "../types";
 import { getHeader } from "./util";
 const url = baseUrl + 'user';
 
-interface LoginResponse {
-  token: string,
-  user: User
-}
 
 const createUser = async (username: string, password: string) => {
   return await axios.post<User>(`${url}/create`, { username, password });
 };
 
-const getReadyUser = async (data: LoginResponse) => {
-  const response = await axios.get<Date[]>(`${url}/donewords/`, getHeader(data.token));
+const getReadyUser = async (user: User) => {
+  if (!user.token) {
+    throw new Error("Invalid token");
+  }
+  const response = await axios.get<Date[]>(`${url}/donewords/`, getHeader(user.token));
+  if (!response) {
+    throw new Error("Could not get donewords");
+    return;
+  }
   const doneWords = response.data.filter(date => date.getDate() === new Date().getDate()).length;
-  const user: User = {
-    username: data.user.username,
-    id: data.user.id,
-    token: data.token,
-    goal:data.user.goal,
+  const fullUser: User = {
+    username: user.username,
+    id: user.id,
+    token: user.token,
+    goal: user.goal,
     doneWords
   };
-  return user;
+  return fullUser;
 };
 
 const tryLogin = async (username: string, password: string) => {
 
-  const result = await axios.post<LoginResponse>(`${url}/login/`, { username, password });
+  const result = await axios.post<User>(`${url}/login/`, { username, password });
   if (result.data) {
     return await getReadyUser(result.data);
   }
-
+  throw new Error("Could not login");
 };
 
 const deleteUser = async (token: string) => {
@@ -44,7 +47,6 @@ const checkLogin = () => {
   const user = window.localStorage.getItem('loggedUser');
   if (user) {
     return JSON.parse(user) as User;
-
   }
   return;
 };
@@ -59,7 +61,7 @@ export const changePassword = async (password: string, token: string) => {
 };
 
 const relog = async (token: string) => {
-  const result = await axios.post<LoginResponse>(`${url}/relog/`, getHeader(token));
+  const result = await axios.post<User>(`${url}/relog/`, getHeader(token));
   return getReadyUser(result.data);
 };
 

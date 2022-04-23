@@ -19,7 +19,6 @@ export const userSlice = createSlice({
     },
     removeUser: state => {
       state.user = undefined;
-      window.localStorage.clear();
     },
     setGoal: (state, action: PayloadAction<number>) => {
       if (!state.user) {

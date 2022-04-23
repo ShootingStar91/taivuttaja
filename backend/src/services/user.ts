@@ -3,7 +3,7 @@ import { User, userModel } from "../models/User";
 import bcrypt from 'bcrypt';
 import { loginValidSeconds, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, SECRET } from '../config';
 import jwt, { Secret } from "jsonwebtoken";
-import { DoneWord, LoginResponse, ValidationError } from "../types";
+import { DoneWord, ValidationError } from "../types";
 import { isString } from '../utils/validators';
 import { wordlistModel } from "../models/Wordlist";
 import { doneWordModel } from "../models/DoneWord";
@@ -56,12 +56,15 @@ const createUser = async (username: unknown, password: unknown) => {
 
 };
 
-const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<LoginResponse> => {
+const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<User> => {
   const username = parseUsername(rawUsername);
   const password = parsePassword(rawPassword);
   const user = await userModel.findOne({ username });
   if (!user) {
     throw new Error("User not found");
+  }
+  if (!user.password) {
+    throw new Error("User did not have password in database");
   }
 
   const result = await bcrypt.compare(password, user.password);
@@ -71,9 +74,16 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Log
 
   const userForToken = { username: user.username, id: user._id };
   const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: loginValidSeconds });
+  const foundUser: User = {username: user.username, _id: user._id, goal: user.goal, token, password: user.password };
+  return foundUser;
 
-  return { user, token } as LoginResponse;
+};
 
+const relog = (user: User) => {
+  const userForToken = { username: user.username, id: user._id };
+  const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: loginValidSeconds });
+  user.token = token;
+  return user;
 };
 
 const deleteUser = async (user: User) => {
@@ -123,6 +133,7 @@ const changePassword = async (rawPassword: unknown, user: User) => {
   return result;
 };
 
+
 export default {
   createUser,
   tryLogin,
@@ -130,6 +141,7 @@ export default {
   addDoneWord,
   getDoneWords,
   setGoal,
-  changePassword
+  changePassword,
+  relog
 };
 
