@@ -58,11 +58,11 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
 
 
     // If wordlist exist, random a word from there
-    const word = settings.wordlist === null ?
+    const randomWord = settings.wordlist === null ?
       null :
       settings.wordlist.words[Math.floor(Math.random() * settings.wordlist.words.length)];
 
-    wordService.getWord(word, 'en', mood, tense).then((response) => {
+    wordService.getWord(randomWord, 'en', mood, tense).then((response) => {
       setWord(response);
 
     }).catch(error => console.log(error));

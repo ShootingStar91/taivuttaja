@@ -47,5 +47,9 @@ router.post('/changepassword/', middleware.userExtractor, async (req, res) => {
   res.status(200).send(result);
 });
 
+router.post('/relog/', middleware.userExtractor, (req, res) => {
+  const result = userService.relog(req.user);
+  res.status(200).send(result);
+});
 
 export default router;

@@ -29,12 +29,7 @@ export const userSlice = createSlice({
       return { ...state, user: newUser };
     },
     addDoneWord: (state) => {
-      console.log("Adding done word. state:");
-      console.log(state);
-      
-
       if (!state.user) { return; }
-      
       return { ...state, user: {...state.user, doneWords: state.user.doneWords + 1}};
     }
   }

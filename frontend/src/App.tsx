@@ -12,6 +12,7 @@ import { ConjugateIndex } from './components/ConjugatePage';
 import { Notification } from './components/Notification';
 import userService from './services/user';
 import { InfoBar } from './components/InfoBar';
+import { showNotification } from './reducers/notification';
 
 const App = () => {
 
@@ -26,13 +27,20 @@ const App = () => {
 
   useEffect(() => {
     const loadedUser = userService.checkLogin();
-    if (loadedUser) {
-      dispatch(setUser(loadedUser));
-      
+    if (loadedUser?.token) {
+      userService.relog(loadedUser.token).then((result) => {
+        if (result) {
+          dispatch(setUser(result));
+        } else {
+          logout();
+        }
+      }).catch((e) => {
+        void dispatch(showNotification((e as Error).message));
+        logout;
+      });
     }
-
   }, []);
-  
+
   return (
     <div className="mainDiv">
       <BrowserRouter>
@@ -46,7 +54,7 @@ const App = () => {
         </div>
         <InfoBar />
         <div className="mainArea">
-        <Notification />
+          <Notification />
           <Routes>
             <Route index element={<IndexPage />} />
             <Route path="conjugatestart" element={<ConjugateIndex />} />

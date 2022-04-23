@@ -13,30 +13,26 @@ const createUser = async (username: string, password: string) => {
   return await axios.post<User>(`${url}/create`, { username, password });
 };
 
+const getReadyUser = async (data: LoginResponse) => {
+  const response = await axios.get<Date[]>(`${url}/donewords/`, getHeader(data.token));
+  const doneWords = response.data.filter(date => date.getDate() === new Date().getDate()).length;
+  const user: User = {
+    username: data.user.username,
+    id: data.user.id,
+    token: data.token,
+    goal:data.user.goal,
+    doneWords
+  };
+  return user;
+};
+
 const tryLogin = async (username: string, password: string) => {
 
-  try {
-    const result = await axios.post<LoginResponse>(`${url}/login/`, { username, password });
-    if (result.data) {
-      const response = await axios.get<Date[]>(`${url}/donewords/`, getHeader(result.data.token));
-      const doneWords = response.data.filter(date => date.getDate() === new Date().getDate()).length;
-      const user: User = {
-        username: result.data.user.username,
-        id: result.data.user.id,
-        token: result.data.token,
-        goal: result.data.user.goal,
-        doneWords
-      };
-      return user;
-    }
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response?.data.error) {
-        console.log("Error on login:");
-        console.log(error.response.data.error);
-      }
-    }
+  const result = await axios.post<LoginResponse>(`${url}/login/`, { username, password });
+  if (result.data) {
+    return await getReadyUser(result.data);
   }
+
 };
 
 const deleteUser = async (token: string) => {
@@ -62,18 +58,22 @@ export const changePassword = async (password: string, token: string) => {
   }
 };
 
+const relog = async (token: string) => {
+  const result = await axios.post<LoginResponse>(`${url}/relog/`, getHeader(token));
+  return getReadyUser(result.data);
+};
 
 const setGoal = async (goal: number, token: string) => {
   const result = await axios.post(`${url}/goal/`, { goal }, getHeader(token));
-  return result;  
+  return result;
 };
 
 const addDoneWord = async (wordId: string, token: string) => {
-  await axios.post(`${url}/doneword/`,  {wordId}, getHeader(token));
+  await axios.post(`${url}/doneword/`, { wordId }, getHeader(token));
 };
 
 const getDoneWords = async (token: string) => {
-  const result = await axios.get(`${url}/doneword/`,  getHeader(token));
+  const result = await axios.get(`${url}/doneword/`, getHeader(token));
   return result;
 };
 
@@ -86,5 +86,6 @@ export default {
   setGoal,
   addDoneWord,
   getDoneWords,
-  changePassword
+  changePassword,
+  relog
 };
