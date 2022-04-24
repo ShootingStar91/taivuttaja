@@ -1,47 +1,63 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { baseUrl } from "../utils";
-import { User } from "../types";
-import { getHeader } from "./util";
+import { DoneWord, User } from "../types";
+import { getHeader, success, error, customError } from "./util";
 const url = baseUrl + 'user';
 
 const createUser = async (username: string, password: string) => {
-  return await axios.post<User>(`${url}/create`, { username, password });
+  try {
+    const result = await axios.post<User>(`${url}/create`, { username, password });
+    return success<User>(result.data);
+  } catch (e: any) {
+    return error(e);
+  }
 };
 
 const getReadyUser = async (user: User) => {
   if (!user.token) {
-    throw new Error("Invalid token");
+    return customError("Invalid token");
   }
-  const response = await axios.get<Date[]>(`${url}/donewords/`, getHeader(user.token));
-  if (!response) {
-    throw new Error("Could not get donewords");
-  }
-  const doneWords = response.data.filter(date => date.getDate() === new Date().getDate()).length;
-  const fullUser: User = {
-    username: user.username,
-    id: user.id,
-    token: user.token,
-    goal: user.goal,
-    doneWords
-  };
-  return fullUser;
+    const [err, result] = await getDoneWords(user.token);    
+    if (!result) {
+      return error(err);
+    }
+
+    const doneWords = result.filter(dw => new Date(dw.date).getDate() === new Date().getDate()).length;
+    const fullUser: User = {
+      username: user.username,
+      id: user.id,
+      token: user.token,
+      goal: user.goal,
+      doneWords
+    };
+    return success<User>(fullUser);
 };
 
-const tryLogin = async (username: string, password: string): Promise<[string, User | undefined]> => {
+const tryLogin = async (username: string, password: string) => {
   try {
     const result = await axios.post<User>(`${url}/login/`, { username, password });
+    console.log("RESULT TRYLOGIN " , result);
+    
     if (result.data) {
-      return ["", await getReadyUser(result.data)];
+      return getReadyUser(result.data);
+    } else {
+      return customError("Unknown error when trying to log in");
     }
   } catch (e: any) {
-    return [(e as Error).message, undefined];
+    console.log(e.response.data.message);
+    
+    return error(e);
   }
-  return ["Could not login", undefined];
 };
 
 const deleteUser = async (token: string) => {
-  const result = await axios.post<User>(`${url}/deleteuser/`, {}, getHeader(token));
-  return result;
+  try {
+    const result = await axios.post<User>(`${url}/deleteuser/`, {}, getHeader(token));
+    return success<User>(result.data);
+  } catch (e) {
+    return error(e);
+  }
 };
 
 const checkLogin = () => {
@@ -49,31 +65,42 @@ const checkLogin = () => {
   if (user) {
     return JSON.parse(user) as User;
   }
-  return;
 };
 
-export const changePassword = async (password: string, token: string) => {
+export const changePassword = async (password: string, token: string): Promise<[string, undefined | User]> => {
+  try {
     const result = await axios.post<User>(`${url}/changepassword/`, { password }, getHeader(token));
-    return result;
-};
-
-const relog = async (token: string) => {
-  const result = await axios.post<User>(`${url}/relog/`, getHeader(token));
-  return getReadyUser(result.data);
+    return success<User>(result.data);
+  } catch (e) {
+    return error(e);
+  }
 };
 
 const setGoal = async (goal: number, token: string) => {
-  const result = await axios.post(`${url}/goal/`, { goal }, getHeader(token));
-  return result;
+  try {
+    const result = await axios.post<User>(`${url}/goal/`, { goal }, getHeader(token));
+    return success<User>(result.data);
+  } catch (e: any) {
+    return error(e);
+  }
 };
 
 const addDoneWord = async (wordId: string, token: string) => {
-  await axios.post(`${url}/doneword/`, { wordId }, getHeader(token));
+  try {
+    await axios.post(`${url}/doneword/`, { wordId }, getHeader(token));
+    return success<boolean>(true);
+  } catch (e: any) {
+    return error(e);
+  }
 };
 
 const getDoneWords = async (token: string) => {
-  const result = await axios.get(`${url}/doneword/`, getHeader(token));
-  return result;
+  try {
+    const result = await axios.get<DoneWord[]>(`${url}/donewords/`, getHeader(token));
+    return success<DoneWord[]>(result.data);
+  } catch (e: any) {
+    return error(e);
+  }
 };
 
 
@@ -85,6 +112,5 @@ export default {
   setGoal,
   addDoneWord,
   getDoneWords,
-  changePassword,
-  relog
+  changePassword
 };

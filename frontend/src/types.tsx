@@ -89,3 +89,10 @@ export type ConjugateSettings = {
   tenseSelections: TenseSelections,
   mode: ConjugateMode
 };
+
+
+export interface DoneWord {
+  word: string,
+  date: Date,
+  user: string,
+}

@@ -25,20 +25,26 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!user?.token) {
-      return;
-    }
-    wordListService.getWordLists(user.token).then((result) => {
+
+    const getWordLists = async () => {
+      if (!user?.token) {
+        return;
+      }
+  
+      const [error, result] = await wordListService.getWordLists(user.token);
+      if (!result) {
+        void dispatch(showNotification(error));
+        return;
+      }
       setAllWordlists(result);
-    }).catch((err) => {
-      console.log("Could not load wordlists:");
-      console.log(err);
-    });
+    };
+
+    void getWordLists();
 
   }, [user]);
 
   const switchMoodSelection = (mood: Mood) => {
-   
+
     const newMoodSelections = moodSelections.map(m => {
       if (m.mood !== mood) {
         return m;
@@ -47,13 +53,13 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       return m;
     });
     setMoodSelections(newMoodSelections);
-    
-    const validTenses = tenseList.filter( tense => 
-                                        validCombinations.filter(c => newMoodSelections.filter(sel => sel.selected).map(sel => sel.mood).includes(c.mood)).map(comb => comb.tense).includes(tense)
-                                        );
-    
+
+    const validTenses = tenseList.filter(tense =>
+      validCombinations.filter(c => newMoodSelections.filter(sel => sel.selected).map(sel => sel.mood).includes(c.mood)).map(comb => comb.tense).includes(tense)
+    );
+
     setAvailableTenses(validTenses);
-    
+
     // Remove tense selections that are no longer valid
     const newTenseSelections = tenseSelections.map(s => validTenses.includes(s.tense) ? s : { tense: s.tense, selected: false });
     setTenseSelections(newTenseSelections);
@@ -78,16 +84,16 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       return;
     }
 
-
     let wordlist = null;
 
     if (user?.token && wordlistId) {
-      wordlist = await wordListService.getWordList(wordlistId, user.token);
+        const [error, result] = await wordListService.getWordList(wordlistId, user.token);
 
-      if (!wordlist) {
-        console.log("Error fetching wordlist");
-        return;
-      }
+        if (!result) {
+          void dispatch(showNotification(error));
+          return;
+        }
+        wordlist = result;
     }
 
     const settings: ConjugateSettings = {

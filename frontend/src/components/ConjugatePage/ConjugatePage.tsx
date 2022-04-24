@@ -18,7 +18,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   const initialState: { [fieldName: string]: string } = {};
   const [lastId, setLastId] = useState<string | null>(null);
   const user = useAppSelector(selectUser);
-  
+
   forms.forEach(form => initialState[form] = '');
 
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
@@ -26,7 +26,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
 
   useEffect(() => {
     if (!word) {
-      getWord();
+      void getWord();
     }
   }, []);
 
@@ -52,20 +52,22 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     setEmptyForms(newEmptyForms);
   }, [word]);
 
-  const getWord = () => {
+  const getWord = async () => {
 
     const { tense, mood } = getRandomForm(settings.tenseSelections, settings.moodSelections);
-
 
     // If wordlist exist, random a word from there
     const randomWord = settings.wordlist === null ?
       null :
       settings.wordlist.words[Math.floor(Math.random() * settings.wordlist.words.length)];
 
-    wordService.getWord(randomWord, 'en', mood, tense).then((response) => {
-      setWord(response);
-
-    }).catch(error => console.log(error));
+    const [error, result] = await wordService.getWord(randomWord, 'en', mood, tense);
+    if (!result) {
+      void dispatch(showNotification(error));
+      return;
+    }
+    
+    setWord(result);
 
   };
 
@@ -82,12 +84,12 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     }
   };
 
-  const onEnter = (event: FormEvent) => {
+  const onEnter = async (event: FormEvent) => {
     event.preventDefault();
-    onTry(true);
+    await onTry(true);
   };
 
-  const onTry = (nextField: boolean) => {
+  const onTry = async (nextField: boolean) => {
 
     const activeField = document.activeElement?.getAttribute('id');
     if (activeField !== undefined && activeField !== null && nextField) {
@@ -116,13 +118,17 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     if (!fail) {
       void dispatch(showNotification("¡Todo correcto!"));
       console.log(user);
-      
+
       if (user?.token) {
-        void userService.addDoneWord(word._id, user.token);
+        try {
+          void userService.addDoneWord(word._id, user.token);
+        } catch (e: any) {
+          void dispatch(showNotification((e as Error).message));
+        }
         dispatch(addDoneWord());
       }
       setFormState({ ...initialState });
-      getWord();
+      await getWord();
       resetFormColors();
       const nextField = document.getElementById("0");
       nextField?.focus();
@@ -131,20 +137,20 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     }
   };
 
-  const onKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
+  const onKeyDown = async (e: KeyboardEvent<HTMLFormElement>) => {
 
     if (e.key === "Tab") {
       const activeField = document.activeElement?.getAttribute('id');
       if (activeField !== null && activeField !== undefined && activeField === "5" && !e.shiftKey) {
         e.preventDefault();
       }
-      onTry(false);
+      await onTry(false);
     }
   };
 
-  const onSkip = () => {
+  const onSkip = async () => {
     setFormState({ ...initialState });
-    getWord();
+    await getWord();
     resetFormColors();
     next();
   };

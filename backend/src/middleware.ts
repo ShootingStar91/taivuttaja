@@ -66,26 +66,26 @@ const userExtractor = (request: express.Request, response: express.Response, nex
 };
 
 const errorHandler = (err: Error, _req: express.Request, res: express.Response, _next: Next) => {
-  console.log(err.name);
+  console.log(err);
   console.log(err.message);
   
   if (err.name === 'CastError') {
-    return res.status(400).send({ error: "Invalid id" });
+    return res.status(400).send({ message: "Invalid id" });
   } else if (err.name === 'ValidationError') {
-    return res.status(400).json({ error: err.message });
+    return res.status(400).json({ message: err.message });
   } else if (err.name === 'JsonWebTokenError') {
-    return res.status(401).send({ error: err.message });
+    return res.status(401).send({ message: err.message });
   } else if (err.name === 'TokenExpiredError') {
-    return res.status(401).send({ error: 'Login expired' });
+    return res.status(401).send({ message: 'Login expired' });
   } else if (err.name === 'MongoServerError') {
     const mongoError = err as MongoServerError;
     if (mongoError.code === 11000) {
-      return res.status(400).send({ error: "Username already exists" });
+      return res.status(400).send({ message: "Username already exists" });
     }
-    return res.status(400).send({ error: "Error in database" });
+    return res.status(400).send({ message: "Error in database" });
   }
 
-  return res.status(400).send({ error: err.message });
+  return res.status(400).send({ message: err.message });
 
 };
 

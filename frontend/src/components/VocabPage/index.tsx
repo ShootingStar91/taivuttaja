@@ -1,4 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import { useAppDispatch } from '../../reducers/hooks';
+import { showNotification } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { Word } from '../../types';
 
@@ -6,28 +8,28 @@ export const VocabPage = () => {
 
   const [currentTry, setCurrentTry] = useState<string>("");
   const [word, setWord] = useState<Word | null>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!word) {
-      getWord();
+      void getWord();
     }
   }, []);
 
-  const getWord = () => {
-    wordService.getWord(null, 'en', null, null).then((response) => {
-      setWord(response);
-    }).catch(error => console.log(error));
+  const getWord = async () => {
+    const [error, result] = await wordService.getWord(null, 'en', null, null);
+    if (!result) {
+      void dispatch(showNotification(error));
+      return;
+    }
+    setWord(result);
   };
 
   const onTry = (event: FormEvent) => {
     event.preventDefault();
-    console.log('Current try' + currentTry);
-    if (word) console.log(word.infinitive);
     if (word && currentTry === word.infinitive) {
-      getWord();
+      void getWord();
       setCurrentTry("");
-    } else {
-      console.log("wrong");
     }
   };
 

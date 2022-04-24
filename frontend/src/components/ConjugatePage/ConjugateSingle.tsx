@@ -21,7 +21,7 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
     void newWord();
   }, []);
 
-  const newWord = () => {
+  const newWord = async () => {
 
     const { tense: randomedTense, mood: randomedMood } = getRandomForm(settings.tenseSelections, settings.moodSelections);
 
@@ -33,22 +33,24 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
       null :
       settings.wordlist.words[Math.floor(Math.random() * settings.wordlist.words.length)];
 
-    wordService.getWord(word, 'en', randomedMood, randomedTense).then((response) => {
-      if (!response) {
-        console.log("getWord failed");
-        return;
-      }
-      setWord(response);
-      // Random a form only from those that are not empty
-      const validForms = forms.filter(f => getWordForm(response, f) !== "");
-      const randomedForm = validForms[Math.floor(Math.random() * validForms.length)];
-      setForm(randomedForm);
-      const rightAnswer = getWordForm(response, randomedForm);
-      if (rightAnswer) {
-        setAnswer(rightAnswer);
-      }
+    const [error, result] = await wordService.getWord(word, 'en', randomedMood, randomedTense);
 
-    }).catch(error => void dispatch(showNotification((error as Error).message)));
+    if (!result) {
+      void dispatch(showNotification(error));
+      return;
+    }
+
+    setWord(result);
+
+    // Random a form only from those that are not empty
+    const validForms = forms.filter(f => getWordForm(result, f) !== "");
+    const randomedForm = validForms[Math.floor(Math.random() * validForms.length)];
+    setForm(randomedForm);
+    const rightAnswer = getWordForm(result, randomedForm);
+    if (rightAnswer) {
+      setAnswer(rightAnswer);
+    }
+
   };
 
   const onClick = () => {

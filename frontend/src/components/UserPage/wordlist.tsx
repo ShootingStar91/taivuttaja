@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
 import { selectUser } from "../../reducers/user";
 import Select, { SingleValue } from 'react-select';
 import { showNotification } from "../../reducers/notification";
+import { ERRORS } from "../../config";
 
 type WordOption = {
   label: string,
@@ -24,21 +25,37 @@ export const WordListView = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!id || !user || !user.token) { return; }
-    wordListService.getWordList(id, user.token).then((data) => {
-      setWordlist(data);
-    }).catch((error: any) => void dispatch(showNotification((error as Error).message)));
+
+    const getWordlist = async () => {
+      if (!id || !user || !user.token) {
+        void dispatch(showNotification(ERRORS.INVALID_LOGIN));
+        return;
+      }
+      const [error, result] = await wordListService.getWordList(id, user.token);
+      if (!result) {
+        void dispatch(showNotification(error));
+        return;
+      }
+      setWordlist(result);
+    };
+
+    void getWordlist();
 
   }, [user]);
 
   useEffect(() => {
-    wordService.getStrippedWords().then((data) => {
-      if (data) {
-        setAllWords(data.map(w => { return { value: w.infinitive_english, label: w.infinitive_english }; }));
-      } else {
-        void dispatch(showNotification("Error getting words from server"));
+
+    const getStrippedWords = async () => {
+      const [error, result] = await wordService.getStrippedWords();
+      if (!result) {
+        void dispatch(showNotification(error));
+        return;
       }
-    }).catch((error: any) => void dispatch(showNotification((error as Error).message)));
+      setAllWords(result.map(w => { return { value: w.infinitive_english, label: w.infinitive_english }; }));
+    };
+
+    void getStrippedWords();
+
   }, []);
 
 
@@ -47,18 +64,21 @@ export const WordListView = () => {
     setWord(newValue);
   };
 
-  const deleteWordlistButton = () => {
+  const deleteWordlistButton = async () => {
 
-    if (wordlist?._id && user?.token && confirm('Are you sure you want to permanently delete wordlist?')) {
-      wordListService.deleteWordlist(wordlist._id, user.token).then((response) => {
-        if (response) {
-          navigate('/userpage/');
-        } else {
-          void dispatch(showNotification("Error deleting wordlist"));
-
-        }
-      }).catch((error: any) => void dispatch(showNotification((error as Error).message)));
+    if (!(wordlist?._id && user?.token && confirm('Are you sure you want to permanently delete wordlist?'))) {
+      return;
     }
+
+    const [error, result] = await wordListService.deleteWordlist(wordlist._id, user.token);
+
+    if (!result) {
+      void dispatch(showNotification(error));
+      return;
+    }
+    void dispatch(showNotification("Wordlist deleted successfully"));
+    navigate('/userpage/');
+
   };
 
 
@@ -72,24 +92,22 @@ export const WordListView = () => {
     if (word && wordlist._id && user && user.token
       && !wordlist.words.includes(word.value)) {
 
-      try {
-        // Here, also add word to wordlist on server
-        setWordlist({ ...wordlist, words: [...wordlist.words, word.value] });
-        await wordListService.addWord(word.value, wordlist._id, user.token);
-        const newAllWords = allWords.filter(w => w.value !== word.value);
-        setAllWords(newAllWords);
-      } catch (e: any) {
-        void dispatch(showNotification((e as Error).message));
+      setWordlist({ ...wordlist, words: [...wordlist.words, word.value] });
+      const [error, result] = await wordListService.addWord(word.value, wordlist._id, user.token);
+      if (!result) {
+        void dispatch(showNotification(error));
+        return;
       }
+      const newAllWords = allWords.filter(w => w.value !== word.value);
+      setAllWords(newAllWords);
     }
   };
 
   const deleteWord = async (wordToDelete: string) => {
     if (!wordlist?._id || !user?.token) { return; }
-    try {
-      await wordListService.deleteWord(wordToDelete, wordlist?._id, user.token);
-    } catch (e: any) {
-      void dispatch(showNotification(e.response.data.error as string));
+    const [error, result] = await wordListService.deleteWord(wordToDelete, wordlist?._id, user.token);
+    if (!result) {
+      void dispatch(showNotification(error));
     }
     setWordlist({ ...wordlist, words: wordlist.words.filter(w => w === wordToDelete) });
   };

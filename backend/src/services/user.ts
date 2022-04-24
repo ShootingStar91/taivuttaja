@@ -74,7 +74,7 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Use
 
   const userForToken = { username: user.username, id: user._id };
   const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: loginValidSeconds });
-  const foundUser: User = {username: user.username, _id: user._id, goal: user.goal, token, password: user.password };
+  const foundUser: User = {username: user.username, _id: user._id, goal: user.goal, token };
   return foundUser;
 
 };

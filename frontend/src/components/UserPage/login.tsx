@@ -15,6 +15,12 @@ export const LoginForm = () => {
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
     const [error, user] = await userService.tryLogin(username, password);
+    console.log("error user after trylogin");
+    
+    console.log(error);
+    console.log(user);
+    
+    
     if (!user) {
       void dispatch(showNotification(error));
       return;
@@ -27,21 +33,23 @@ export const LoginForm = () => {
   };
 
   const tryNewUser = async () => {
-    try {
-      await userService.createUser(username, password);
-      const [error, user] = await userService.tryLogin(username, password);
-
-      if (!user) {
-        void dispatch(showNotification(error));
-        return;
-      }
-      window.localStorage.setItem('loggedUser', JSON.stringify(user));
-      dispatch(setUser({ ...user }));
-      navigate('/conjugatestart');
-
-    } catch (e: any) {
-      void dispatch(showNotification(e.response.data.error as string));
+    const [userError, result] = await userService.createUser(username, password);
+    if (!result) {
+      void dispatch(showNotification(userError));
+      return;
     }
+
+    const [error, user] = await userService.tryLogin(username, password);
+
+    if (!user) {
+      void dispatch(showNotification(error));
+      return;
+    }
+
+    window.localStorage.setItem('loggedUser', JSON.stringify(user));
+    dispatch(setUser({ ...user }));
+    navigate('/conjugatestart');
+
   };
 
   const handlePasswordChange = (event: FormEvent<HTMLInputElement>) => {

@@ -18,14 +18,18 @@ export const UserPage = () => {
   const [password, setPassword] = useState<string>("");
 
   useEffect(() => {
-    if (user && user.token) {
-      wordListService.getWordLists(user.token).then((data) => {
-        setWordLists(data);
-      })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+    const getWordLists = async () => {
+      if (user && user.token) {
+        const [error, result] = await wordListService.getWordLists(user.token);
+
+        if (!result) {
+          void dispatch(showNotification(error));
+          return;
+        }
+        setWordLists(result);
+      }
+    };
+    void getWordLists();
   }, [user]);
 
   const onNameChange = (event: FormEvent<HTMLInputElement>) => {
@@ -34,23 +38,25 @@ export const UserPage = () => {
 
   const deleteUserButton = async () => {
     if (!user?.token) {
-      console.log("Error: User null or undefined on user page");
+      void dispatch(showNotification("Error: Invalid login. Try logging in again"));
       return;
     }
-    const answer = confirm("Are you sure you want to delete all your user data? This includes your username, saved progress and all wordlists. This cannot be undone");
+    const answer = confirm("Are you sure you want to delete all your user data? This includes your username, saved progress and all wordlists. This cannot be undone.");
     if (answer) {
-      const result = await userService.deleteUser(user.token);
-      if (result) {
-        dispatch(removeUser());
-        alert("All user data deleted.");
-        navigate('/');
+      const [error, result] = await userService.deleteUser(user.token);
+      if (!result) {
+        void dispatch(showNotification(error));
       }
+      dispatch(removeUser());
+      alert("All user data deleted.");
+      navigate('/');
     }
   };
 
   const onSetDailyGoal = async (event: FormEvent) => {
     event.preventDefault();
-    if (!user?.token || !dailyGoal) {
+    if (!user?.token) {
+      void dispatch(showNotification("Error: Invalid user. Try logging in again"));
       return;
     }
     const result = await userService.setGoal(parseInt(dailyGoal), user.token);
@@ -77,30 +83,26 @@ export const UserPage = () => {
 
   const changePassword = async () => {
     if (!user?.token) {
+      void dispatch(showNotification("Error: Invalid user. Try logging in again"));
       return;
     }
-    try {
-      const result = await userService.changePassword(password, user.token);
-
-      if (result) {
-        void dispatch(showNotification("Password changed"));
-      }
-    } catch (e: any) {
-      void dispatch(showNotification(e.response.data.error as string));
+    const [error, result] = await userService.changePassword(password, user.token);
+    if (!result) {
+      void dispatch(showNotification(error));
     }
+    void dispatch(showNotification("Password changed"));
   };
-
-
 
   const newWordList = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(name);
-    console.log(user);
-
     if (user && user.token) {
       const newWordList: WordList = { title: name, words: [], owner: user };
-      const result = await wordListService.createWordlist(newWordList, user.token);
-      const id = result.data._id as string;
+      const [error, data] = await wordListService.createWordlist(newWordList, user.token);
+      if (!data) {
+        void dispatch(showNotification(error));
+        return;
+      }
+      const id = data._id as string;
       navigate(`/wordlist/${id}`);
     }
   };

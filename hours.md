@@ -32,4 +32,6 @@
 | 20.4. | 3   | Added logic to prevent choosing combinations of mood and tense that are impossible. Also dealt with situations where some forms are empty, like 1st and 2nd person singular in imperative |
 | 21.4. | 2   | Started building backend functionality for setting daily goal |
 | 22.4. | 3   | Functionality for counting how many words are done, and showing progress towards daily goal. Added password changing |
-| Total hours | 80     | 
+| 23.4. | 4   | Added redux-toolkit middleware that saves user-state after every change. Also worked on code quality and error handling on frontend |
+| 24.4. | 3   | Refactored frontend error handling by moving all try-catch from React-components to service-files. Not sure how wise this is but it seems clearer. Also tested and fixed other bugs |
+| Total hours | 87     | 
