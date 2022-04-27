@@ -18,6 +18,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   const initialState: { [fieldName: string]: string } = {};
   const [lastId, setLastId] = useState<string | null>(null);
   const user = useAppSelector(selectUser);
+  const [showingAnswers, setShowingAnswers] = useState<boolean>(false);
 
   forms.forEach(form => initialState[form] = '');
 
@@ -41,7 +42,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
       }
     });
 
-    // A bit ugly but here we check what is the id of the last active input field
+    // what is the id of the last active input field
     const emptyFormsAsNumbers = emptyForms.map(f => parseInt(f.charAt(0)));
     for (let i = 5; i >= 0; i--) {
       if (emptyFormsAsNumbers.includes(i)) {
@@ -66,7 +67,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
       void dispatch(showNotification(error));
       return;
     }
-    
+
     setWord(result);
 
   };
@@ -103,7 +104,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
 
     if (word === null) { return; }
 
-    let fail = false;
+    let all_correct = true;
     forms.forEach(form => {
       if (formState[form] === getWordForm(word, form)) {
         if (getWordForm(word, form) !== "") {
@@ -111,19 +112,18 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
         }
       } else {
         const color = formState[form] === "" ? "#ffffff" : "#ffebeb";
-        fail = true;
+        all_correct = false;
         document.getElementsByName(form)[0].style.backgroundColor = color;
       }
     });
-    if (!fail) {
+
+    if (all_correct) {
       void dispatch(showNotification("¡Todo correcto!"));
-      console.log(user);
 
       if (user?.token) {
-        try {
-          void userService.addDoneWord(word._id, user.token);
-        } catch (e: any) {
-          void dispatch(showNotification((e as Error).message));
+        const [error, result] = await userService.addDoneWord(word._id, user.token);
+        if (!result) {
+          void dispatch(showNotification(error));
         }
         dispatch(addDoneWord());
       }
@@ -149,10 +149,27 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   };
 
   const onSkip = async () => {
-    setFormState({ ...initialState });
-    await getWord();
-    resetFormColors();
-    next();
+    if (!word) {
+      void dispatch(showNotification("Unexpected error happened!"));
+      return;
+    }
+    if (!showingAnswers) {
+      setShowingAnswers(true);
+      const newFormState = {...initialState};
+      forms.forEach(f => {
+        const answer = getWordForm(word, f);
+        newFormState[f] = answer !== undefined ? answer : "";
+        setFormState({...newFormState});
+      });
+      forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffec99");
+
+    } else {
+      setShowingAnswers(false);
+      setFormState({ ...initialState });
+      await getWord();
+      resetFormColors();
+      next();
+    }
   };
 
   if (word === null) {
@@ -187,8 +204,8 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
               )}
             </tbody>
           </table>
-          <p><button type='submit'>Try</button></p>
-          <p><button type='button' onClick={onSkip}>Skip</button></p>
+          <p><button type='submit' disabled={showingAnswers}>Try</button></p>
+          <p><button type='button' onClick={onSkip}>{showingAnswers ? "Next" : "Show answers"}</button></p>
         </form>
       </div>
     </div>

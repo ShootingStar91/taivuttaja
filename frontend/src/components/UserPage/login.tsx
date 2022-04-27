@@ -15,11 +15,6 @@ export const LoginForm = () => {
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
     const [error, user] = await userService.tryLogin(username, password);
-    console.log("error user after trylogin");
-    
-    console.log(error);
-    console.log(user);
-    
     
     if (!user) {
       void dispatch(showNotification(error));
@@ -28,7 +23,7 @@ export const LoginForm = () => {
     void dispatch(showNotification("Login successful!"));
     window.localStorage.setItem('loggedUser', JSON.stringify(user));
     dispatch(setUser({ ...user }));
-    navigate('/conjugate');
+    navigate('/userpage');
 
   };
 

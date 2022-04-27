@@ -39,6 +39,11 @@ export const VocabPage = () => {
       setCurrentTry(value);
     }
   };
+
+  const onClickSkip = () => {
+    void getWord();
+    setCurrentTry("");
+  };
   
   if (word === null) {
     return <div>Loading...</div>;
@@ -53,6 +58,7 @@ export const VocabPage = () => {
         <form onSubmit={onTry}>
           <p><input type='text' onChange={handleChange} value={currentTry} /></p>
           <p><button type='submit'>Try</button></p>
+          <p><button type='button' onClick={onClickSkip}>Skip</button></p>
         </form>
       </div>
     </div>

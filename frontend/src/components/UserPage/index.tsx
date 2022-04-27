@@ -107,6 +107,9 @@ export const UserPage = () => {
     }
   };
 
+  if (!user) {
+    return <>Error, no login found. Try to login again!</>;
+  }
 
   return (
     <div>
@@ -128,7 +131,7 @@ export const UserPage = () => {
         <p><button type='submit'>Create</button></p>
       </form>
       <h3>User info</h3>
-      Words practiced in total: {user?.doneWords}
+      You have conjugated {user?.doneWords} words in total.
       <h3>User settings</h3>
       <form><p><input type="password" value={password} onChange={onChangePassword}></input></p>
         <p><button type='button' onClick={changePassword}>Change password</button></p></form>

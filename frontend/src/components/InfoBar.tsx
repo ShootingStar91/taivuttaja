@@ -12,7 +12,10 @@ export const InfoBar = () => {
   const goalInfo = () => {
     if (!user || !user.goal) return null;
     if (user.doneWords < user.goal) {
-      return <>Daily progress: {user.doneWords} / {user.goal}</>;
+      return (<><label htmlFor='progress'>Daily progress: {user.doneWords} / {user.goal} </label>
+        <progress id='progress' value={user.doneWords.toString()} max={user.goal}></progress>
+
+        </>);
     } else {
       return <>Daily goal of {user.goal} achieved!</>;
     }
