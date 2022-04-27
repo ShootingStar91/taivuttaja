@@ -34,4 +34,5 @@
 | 22.4. | 3   | Functionality for counting how many words are done, and showing progress towards daily goal. Added password changing |
 | 23.4. | 4   | Added redux-toolkit middleware that saves user-state after every change. Also worked on code quality and error handling on frontend |
 | 24.4. | 3   | Refactored frontend error handling by moving all try-catch from React-components to service-files. Not sure how wise this is but it seems clearer. Also tested and fixed other bugs |
-| Total hours | 87     | 
+| 27.4. | 1   | Added showing correct answers to full conjugating mode. Minor fixes & Readme update |
+| Total hours | 88     | 
