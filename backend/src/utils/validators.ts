@@ -4,6 +4,12 @@ export const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
 
+export const isBoolean = (variable: unknown): variable is boolean => {
+  return typeof variable == "boolean";
+};
+
+
+
 export const isTense = (text: unknown): text is Tense => {
   return isString(text) && tenseList.includes(text);
 };

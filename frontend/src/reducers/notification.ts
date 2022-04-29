@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { NOTIFICATION_DELAY } from "../config";
+import { delay } from "../services/util";
 import { AppDispatch, RootState } from './store';
 
 export interface NotificationState {
@@ -12,9 +13,7 @@ const initialState: NotificationState = {
   id: 0,
 };
 
-const delay = (time: number) => {
-  return new Promise(resolve => setTimeout(resolve, time));
-};
+
 
 export const showNotification = createAsyncThunk<
   void, string, {

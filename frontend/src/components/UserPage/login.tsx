@@ -29,21 +29,21 @@ export const LoginForm = () => {
 
   const tryNewUser = async () => {
     const [userError, result] = await userService.createUser(username, password);
-    if (!result) {
+    if (!result) {     
       void dispatch(showNotification(userError));
       return;
     }
 
     const [error, user] = await userService.tryLogin(username, password);
 
-    if (!user) {
+    if (!user) {     
       void dispatch(showNotification(error));
       return;
     }
 
     window.localStorage.setItem('loggedUser', JSON.stringify(user));
     dispatch(setUser({ ...user }));
-    navigate('/conjugatestart');
+    navigate('/userpage');
 
   };
 

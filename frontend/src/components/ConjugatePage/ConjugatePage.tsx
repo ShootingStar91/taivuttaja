@@ -4,10 +4,12 @@ import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
 import { showNotification } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { ConjugateSettings, Word } from '../../types';
-import { getWordForm, getForm, getFormDescription, forms, getRandomForm } from '../../utils';
+import { getWordForm, getForm, getFormDescription, forms, getRandomForm, deAccentify } from '../../utils';
 import { EnglishFlag, SpanishFlag } from '../Flags';
 import userService from '../../services/user';
 import { addDoneWord, selectUser } from '../../reducers/user';
+import { delay } from '../../services/util';
+import { COLORS } from '../../config';
 
 export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
 
@@ -101,23 +103,37 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
 
 
     if (word === null) { return; }
-
+    let accentMistakes = false;
     let all_correct = true;
     forms.forEach(form => {
-      if (formState[form] === getWordForm(word, form)) {
-        if (getWordForm(word, form) !== "") {
-          document.getElementsByName(form)[0].style.backgroundColor = "#33cc33";
-        }
-      } else {
-        const color = formState[form] === "" ? "#ffffff" : "#ffebeb";
-        all_correct = false;
+      const attempt = formState[form];
+      const correct = getWordForm(word, form);
+      if (!correct) {
+        void dispatch(showNotification("Unexpected error: Invalid word data."));
+        return;
+      }
+      if (attempt === correct) {
+        const color = attempt === "" ? COLORS.BLANK : COLORS.CORRECT;
         document.getElementsByName(form)[0].style.backgroundColor = color;
+
+      } else {
+        if (user && !user.strictAccents && deAccentify(attempt) === deAccentify(correct)) {
+          // Some accents were wrong but word otherwise correct
+          document.getElementsByName(form)[0].style.backgroundColor = COLORS.ALMOST_CORRECT;
+          accentMistakes = true;
+        } else {
+          // Wrong answer
+          const color = formState[form] === "" ? COLORS.BLANK : COLORS.WRONG;
+          all_correct = false;
+          document.getElementsByName(form)[0].style.backgroundColor = color;
+        }
       }
     });
 
     if (all_correct) {
-      void dispatch(showNotification("¡Todo correcto!"));
-
+      const message = accentMistakes ? "All correct, but remember the accents!" : "¡Todo correcto!";
+      void dispatch(showNotification(message));
+      await delay(3000);
       if (user?.token) {
         const [error, result] = await userService.addDoneWord(word._id, user.token);
         if (!result) {
@@ -138,6 +154,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   const onKeyDown = async (e: KeyboardEvent<HTMLFormElement>) => {
 
     if (e.key === "Tab") {
+      console.log(word);
       const activeField = document.activeElement?.getAttribute('id');
       if (activeField !== null && activeField !== undefined && activeField === "5" && !e.shiftKey) {
         e.preventDefault();
@@ -153,11 +170,11 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
     }
     if (!showingAnswers) {
       setShowingAnswers(true);
-      const newFormState = {...initialState};
+      const newFormState = { ...initialState };
       forms.forEach(f => {
         const answer = getWordForm(word, f);
         newFormState[f] = answer !== undefined ? answer : "";
-        setFormState({...newFormState});
+        setFormState({ ...newFormState });
       });
       forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffec99");
 

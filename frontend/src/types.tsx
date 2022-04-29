@@ -29,6 +29,7 @@ export interface User {
   wordLists?: string[],
   doneWords: DoneWord[],
   doneWordsToday: number,
+  strictAccents: boolean,
 }
 
 

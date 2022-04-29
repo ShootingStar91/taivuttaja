@@ -1,9 +1,11 @@
 import React, { FormEvent, useEffect, useState, KeyboardEvent } from "react";
-import { useAppDispatch } from "../../reducers/hooks";
+import { COLORS } from "../../config";
+import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
 import { showNotification } from "../../reducers/notification";
+import { selectUser } from "../../reducers/user";
 import { wordService } from "../../services/words";
 import { ConjugateMode, ConjugateSettings, Mood, Tense, Word } from "../../types";
-import { forms, getForm, getRandomForm, getWordForm } from "../../utils";
+import { deAccentify, forms, getForm, getRandomForm, getWordForm } from "../../utils";
 import { EnglishFlag, SpanishFlag } from "../Flags";
 
 export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) => {
@@ -16,6 +18,7 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   const [tense, setTense] = useState<Tense | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   
   useEffect(() => {
     void newWord();
@@ -70,21 +73,29 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
-    
+    if (!answer) {
+      void dispatch(showNotification("Error: invalid word data"));
+      return;
+    }
     if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();
       console.log(attempt);
       console.log(answer);
       
       
-      if (attempt.toLowerCase() === answer?.toLowerCase()) {
+      if (attempt.toLowerCase() === answer.toLowerCase()) {
         void newWord();
         setAttempt("");
       } else {
+        if (user && !user.strictAccents && deAccentify(attempt) === deAccentify(answer)) {
+          void dispatch(showNotification(`Correct, but with accents the word is: ${answer}`));
+          void newWord();
+          setAttempt("");
+        }
         const field = document.getElementsByName("attemptField")[0];
-        field.style.backgroundColor = "#ffebeb";
+        field.style.backgroundColor = COLORS.WRONG;
         setTimeout(() => {
-          field.style.backgroundColor = "#ffffff";
+          field.style.backgroundColor = COLORS.BLANK;
         }, 2000);
       }
     }

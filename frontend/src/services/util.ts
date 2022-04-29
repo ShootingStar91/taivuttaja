@@ -15,3 +15,7 @@ export const error = (e: any): [string, undefined] => {
 export const customError = (message: string): [string, undefined] => {
   return [message, undefined];
 };
+
+export const delay = (time: number) => {
+  return new Promise(resolve => setTimeout(resolve, time));
+};

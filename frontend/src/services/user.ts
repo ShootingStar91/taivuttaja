@@ -7,8 +7,8 @@ const url = baseUrl + 'user';
 
 const createUser = async (username: string, password: string) => {
   try {
-    const result = await axios.post<User>(`${url}/create`, { username, password });
-    return success<User>(result.data);
+    const result = await axios.post<boolean>(`${url}/create`, { username, password });
+    return success<boolean>(result.data);
   } catch (e: any) {
     return error(e);
   }
@@ -25,12 +25,9 @@ const getReadyUser = async (user: User) => {
     const doneWords = result;
     const doneWordsToday = result.filter(dw => new Date(dw.date).getDate() === new Date().getDate()).length;
     const fullUser: User = {
-      username: user.username,
-      id: user.id,
-      token: user.token,
-      goal: user.goal,
+      ...user,
       doneWords,
-      doneWordsToday
+      doneWordsToday,
     };
     
     return success<User>(fullUser);
@@ -102,6 +99,14 @@ const getDoneWords = async (token: string) => {
   }
 };
 
+const setStrictAccents = async (strictAccents: boolean, token: string) => {
+  try {
+    const result = await axios.post<User>(`${url}/setstrictaccents/`, { strictAccents }, getHeader(token));
+    return success<User>(result.data);
+  } catch (e: any) {
+    return error(e);
+  }
+};
 
 export default {
   tryLogin,
@@ -111,5 +116,6 @@ export default {
   setGoal,
   addDoneWord,
   getDoneWords,
-  changePassword
+  changePassword,
+  setStrictAccents
 };

@@ -165,6 +165,19 @@ export const UserPage = () => {
     );
   };
 
+  const setStrictAccents = async (value: boolean) => {
+    if (!user || !user.token) {
+      return;
+    }
+    const [error, result] = await userService.setStrictAccents(value, user.token);
+    if (!result) {
+      void dispatch(showNotification(error));
+    }
+    dispatch(setUser({...user, strictAccents: value}));
+    void dispatch(showNotification("Setting changed!"));
+  };
+
+
   if (!user) {
     return <>Error, no login found. Try to login again!</>;
   }
@@ -177,6 +190,7 @@ export const UserPage = () => {
   const uniqueTenseMoods = new Set(
     user.doneWords.map(dw => dw.word.tense.concat(dw.word.mood))
   ).size;
+
 
   return (
     <div>
@@ -239,6 +253,14 @@ export const UserPage = () => {
       </div>
 
       <h3>User settings</h3>
+      <p>Allow accent mistakes?</p> 
+      <p><input type="radio" id="StrictAccentsFalse" name="strict_accents" defaultChecked={!user.strictAccents}
+          onChange={() => setStrictAccents(false)} />
+      <label htmlFor="strictAccents"> Allow</label></p>
+      <p><input type="radio" id="StrictAccentsTrue" name="strict_accents"  defaultChecked={user.strictAccents}
+        onChange={() => setStrictAccents(true)} />
+      <label htmlFor="strictAccents"> Require correct accents</label>
+      </p>
       <form><p><input type="password" value={password} onChange={onChangePassword}></input></p>
         <p><button type='button' onClick={changePassword}>Change password</button></p></form>
 

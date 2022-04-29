@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { loginValidSeconds, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, SECRET } from '../config';
 import jwt, { Secret } from "jsonwebtoken";
 import { ValidationError } from "../types";
-import { isString } from '../utils/validators';
+import { isBoolean, isString } from '../utils/validators';
 import { wordlistModel } from "../models/Wordlist";
 import { doneWordModel } from "../models/DoneWord";
 
@@ -41,7 +41,7 @@ const toNewUser = async (username: unknown, password: unknown): Promise<RawUser>
   const newUser: RawUser = {
     username: parseUsername(username),
     password: await createPasswordHash(parsePassword(password)),
-
+    strictAccents: false,
   };
   return newUser;
 };
@@ -52,7 +52,6 @@ const createUser = async (username: unknown, password: unknown) => {
   const newUser = new userModel(rawUser);
 
   await newUser.save();
-
 
 };
 
@@ -74,7 +73,7 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Use
 
   const userForToken = { username: user.username, id: user._id };
   const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: loginValidSeconds });
-  const foundUser: User = {username: user.username, _id: user._id, goal: user.goal, token };
+  const foundUser: User = {username: user.username, _id: user._id, goal: user.goal, token, strictAccents: user.strictAccents };
   return foundUser;
 
 };
@@ -104,7 +103,6 @@ const addDoneWord = async (wordId: unknown, user: User) => {
   }
 
   const newDoneWord = new doneWordModel({ word: wordId, date: new Date(), user: user._id });
-  console.log("adding doneword: " , newDoneWord);
   
   const result = await newDoneWord.save();
   if (!result) {
@@ -113,14 +111,12 @@ const addDoneWord = async (wordId: unknown, user: User) => {
 };
 
 const getDoneWords = async (user: User) => {
-  console.log("user: " , user);
   
   const result = await doneWordModel.find({ user: user._id }).populate({ path: 'word', model: 'Word' });
 
   if (!result) {
     throw new Error("Could not get done words");
   }
-  console.log("doneWords:" , result);
   
   return result;
 };
@@ -140,6 +136,13 @@ const changePassword = async (rawPassword: unknown, user: User) => {
   return result;
 };
 
+const setStrictAccents = async (strictAccents: unknown, user: User) => {
+  if (!isBoolean(strictAccents)) {
+    throw new ValidationError("Strict accents parameter was not boolean");
+  }
+  const result = await userModel.updateOne({_id: user._id }, { strictAccents });
+  return result;
+};
 
 export default {
   createUser,
@@ -149,6 +152,7 @@ export default {
   getDoneWords,
   setGoal,
   changePassword,
-  relog
+  relog,
+  setStrictAccents
 };
 

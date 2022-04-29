@@ -66,8 +66,7 @@ const userExtractor = (request: express.Request, response: express.Response, nex
 };
 
 const errorHandler = (err: Error, _req: express.Request, res: express.Response, _next: Next) => {
-  console.log(err);
-  console.log(err.message);
+  console.log("Error: ", err.message);
   
   if (err.name === 'CastError') {
     return res.status(400).send({ message: "Invalid id" });
