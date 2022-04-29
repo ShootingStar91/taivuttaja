@@ -22,22 +22,23 @@ const getReadyUser = async (user: User) => {
     if (!result) {
       return error(err);
     }
-
-    const doneWords = result.filter(dw => new Date(dw.date).getDate() === new Date().getDate()).length;
+    const doneWords = result;
+    const doneWordsToday = result.filter(dw => new Date(dw.date).getDate() === new Date().getDate()).length;
     const fullUser: User = {
       username: user.username,
       id: user.id,
       token: user.token,
       goal: user.goal,
-      doneWords
+      doneWords,
+      doneWordsToday
     };
+    
     return success<User>(fullUser);
 };
 
 const tryLogin = async (username: string, password: string) => {
   try {
     const result = await axios.post<User>(`${url}/login/`, { username, password });
-    console.log("RESULT TRYLOGIN " , result);
     
     if (result.data) {
       return getReadyUser(result.data);
@@ -45,8 +46,6 @@ const tryLogin = async (username: string, password: string) => {
       return customError("Unknown error when trying to log in");
     }
   } catch (e: any) {
-    console.log(e.response.data.message);
-    
     return error(e);
   }
 };
@@ -67,7 +66,7 @@ const checkLogin = () => {
   }
 };
 
-export const changePassword = async (password: string, token: string): Promise<[string, undefined | User]> => {
+const changePassword = async (password: string, token: string): Promise<[string, undefined | User]> => {
   try {
     const result = await axios.post<User>(`${url}/changepassword/`, { password }, getHeader(token));
     return success<User>(result.data);

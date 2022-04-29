@@ -27,7 +27,8 @@ export interface User {
   goal?: number,
   token?: string,
   wordLists?: string[],
-  doneWords: number,
+  doneWords: DoneWord[],
+  doneWordsToday: number,
 }
 
 
@@ -92,7 +93,7 @@ export type ConjugateSettings = {
 
 
 export interface DoneWord {
-  word: string,
+  word: Word,
   date: Date,
   user: string,
 }

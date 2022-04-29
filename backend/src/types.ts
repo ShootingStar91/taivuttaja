@@ -68,7 +68,7 @@ export class ValidationError extends Error {
 }
 
 export interface DoneWord {
-  word: string,
+  word: string | Word,
   date: Date,
   user: string,
 }

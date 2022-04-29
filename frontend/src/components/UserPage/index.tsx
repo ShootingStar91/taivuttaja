@@ -1,11 +1,16 @@
 import React, { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
-import { removeUser, selectUser, setGoal } from "../../reducers/user";
+import { removeUser, selectUser, setGoal, setUser } from "../../reducers/user";
 import { wordListService } from "../../services/wordlists";
-import { WordList } from "../../types";
+import { moodList, tenseList, WordList } from "../../types";
 import userService from '../../services/user';
 import { showNotification } from "../../reducers/notification";
+
+type TableData = {
+  form: string,
+  count: number
+};
 
 export const UserPage = () => {
 
@@ -29,8 +34,23 @@ export const UserPage = () => {
         setWordLists(result);
       }
     };
+
+    const updateDoneWords = async () => {
+      if (user && user.token) {
+        const [error, result] = await userService.getDoneWords(user.token);
+        if (!result) {
+          void dispatch(showNotification(error));
+          return;
+        }
+        dispatch(setUser({ ...user, doneWords: result }));
+      }
+    };
+
     void getWordLists();
-  }, [user]);
+    void updateDoneWords();
+  }, []);
+
+
 
   const onNameChange = (event: FormEvent<HTMLInputElement>) => {
     setName(event.currentTarget.value);
@@ -93,6 +113,28 @@ export const UserPage = () => {
     void dispatch(showNotification("Password changed"));
   };
 
+  const getMoodTableData = () => {
+    if (!user) {
+      return null;
+    }
+    const tableData: TableData[] = moodList.map(mood => {
+      const count = user.doneWords.filter(dw => dw.word.mood_english === mood).length;
+      return { form: mood, count };
+    });
+    return tableData.sort((a, b) => b.count - a.count);
+  };
+
+  const getTenseTableData = () => {
+    if (!user) {
+      return null;
+    }
+    const tableData: TableData[] = tenseList.map(tense => {
+      const count = user.doneWords.filter(dw => dw.word.tense_english === tense).length;
+      return { form: tense, count };
+    });
+    return tableData.sort((a, b) => b.count - a.count);
+  };
+
   const newWordList = async (event: FormEvent) => {
     event.preventDefault();
     if (user && user.token) {
@@ -107,17 +149,47 @@ export const UserPage = () => {
     }
   };
 
+  const renderTable = (tableData: TableData[] | null) => {
+    if (!tableData) {
+      return null;
+    }
+    return (
+      tableData.map(data =>
+        <tr key={data.form}>
+          <td>{data.form}</td>
+          <td>
+            {data.count}
+          </td>
+        </tr>
+        )
+    );
+  };
+
   if (!user) {
     return <>Error, no login found. Try to login again!</>;
   }
 
+
+
+  const dwDates = user.doneWords.map(dw => new Date(dw.date).getDate());
+  const uniqueDates = new Set(dwDates).size.toString();
+
+  const uniqueTenseMoods = new Set(
+    user.doneWords.map(dw => dw.word.tense.concat(dw.word.mood))
+  ).size;
+
   return (
     <div>
+
+
       <h3>Daily goal</h3>
       <form onSubmit={onSetDailyGoal}><p>Set daily goal:</p>
         <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> {dailyGoal}</p>
         <p><button type='submit'>Save</button></p>
       </form>
+
+
+
       <h3>Your wordlists</h3>
       {wordLists.length > 0 ?
         wordLists.map((list) => <div key={list.title}>
@@ -125,18 +197,57 @@ export const UserPage = () => {
             list.title}
         </div>)
         : <p>No wordlists found</p>}
+
+
+
       <h3>New wordlist</h3>
       <form onSubmit={newWordList}><p>Name:</p>
         <p><input type="text" onChange={onNameChange}></input></p>
         <p><button type='submit'>Create</button></p>
       </form>
+
+
+
       <h3>User info</h3>
-      You have conjugated {user?.doneWords} words in total.
+      <p>You have conjugated {user?.doneWords.length} words in total, on {uniqueDates} days. Unique combinations of tense/mood: {uniqueTenseMoods}</p>
+
+      <div style={{ padding: 20 }}>
+        <table>
+          <tbody>
+            <tr>
+              <th>Mood</th>
+              <th></th>
+            </tr>
+            {renderTable(getMoodTableData())}
+
+          </tbody>
+        </table>
+      </div>
+      <div style={{ padding: 20 }}>
+
+        <table>
+          <tbody>
+
+            <tr>
+              <th>Tense</th>
+              <th></th>
+              </tr>
+            {renderTable(getTenseTableData())}
+            
+          </tbody>
+        </table>
+      </div>
+
       <h3>User settings</h3>
       <form><p><input type="password" value={password} onChange={onChangePassword}></input></p>
         <p><button type='button' onClick={changePassword}>Change password</button></p></form>
+
+
+
       <h3>Delete user</h3>
       <button type='button' onClick={deleteUserButton}>Delete all user data</button>
+
+
     </div>
   );
 };

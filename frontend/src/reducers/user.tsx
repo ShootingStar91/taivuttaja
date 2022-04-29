@@ -29,7 +29,7 @@ export const userSlice = createSlice({
     },
     addDoneWord: (state) => {
       if (!state.user) { return; }
-      return { ...state, user: {...state.user, doneWords: state.user.doneWords + 1}};
+      return { ...state, user: {...state.user, doneWordsToday: state.user.doneWordsToday + 1}};
     }
   }
 });

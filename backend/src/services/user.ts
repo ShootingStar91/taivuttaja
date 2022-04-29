@@ -3,7 +3,7 @@ import { User, userModel } from "../models/User";
 import bcrypt from 'bcrypt';
 import { loginValidSeconds, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, SECRET } from '../config';
 import jwt, { Secret } from "jsonwebtoken";
-import { DoneWord, ValidationError } from "../types";
+import { ValidationError } from "../types";
 import { isString } from '../utils/validators';
 import { wordlistModel } from "../models/Wordlist";
 import { doneWordModel } from "../models/DoneWord";
@@ -102,8 +102,10 @@ const addDoneWord = async (wordId: unknown, user: User) => {
   if (!isString(wordId)) {
     throw new ValidationError("Invalid wordId");
   }
-  const rawDoneWord: DoneWord = { word: wordId, date: new Date(), user: user._id };
-  const newDoneWord = new doneWordModel(rawDoneWord);
+
+  const newDoneWord = new doneWordModel({ word: wordId, date: new Date(), user: user._id });
+  console.log("adding doneword: " , newDoneWord);
+  
   const result = await newDoneWord.save();
   if (!result) {
     throw new Error("Could not add done word");
@@ -111,10 +113,15 @@ const addDoneWord = async (wordId: unknown, user: User) => {
 };
 
 const getDoneWords = async (user: User) => {
-  const result = await doneWordModel.find({ user: user._id });
+  console.log("user: " , user);
+  
+  const result = await doneWordModel.find({ user: user._id }).populate({ path: 'word', model: 'Word' });
+
   if (!result) {
     throw new Error("Could not get done words");
   }
+  console.log("doneWords:" , result);
+  
   return result;
 };
 

@@ -1,4 +1,4 @@
-import { MoodSelections, TenseSelections, Word } from './types';
+import { MoodSelections, TenseSelections, validCombinations, Word } from './types';
 
 export const baseUrl = 'http://localhost:3001/api/';
 
@@ -59,13 +59,13 @@ export const getForm = (form: string): string => {
     case '2s':
       return 'tu';
     case '3s':
-      return 'ella';
+      return 'ella / usted';
     case '1p':
       return 'nosotros';
     case '2p':
       return 'vosotros';
     case '3p':
-      return 'ellas';
+      return 'ellas / ustedes';
   }
   return "Error, form description missing!";
 };
@@ -73,8 +73,11 @@ export const getForm = (form: string): string => {
 export const getRandomForm = (tenseSelections: TenseSelections, moodSelections: MoodSelections) => {
   const selectedTenses = tenseSelections.filter(t => t.selected);
   const tense = selectedTenses[Math.floor(Math.random() * selectedTenses.length)].tense;
+
+  // Filter only those moods that are valid with the selected tense
   const selectedMoods = moodSelections.filter(m => m.selected);
-  const mood = selectedMoods[Math.floor(Math.random() * selectedMoods.length)].mood;
+  const possibleMoods = selectedMoods.map(m => m.mood).filter(m => validCombinations.find(comb => comb.mood === m && comb.tense === tense));
+  const mood = possibleMoods[Math.floor(Math.random() * possibleMoods.length)];
   return { mood, tense };
 };
 

@@ -70,7 +70,6 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
-    console.log("key down", event.key);
     
     if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();

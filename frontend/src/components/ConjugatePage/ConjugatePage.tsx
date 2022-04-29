@@ -9,7 +9,6 @@ import { EnglishFlag, SpanishFlag } from '../Flags';
 import userService from '../../services/user';
 import { addDoneWord, selectUser } from '../../reducers/user';
 
-
 export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
 
   const [word, setWord] = useState<Word | null>(null);
@@ -23,7 +22,6 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   forms.forEach(form => initialState[form] = '');
 
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
-  //const [skipped, setSkipped] = useState<boolean>(false);
 
   useEffect(() => {
     if (!word) {
