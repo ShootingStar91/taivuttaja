@@ -74,7 +74,7 @@ const errorHandler = (err: Error, _req: express.Request, res: express.Response, 
   } else if (err.name === 'ValidationError') {
     return res.status(400).json({ message: err.message });
   } else if (err.name === 'JsonWebTokenError') {
-    return res.status(401).send({ message: err.message });
+    return res.status(401).send({ message: "Login invalid or expired. Please try to login again" });
   } else if (err.name === 'TokenExpiredError') {
     return res.status(401).send({ message: 'Login expired' });
   } else if (err.name === 'MongoServerError') {
