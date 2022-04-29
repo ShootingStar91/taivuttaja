@@ -36,4 +36,5 @@
 | 24.4. | 3   | Refactored frontend error handling by moving all try-catch from React-components to service-files. Not sure how wise this is but it seems clearer. Also tested and fixed other bugs |
 | 27.4. | 1   | Added showing correct answers to full conjugating mode. Minor fixes & Readme update |
 | 28.4. | 2   | Showing on how many days app has been used by user and how many unique mood/tense combinations have been conjugated | 
-| Total hours | 90     | 
+| 29.4. | 3   | Added information table of how much each tense and mood has been practiced. Added setting of strict mode for accents, which defines if accent mistakes are allowed. Fixed logic of tense/mood randoming that allowed some impossible cases. Fixed new user not logging in. |
+| Total hours | 93     | 
