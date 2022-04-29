@@ -8,6 +8,7 @@ export const VocabPage = () => {
 
   const [currentTry, setCurrentTry] = useState<string>("");
   const [word, setWord] = useState<Word | null>(null);
+  const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -41,8 +42,16 @@ export const VocabPage = () => {
   };
 
   const onClickSkip = () => {
-    void getWord();
-    setCurrentTry("");
+    if (!word) { return; }
+    if (!showAnswer) {
+      setShowAnswer(true);
+      setCurrentTry(word.infinitive);
+    } else {
+      setShowAnswer(false);
+      void getWord();
+      setCurrentTry("");
+    }
+    
   };
   
   if (word === null) {
@@ -56,9 +65,9 @@ export const VocabPage = () => {
       </p>
       <div>
         <form onSubmit={onTry}>
-          <p><input type='text' onChange={handleChange} value={currentTry} /></p>
+          <p><input type='text' onChange={handleChange} value={currentTry} disabled={showAnswer} /></p>
           <p><button type='submit'>Try</button></p>
-          <p><button type='button' onClick={onClickSkip}>Skip</button></p>
+          <p><button type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button></p>
         </form>
       </div>
     </div>
