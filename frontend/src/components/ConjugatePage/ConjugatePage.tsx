@@ -196,7 +196,7 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
       <div className='flex auto-flex gap-x-4'>
         <SpanishFlag /> <h2>{word.infinitive}</h2>
       </div>
-      <div className='flex auto-flex gap-x-4'>
+      <div className='flex auto-flex gap-x-4 pt-4'>
         <EnglishFlag /> <h2>{word.infinitive_english}</h2>
       </div>
       <div className='mt-4 flex auto-flex gap-x-4'>

@@ -162,7 +162,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
         {user && <div className='pt-6'>
           <h2 className='flex justify-center mb-6'>Select wordlist or include all words</h2>
           <div className=''>
-            {allWordlists !== null ?
+            {allWordlists !== null && allWordlists.length > 0 ?
               <Select
                 className="basic-single"
                 classNamePrefix="select"
@@ -172,12 +172,12 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
                 })}
                 onChange={onWordlistChange}
               /> :
-              <p>No wordlists found. Create wordlists on user page.</p>
+              user && <p className='flex justify-center'>No wordlists found. Create wordlists on user page.</p>
             }
           </div>
         </div>}
         <div className='pt-6'>
-          <h2 className='flex justify-center'>Begin by choosing mode</h2>
+          <h2 className='flex justify-center'>Begin by choosing mode!</h2>
           <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto p-1 ">
             <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
               onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>

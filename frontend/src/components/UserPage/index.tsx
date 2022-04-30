@@ -161,7 +161,7 @@ export const UserPage = () => {
             {data.count}
           </td>
         </tr>
-        )
+      )
     );
   };
 
@@ -173,7 +173,7 @@ export const UserPage = () => {
     if (!result) {
       void dispatch(showNotification(error));
     }
-    dispatch(setUser({...user, strictAccents: value}));
+    dispatch(setUser({ ...user, strictAccents: value }));
     void dispatch(showNotification("Setting changed!"));
   };
 
@@ -195,14 +195,25 @@ export const UserPage = () => {
   return (
     <div>
 
-
-      <h3>Daily goal</h3>
-      <form onSubmit={onSetDailyGoal}><p>Set daily goal:</p>
-        <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> {dailyGoal}</p>
-        <p><button type='submit'>Save</button></p>
-      </form>
-
-
+      <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center'>
+        <div>
+          <h3>Daily goal</h3>
+          <form onSubmit={onSetDailyGoal}><p>Set daily goal:</p>
+            <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> {dailyGoal}</p>
+            <p><button className="btn" type='submit'>Save</button></p>
+          </form>
+        </div>
+        <div>
+          <h3>Strict accents</h3>
+          <p><input type="radio" id="StrictAccentsFalse" name="strict_accents" defaultChecked={!user.strictAccents}
+            onChange={() => setStrictAccents(false)} />
+            <label htmlFor="strictAccents"> Allow</label></p>
+          <p><input type="radio" id="StrictAccentsTrue" name="strict_accents" defaultChecked={user.strictAccents}
+            onChange={() => setStrictAccents(true)} />
+            <label htmlFor="strictAccents"> Require correct accents</label>
+          </p>
+        </div>
+      </div>
 
       <h3>Your wordlists</h3>
       {wordLists.length > 0 ?
@@ -245,22 +256,15 @@ export const UserPage = () => {
             <tr>
               <th>Tense</th>
               <th></th>
-              </tr>
+            </tr>
             {renderTable(getTenseTableData())}
-            
+
           </tbody>
         </table>
       </div>
 
       <h3>User settings</h3>
-      <p>Allow accent mistakes?</p> 
-      <p><input type="radio" id="StrictAccentsFalse" name="strict_accents" defaultChecked={!user.strictAccents}
-          onChange={() => setStrictAccents(false)} />
-      <label htmlFor="strictAccents"> Allow</label></p>
-      <p><input type="radio" id="StrictAccentsTrue" name="strict_accents"  defaultChecked={user.strictAccents}
-        onChange={() => setStrictAccents(true)} />
-      <label htmlFor="strictAccents"> Require correct accents</label>
-      </p>
+
       <form><p><input type="password" value={password} onChange={onChangePassword}></input></p>
         <p><button type='button' onClick={changePassword}>Change password</button></p></form>
 
