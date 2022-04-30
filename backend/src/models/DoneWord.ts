@@ -8,3 +8,4 @@ const doneWordSchema = new Schema<DoneWord>({
 });
 
 export const doneWordModel = model<DoneWord>('Doneword', doneWordSchema);
+

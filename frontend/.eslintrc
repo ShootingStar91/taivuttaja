@@ -8,7 +8,8 @@
   "plugins": ["@typescript-eslint", "react"],
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "node": true
   },
   "rules": {
     "@typescript-eslint/semi": ["error"],

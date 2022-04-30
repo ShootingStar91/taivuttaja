@@ -30,7 +30,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       if (!user?.token) {
         return;
       }
-  
+
       const [error, result] = await wordListService.getWordLists(user.token);
       if (!result) {
         void dispatch(showNotification(error));
@@ -87,13 +87,13 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
     let wordlist = null;
 
     if (user?.token && wordlistId) {
-        const [error, result] = await wordListService.getWordList(wordlistId, user.token);
+      const [error, result] = await wordListService.getWordList(wordlistId, user.token);
 
-        if (!result) {
-          void dispatch(showNotification(error));
-          return;
-        }
-        wordlist = result;
+      if (!result) {
+        void dispatch(showNotification(error));
+        return;
+      }
+      wordlist = result;
     }
 
     const settings: ConjugateSettings = {
@@ -117,40 +117,49 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
   return (
     <form>
-      <div>
-        <div style={{ display: "flex", marginBottom: "50px", fontSize: "20px" }}>
-          <div style={{ flex: 1 }}>
-            <h4>Moods</h4>
-            {moodList.map(mood =>
-              <div key={mood}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={moodSelections.find(m => m.mood === mood)?.selected}
-                    onChange={() => switchMoodSelection(mood)}
-                  />
-                  {mood}
-                </label>
-              </div>)}
+      <div className="container">
+        <div className="flex flex-row justify-center gap-x-24">
+          <div>
+            <h2>Moods</h2>
+            <div className='mt-4 select-none'>
+              {moodList.map(mood =>
+                <div key={mood}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={moodSelections.find(m => m.mood === mood)?.selected}
+                      onChange={() => switchMoodSelection(mood)}
+                    />
+                    <span className="pl-1">
+                      {mood}
+                    </span>
+
+                  </label>
+                </div>)}
+            </div>
           </div>
-          <div style={{ flex: 1 }}>
-            <h4>Tenses</h4>
-            {availableTenses.map(tense =>
-              <div key={tense}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={tenseSelections.find(t => t.tense === tense)?.selected}
-                    onChange={() => switchTenseSelection(tense)}
-                  />
-                  {tense}
-                </label>
-              </div>)}
+          <div className='min-w-[25%] min-h-[360px]'>
+            <h2>Tenses</h2>
+            <div className='mt-4 select-none'>
+              {availableTenses.map(tense =>
+                <div key={tense}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={tenseSelections.find(t => t.tense === tense)?.selected}
+                      onChange={() => switchTenseSelection(tense)}
+                    />
+                    <span className="pl-1">
+                      {tense}
+                    </span>
+                  </label>
+                </div>)}
+            </div>
           </div>
         </div>
       </div>
-      {user && <div>
-        <h4>Select wordlist or all words</h4>
+      {user && <div className='pt-6'>
+        <h2>Select wordlist or include all words</h2>
         {allWordlists !== null ?
           <Select
             className="basic-single"
@@ -164,11 +173,13 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
           <p>No wordlists found. Create wordlists on user page.</p>
         }
       </div>}
-      <h4>Begin by choosing mode</h4>
-      <div>
-        <p><button type="button" onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
-        <p><button type="button" onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>
-        <p><button type="button" onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button></p>
+      <div className='pt-6'>
+        <h2>Begin by choosing mode</h2>
+        <div className="container flex flex-wrap justify-left items-center gap-12 mx-auto p-1">
+          <p><button type="button" onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
+          <p><button type="button" onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>
+          <p><button type="button" onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button></p>
+        </div>
       </div>
     </form>
   );
