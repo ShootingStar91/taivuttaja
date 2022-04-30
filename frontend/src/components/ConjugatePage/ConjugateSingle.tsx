@@ -87,8 +87,8 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
         void newWord();
         setAttempt("");
       } else {
-        if (user && !user.strictAccents && deAccentify(attempt) === deAccentify(answer)) {
-          void dispatch(showNotification(`Correct, but with accents the word is: ${answer}`));
+        if (user && !user.strictAccents && deAccentify(attempt.toLowerCase()) === deAccentify(answer.toLowerCase())) {
+          void dispatch(showNotification(`Correct, but the accents are: ${answer}`));
           void newWord();
           setAttempt("");
         }
