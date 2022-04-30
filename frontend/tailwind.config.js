@@ -3,7 +3,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'spain-city-flag': "url(resources/spain-city-flag.jpeg",
+      }
+    },
   },
   plugins: [],
 };

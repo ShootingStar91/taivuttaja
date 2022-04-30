@@ -116,71 +116,78 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
 
   return (
-    <form>
-      <div className="container">
-        <div className="flex flex-row justify-center gap-x-24">
-          <div>
-            <h2>Moods</h2>
-            <div className='mt-4 select-none'>
-              {moodList.map(mood =>
-                <div key={mood}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={moodSelections.find(m => m.mood === mood)?.selected}
-                      onChange={() => switchMoodSelection(mood)}
-                    />
-                    <span className="pl-1">
-                      {mood}
-                    </span>
+    <div>
+      <form>
+        <div>
+          <div className="flex flex-row justify-center gap-x-24">
+            <div>
+              <h2>Moods</h2>
+              <div className='mt-4 select-none'>
+                {moodList.map(mood =>
+                  <div key={mood}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={moodSelections.find(m => m.mood === mood)?.selected}
+                        onChange={() => switchMoodSelection(mood)}
+                      />
+                      <span className="pl-1">
+                        {mood}
+                      </span>
 
-                  </label>
-                </div>)}
+                    </label>
+                  </div>)}
+              </div>
             </div>
-          </div>
-          <div className='min-w-[25%] min-h-[360px]'>
-            <h2>Tenses</h2>
-            <div className='mt-4 select-none'>
-              {availableTenses.map(tense =>
-                <div key={tense}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={tenseSelections.find(t => t.tense === tense)?.selected}
-                      onChange={() => switchTenseSelection(tense)}
-                    />
-                    <span className="pl-1">
-                      {tense}
-                    </span>
-                  </label>
-                </div>)}
+            <div className='min-w-[25%] min-h-[360px]'>
+              <h2>Tenses</h2>
+              <div className='mt-4 select-none'>
+                {availableTenses.map(tense =>
+                  <div key={tense}>
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={tenseSelections.find(t => t.tense === tense)?.selected}
+                        onChange={() => switchTenseSelection(tense)}
+                      />
+                      <span className="pl-1">
+                        {tense}
+                      </span>
+                    </label>
+                  </div>)}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {user && <div className='pt-6'>
-        <h2>Select wordlist or include all words</h2>
-        {allWordlists !== null ?
-          <Select
-            className="basic-single"
-            classNamePrefix="select"
-            name="wordField"
-            options={allWordlists.map(list => {
-              return { label: list.title, value: list._id };
-            })}
-            onChange={onWordlistChange}
-          /> :
-          <p>No wordlists found. Create wordlists on user page.</p>
-        }
-      </div>}
-      <div className='pt-6'>
-        <h2>Begin by choosing mode</h2>
-        <div className="container flex flex-wrap justify-left items-center gap-12 mx-auto p-1">
-          <p><button type="button" onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
-          <p><button type="button" onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>
-          <p><button type="button" onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button></p>
+        {user && <div className='pt-6'>
+          <h2 className='flex justify-center mb-6'>Select wordlist or include all words</h2>
+          <div className=''>
+            {allWordlists !== null ?
+              <Select
+                className="basic-single"
+                classNamePrefix="select"
+                name="wordField"
+                options={allWordlists.map(list => {
+                  return { label: list.title, value: list._id };
+                })}
+                onChange={onWordlistChange}
+              /> :
+              <p>No wordlists found. Create wordlists on user page.</p>
+            }
+          </div>
+        </div>}
+        <div className='pt-6'>
+          <h2 className='flex justify-center'>Begin by choosing mode</h2>
+          <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto p-1 ">
+            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+              onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
+            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+              onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>
+            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+              onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button></p>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };

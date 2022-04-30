@@ -3,13 +3,40 @@
 @tailwind utilities;
 
 @layer base {
+
   h1 {
     @apply text-4xl font-bold;
   }
+
   h2 {
     @apply text-xl font-bold;
   }
+
+  h3 {
+    @apply text-lg font-bold;
+  }
+
+  .description {
+    @apply text-sm text-gray-600;
+  }
+
   p {
     @apply mt-4 mb-4
+  }
+
+  .btn {
+    @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
+  }
+  
+  .btn:hover {
+    @apply hover:bg-blue-700;
+  }
+
+  .textField {
+    @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight;
+  }
+
+  input:focus {
+    @apply outline-none;
   }
 }

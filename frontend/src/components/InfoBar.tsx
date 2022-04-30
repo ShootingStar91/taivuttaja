@@ -23,9 +23,9 @@ export const InfoBar = () => {
   };
 
   return (
-    <>
-      <span>Logged in as {user.username}.</span>
+    <div className="bg-amber-100 container flex flex-wrap justify-center items-center gap-12 mx-auto p-1">
+      <span>Logged in as <span className='text-amber-600 font-bold'>{user.username}</span></span>
       <span>{goalInfo()}</span>
-    </>
+    </div>
   );
 };

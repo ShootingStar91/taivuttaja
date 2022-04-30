@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useEffect } from 'react';
 import './App.css';
 import { IndexPage } from './components/IndexPage';
@@ -12,6 +13,7 @@ import { ConjugateIndex } from './components/ConjugatePage';
 import { Notification } from './components/Notification';
 import userService from './services/user';
 import { InfoBar } from './components/InfoBar';
+import spain_city_flag from './resources/spain-city-flag-cropped-2.jpeg';
 
 const App = () => {
 
@@ -34,15 +36,16 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    document.getElementsByTagName("body")[0].className = "bg-sky-50";
+    document.getElementsByTagName("body")[0].className = "bg-rose-50";
   }, []);
 
-  const navBarLinkStyle = "float-left hover:text-amber-600";
+  const navBarLinkStyle = "float-left hover:text-yellow-100";
 
   return (
-    <div className="bg-amber-200 container sm mx-auto rounded-md mt-6 mb-6">
+    <div className="bg-amber-200 container sm mx-auto mb-6 max-w-[1024px] rounded-b-lg">
       <BrowserRouter>
-        <div className="bg-sky-200 container flex flex-wrap justify-center items-center gap-12 mx-auto h-24 
+      <img src={spain_city_flag} ></img>
+        <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto h-12 
                         rounded-t-md font-sans text-2xl">
           <Link className={navBarLinkStyle} to="/">Home</Link>
           <Link className={navBarLinkStyle} to="/conjugatestart">Conjugate</Link>
@@ -51,8 +54,9 @@ const App = () => {
           {!user ? <Link className={navBarLinkStyle} to="/login">Login</Link> :
             <Link className={navBarLinkStyle} to="/" onClick={logout}>Logout</Link>}
         </div>
-        <div className="bg-amber-400 container flex flex-wrap justify-center items-center gap-12 mx-auto p-1"><InfoBar /></div>
-        <div className="pl-16 pt-12 pr-20 pb-6 flex flex-col space-y-4">
+        <InfoBar />
+        <div className="bg-amber-50 pl-4 md:pl-12 pt-12 pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg 
+                    overflow-auto max-h-[800px]">
           <Notification />
           <Routes>
             <Route index element={<IndexPage />} />

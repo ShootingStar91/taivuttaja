@@ -192,25 +192,26 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   }
 
   return (
-    <div>
-      <p>
-        <SpanishFlag /> <b>{word.infinitive}</b>
-      </p>
-      <p>
-        <EnglishFlag /> {word.infinitive_english}
-      </p>
-      <p>
-        {word.mood_english} {word.tense_english.toLowerCase()}
-      </p>
-      <div>
+    <div className='md:pl-12'>
+      <div className='flex auto-flex gap-x-4'>
+        <SpanishFlag /> <h2>{word.infinitive}</h2>
+      </div>
+      <div className='flex auto-flex gap-x-4'>
+        <EnglishFlag /> <h2>{word.infinitive_english}</h2>
+      </div>
+      <div className='mt-4 flex auto-flex gap-x-4'>
+        <h2 className='text-amber-600'>{word.mood_english}</h2> 
+        <h2 className='text-sky-400'>{word.tense_english.toLowerCase()}</h2>
+      </div>
+      <div className='mt-8'>
         <form onSubmit={onEnter} autoComplete='off' onKeyDown={onKeyDown}>
           <table>
             <tbody>
               {forms.map((form, index) =>
                 <React.Fragment key={form}>
-                  <tr key={form} className="conjugationRow">
-                    <td><input type='text' id={index.toString()} name={form} onChange={emptyForms.includes(form) ? undefined : handleChange} value={formState[form]} disabled={emptyForms.includes(form) ? true : undefined} /></td>
-                    <td className="formDescription"><div className="tooltip">{getForm(form)}<div className="tooltiptext">{getFormDescription(form)}</div></div></td>
+                  <tr key={form}>
+                    <td><input className='textField' type='text' id={index.toString()} name={form} onChange={emptyForms.includes(form) ? undefined : handleChange} value={formState[form]} disabled={emptyForms.includes(form) ? true : undefined} /></td>
+                    <td><div className="ml-8 min-h-[80px]"><h3>{getForm(form)}</h3><div className="description">{getFormDescription(form)}</div></div></td>
                   </tr>
                   <tr></tr>
                   <tr></tr>
@@ -219,9 +220,11 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
               )}
             </tbody>
           </table>
-          <p><button type='submit' disabled={showingAnswers}>Try</button></p>
-          <p><button type='button' onClick={onSkip}>{showingAnswers ? "Next" : "Show answers"}</button></p>
-        </form>
+          <div className='flex gap-x-8 mt-8'>
+            <button className='btn' type='submit' disabled={showingAnswers}>Try</button>
+            <button className='btn' type='button' onClick={onSkip}>{showingAnswers ? "Next" : "Show answers"}</button>
+          </div>
+    </form>
       </div>
     </div>
   );

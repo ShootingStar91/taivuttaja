@@ -15,7 +15,7 @@ export const LoginForm = () => {
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
     const [error, user] = await userService.tryLogin(username, password);
-    
+
     if (!user) {
       void dispatch(showNotification(error));
       return;
@@ -29,14 +29,14 @@ export const LoginForm = () => {
 
   const tryNewUser = async () => {
     const [userError, result] = await userService.createUser(username, password);
-    if (!result) {     
+    if (!result) {
       void dispatch(showNotification(userError));
       return;
     }
 
     const [error, user] = await userService.tryLogin(username, password);
 
-    if (!user) {     
+    if (!user) {
       void dispatch(showNotification(error));
       return;
     }
@@ -56,12 +56,20 @@ export const LoginForm = () => {
   };
 
   return (
-    <div>
+    <div className="container flex justify-center">
       <form onSubmit={tryLogin}>
-        <p><label>Username</label></p><p><input type='text' onChange={handleUsernameChange} value={username}></input></p>
-        <p><label>Password</label></p><p><input type='password' onChange={handlePasswordChange} value={password}></input></p>
-        <p><button type='submit'>Log in</button></p>
-        <p><button type="button" onClick={tryNewUser}>Create new user</button></p>
+        <div className='container flex flex-col justify-center'>
+          <h2>Username</h2>
+            <p>
+              <input type='text' onChange={handleUsernameChange} value={username}
+              className='textField'></input></p>
+          <h2>Password</h2><p><input type='password' onChange={handlePasswordChange} value={password}
+          className='textField'></input></p>
+        </div>
+        <div className='container flex gap-8'>
+          <p><button type='submit' className='btn'>Log in</button></p>
+          <p><button type="button" onClick={tryNewUser} className='btn'>Create new user</button></p>
+        </div>
       </form>
     </div>
   );

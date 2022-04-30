@@ -2,7 +2,7 @@ import React from 'react';
 
 export const IndexPage = () => {
   return (
-    <div className="">
+    <div>
       <h1>Welcome</h1>
       <p>Welcome to the conjugation app! Learn Spanish verbs and their conjugations here! Try the different learning modes:</p>
       <h2>Vocabulary</h2>
