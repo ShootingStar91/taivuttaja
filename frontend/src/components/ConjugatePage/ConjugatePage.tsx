@@ -175,10 +175,13 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
         const answer = getWordForm(word, f);
         newFormState[f] = answer !== undefined ? answer : "";
         setFormState({ ...newFormState });
+        document.getElementsByName(f).forEach(element => element.setAttribute('disabled', 'true'));
+        document.getElementsByName(f)[0].style.backgroundColor = "#ffec99";
       });
-      forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffec99");
 
     } else {
+      forms.forEach(f => document.getElementsByName(f).forEach(element => element.removeAttribute('disabled')));
+
       setShowingAnswers(false);
       setFormState({ ...initialState });
       await getWord();

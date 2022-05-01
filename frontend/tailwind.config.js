@@ -4,10 +4,11 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'spain-city-flag': "url(resources/spain-city-flag.jpeg",
-      }
+      colors: {
+        'customamber': '#fffdf1'
+      },
     },
+
   },
   plugins: [],
 };

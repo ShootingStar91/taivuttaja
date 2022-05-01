@@ -36,7 +36,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    document.getElementsByTagName("body")[0].className = "bg-rose-50";
+    document.getElementsByTagName("body")[0].className = "bg-customamber";
   }, []);
 
   const navBarLinkStyle = "float-left hover:text-yellow-100";
