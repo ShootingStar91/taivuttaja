@@ -42,7 +42,7 @@ const App = () => {
   const navBarLinkStyle = "float-left hover:text-yellow-100";
 
   return (
-    <div className="bg-amber-200 container sm mx-auto mb-6 max-w-[1024px] rounded-b-lg">
+    <div className="bg-amber-200 container sm mx-auto mb-6 max-w-[1024px] rounded-b-lg shadow-lg">
       <BrowserRouter>
       <img src={spain_city_flag} ></img>
         <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto h-12 
@@ -55,7 +55,7 @@ const App = () => {
             <Link className={navBarLinkStyle} to="/" onClick={logout}>Logout</Link>}
         </div>
         <InfoBar />
-        <div className="bg-amber-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg shadow-xl">
+        <div className="bg-amber-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg shadow-2xl">
           <Notification />
           <Routes>
             <Route index element={<IndexPage />} />

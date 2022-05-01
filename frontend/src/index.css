@@ -16,6 +16,14 @@
     @apply text-lg font-bold;
   }
 
+  .optioncard {
+    @apply bg-white rounded shadow-md w-[260px] p-4;
+  }
+
+  .link {
+    @apply text-blue-500 underline;
+  }
+
   .description {
     @apply text-sm text-gray-600;
   }

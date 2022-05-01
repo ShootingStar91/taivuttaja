@@ -133,7 +133,10 @@ const changePassword = async (rawPassword: unknown, user: User) => {
   const password = await createPasswordHash(parsePassword(rawPassword));
 
   const result = await userModel.updateOne({ _id: user._id }, { password });
-  return result;
+  if (result) {
+    return true;
+  }
+  return false;
 };
 
 const setStrictAccents = async (strictAccents: unknown, user: User) => {

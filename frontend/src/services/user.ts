@@ -63,10 +63,10 @@ const checkLogin = () => {
   }
 };
 
-const changePassword = async (password: string, token: string): Promise<[string, undefined | User]> => {
+const changePassword = async (password: string, token: string): Promise<[string, undefined | boolean]> => {
   try {
-    const result = await axios.post<User>(`${url}/changepassword/`, { password }, getHeader(token));
-    return success<User>(result.data);
+    const result = await axios.post<boolean>(`${url}/changepassword/`, { password }, getHeader(token));
+    return success<boolean>(result.data);
   } catch (e) {
     return error(e);
   }
