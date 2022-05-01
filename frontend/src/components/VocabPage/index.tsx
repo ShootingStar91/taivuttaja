@@ -60,14 +60,14 @@ export const VocabPage = () => {
 
   return (
     <div className="vocabPage">
-      <p>
+      <h2>
         {word.infinitive_english}
-      </p>
+      </h2>
       <div>
         <form onSubmit={onTry}>
-          <p><input type='text' onChange={handleChange} value={currentTry} disabled={showAnswer} /></p>
-          <p><button type='submit'>Try</button></p>
-          <p><button type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button></p>
+          <p><input className='textField' type='text' onChange={handleChange} value={currentTry} disabled={showAnswer} /></p>
+          <p><button className='btn' type='submit'>Try</button></p>
+          <p><button className='btn' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button></p>
         </form>
       </div>
     </div>

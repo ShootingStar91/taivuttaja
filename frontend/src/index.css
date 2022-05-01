@@ -17,7 +17,7 @@
   }
 
   .optioncard {
-    @apply bg-white rounded shadow-md w-[260px] p-4;
+    @apply bg-white rounded shadow-lg w-[260px] p-4;
   }
 
   .link {

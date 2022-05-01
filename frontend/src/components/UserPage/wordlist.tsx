@@ -16,23 +16,28 @@ type WordOption = {
 
 export const WordListView = () => {
 
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
+  const user = useAppSelector(selectUser);
   const { id } = useParams();
   const [wordlist, setWordlist] = useState<WordList | undefined>();
   const [word, setWord] = useState<WordOption | null>(null);
   const [allWords, setAllWords] = useState<WordOption[] | undefined>();
-  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-
+    if (!user) {
+      return;
+    }
     const getWordlist = async () => {
       if (!id || !user || !user.token) {
+        console.log(id, user);
         void dispatch(showNotification(ERRORS.INVALID_LOGIN));
         return;
       }
       const [error, result] = await wordListService.getWordList(id, user.token);
       if (!result) {
+        console.log(result);
+        
         void dispatch(showNotification(error));
         return;
       }

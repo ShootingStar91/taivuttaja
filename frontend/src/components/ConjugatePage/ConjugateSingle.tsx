@@ -19,7 +19,7 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   const [mood, setMood] = useState<Mood | null>(null);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
-  
+
   useEffect(() => {
     void newWord();
   }, []);
@@ -81,8 +81,8 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
       event.preventDefault();
       console.log(attempt);
       console.log(answer);
-      
-      
+
+
       if (attempt.toLowerCase() === answer.toLowerCase()) {
         void newWord();
         setAttempt("");
@@ -108,9 +108,16 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   if (settings.mode === ConjugateMode.Flashcard) {
     return (
       <div>
-      <h4><EnglishFlag /> {word.infinitive_english}</h4>
-      <h5><SpanishFlag /> {word.infinitive}</h5>
-        <h5>{getForm(form)} - {tense} - {mood}</h5>
+        <div className='flex auto-flex gap-x-4'>
+          <SpanishFlag /> <h2>{tense}</h2>
+        </div>
+        <div className='flex auto-flex gap-x-4 pt-4'>
+          <EnglishFlag /> <h2>{mood}</h2>
+        </div>
+        <div className='mt-4 flex auto-flex gap-x-4'>
+          <h2 className='text-amber-600'>{word.mood_english}</h2>
+          <h2 className='text-sky-400'>{word.tense_english.toLowerCase()}</h2>
+        </div>
         <button type='button' onClick={onClick}>{showing ? 'Next' : 'Show'}</button>
         {showing && answer}
       </div>
@@ -119,10 +126,20 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
 
   return (
     <div>
-      <h4><EnglishFlag /> {word.infinitive_english}</h4>
-      <h5><SpanishFlag /> {word.infinitive}</h5>
-      <h5>{getForm(form)} - {tense} - {mood}</h5>
-      <form onKeyDown={onKeyDown}><input name="attemptField" type='text' onChange={onChange} value={attempt}></input></form>
+      <div className='flex auto-flex gap-x-4'>
+        <SpanishFlag /> <h2>{word.infinitive}</h2>
+      </div>
+      <div className='flex auto-flex gap-x-4 pt-4'>
+        <EnglishFlag /> <h2>{word.infinitive_english}</h2>
+      </div>
+      <div className='mt-4 flex auto-flex gap-x-4'>
+        <h2 className='text-amber-600'>{tense}</h2>
+        <h2 className='text-sky-400'>{mood}</h2>
+      </div>
+      <p><h2>{getForm(form)}</h2></p>
+      <div className='mt-8'>
+        <form onKeyDown={onKeyDown}><input className='textField' name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off"></input></form>
+      </div>
     </div>
   );
 

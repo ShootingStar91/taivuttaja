@@ -37,5 +37,6 @@
 | 27.4. | 1   | Added showing correct answers to full conjugating mode. Minor fixes & Readme update |
 | 28.4. | 2   | Showing on how many days app has been used by user and how many unique mood/tense combinations have been conjugated | 
 | 29.4. | 3   | Added information table of how much each tense and mood has been practiced. Added setting of strict mode for accents, which defines if accent mistakes are allowed. Fixed logic of tense/mood randoming that allowed some impossible cases. Fixed new user not logging in. |
-| 30.4. | 4,5 | (To new branch: cssBranch) Studied, installed & configured Tailwind CSS. Started re-building frontend UI with it. |
-| Total hours | 97,5     | 
+| 30.4. | 4.5 | (To new branch: cssBranch) Studied, installed & configured Tailwind CSS. Started re-building frontend UI with it. |
+| 1.5.  | 3.5 | Continued building frontend styles. |
+| Total hours | 101     | 

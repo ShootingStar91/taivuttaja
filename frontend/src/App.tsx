@@ -44,7 +44,9 @@ const App = () => {
   return (
     <div className="bg-amber-200 container sm mx-auto mb-6 max-w-[1024px] rounded-b-lg shadow-lg">
       <BrowserRouter>
-      <img src={spain_city_flag} ></img>
+      <img src={spain_city_flag}></img>
+      <Notification />
+
         <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto h-12 
                         rounded-t-md font-sans text-2xl">
           <Link className={navBarLinkStyle} to="/">Home</Link>
@@ -56,7 +58,6 @@ const App = () => {
         </div>
         <InfoBar />
         <div className="bg-amber-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg shadow-2xl">
-          <Notification />
           <Routes>
             <Route index element={<IndexPage />} />
             <Route path="conjugatestart" element={<ConjugateIndex />} />
