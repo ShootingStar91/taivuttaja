@@ -5,12 +5,10 @@ import { selectUser } from "../reducers/user";
 export const InfoBar = () => {
   const user = useAppSelector(selectUser);
 
-  if (!user?.goal) {
-    return null;
-  }
-  const percentage = user.doneWordsToday / user.goal * 100;
   const goalInfo = () => {
     if (!user || !user.goal) return null;
+    const percentage = user.doneWordsToday / user.goal * 100;
+
     if (user.doneWordsToday < user.goal) {
       return (<><label htmlFor='progress'>Daily progress: {user.doneWordsToday} / {user.goal} </label>
       <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700">
@@ -21,7 +19,9 @@ export const InfoBar = () => {
       return <>Daily goal of {user.goal} achieved!</>;
     }
   };
-
+  if (!user) {
+    return null;
+  }
   return (
     <div className="bg-amber-100 container flex flex-wrap justify-center items-center gap-12 mx-auto p-1">
       <span>Logged in as <span className='text-amber-600 font-bold'>{user.username}</span></span>

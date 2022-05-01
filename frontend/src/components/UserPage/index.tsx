@@ -21,6 +21,7 @@ export const UserPage = () => {
   const dispatch = useAppDispatch();
   const [dailyGoal, setDailyGoal] = useState<string>("50");
   const [password, setPassword] = useState<string>("");
+  const [strictAccents, setStrictAccents] = useState<boolean | undefined>(user?.strictAccents);
 
   useEffect(() => {
     const getWordLists = async () => {
@@ -165,15 +166,17 @@ export const UserPage = () => {
     );
   };
 
-  const setStrictAccents = async (value: boolean) => {
+  const changeStrictAccents = async () => {
     if (!user || !user.token) {
       return;
     }
-    const [error, result] = await userService.setStrictAccents(value, user.token);
+    const newStrictAccents = !strictAccents;
+    setStrictAccents(!strictAccents);
+    const [error, result] = await userService.setStrictAccents(newStrictAccents, user.token);
     if (!result) {
       void dispatch(showNotification(error));
     }
-    dispatch(setUser({ ...user, strictAccents: value }));
+    dispatch(setUser({ ...user, strictAccents: newStrictAccents }));
     void dispatch(showNotification("Setting changed!"));
   };
 
@@ -204,14 +207,12 @@ export const UserPage = () => {
           </form>
         </div>
         <div>
-          <h3>Strict accents</h3>
-          <p><input type="radio" id="StrictAccentsFalse" name="strict_accents" defaultChecked={!user.strictAccents}
-            onChange={() => setStrictAccents(false)} />
-            <label htmlFor="strictAccents"> Allow</label></p>
-          <p><input type="radio" id="StrictAccentsTrue" name="strict_accents" defaultChecked={user.strictAccents}
-            onChange={() => setStrictAccents(true)} />
-            <label htmlFor="strictAccents"> Require correct accents</label>
-          </p>
+          <h3>Strict accents mode</h3>
+          <label htmlFor="default-toggle" className="relative inline-flex items-center mb-4 cursor-pointer">
+            <input type="checkbox" value="" id="default-toggle" className="sr-only peer" onClick={changeStrictAccents} checked={strictAccents} />
+              <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+              <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{strictAccents ? "On" : "Off"}</span>
+          </label>
         </div>
       </div>
 

@@ -55,7 +55,7 @@ const App = () => {
             <Link className={navBarLinkStyle} to="/" onClick={logout}>Logout</Link>}
         </div>
         <InfoBar />
-        <div className="bg-amber-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg">
+        <div className="bg-amber-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg shadow-xl">
           <Notification />
           <Routes>
             <Route index element={<IndexPage />} />
