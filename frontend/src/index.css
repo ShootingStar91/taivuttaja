@@ -20,6 +20,10 @@
     @apply bg-white rounded shadow-lg w-[260px] p-4;
   }
 
+  .fullcard {
+    @apply bg-white rounded shadow-xl min-w-full p-2 pl-6;
+  }
+
   .link {
     @apply text-blue-500 underline;
   }

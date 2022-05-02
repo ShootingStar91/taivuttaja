@@ -114,7 +114,7 @@ export const WordListView = () => {
     if (!result) {
       void dispatch(showNotification(error));
     }
-    setWordlist({ ...wordlist, words: wordlist.words.filter(w => w === wordToDelete) });
+    setWordlist({ ...wordlist, words: wordlist.words.filter(w => w !== wordToDelete) });
   };
 
   if (!wordlist || !allWords) {
@@ -131,13 +131,13 @@ export const WordListView = () => {
         options={allWords}
         onChange={onChange}
       />
-      <p><button type="button" onClick={addWord}>Add</button></p>
+      <p><button className='btn' type="button" onClick={addWord}>Add</button></p>
 
-      <div>
-        {wordlist.words.map(w => <p key={w}><a href="" onClick={() => deleteWord(w)}>Delete</a> | {w}</p>)}
+      <div className='fullcard'>
+        {wordlist.words.map(w => <p key={w}><span className='link' onClick={() => deleteWord(w)}>Delete</span> | {w}</p>)}
       </div>
       <div>
-        <button type="button" onClick={deleteWordlistButton}>Delete list</button>
+        <p><button className='btn' type="button" onClick={deleteWordlistButton}>Delete list</button></p>
       </div>
     </div>
   );

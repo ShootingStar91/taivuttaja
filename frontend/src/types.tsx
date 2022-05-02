@@ -98,3 +98,8 @@ export interface DoneWord {
   date: Date,
   user: string,
 }
+
+export enum ToastType {
+  OK,
+  ERR
+}

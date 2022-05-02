@@ -17,6 +17,7 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   const [attempt, setAttempt] = useState<string>("");
   const [tense, setTense] = useState<Tense | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
+  const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
@@ -101,6 +102,20 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
     }
   };
 
+  const onClickSkip = () => {
+    if (!word) { return; }
+    if (!showAnswer) {
+      setShowAnswer(true);
+      setAttempt(word.infinitive);
+    } else {
+      setShowAnswer(false);
+      void newWord();
+      setAttempt("");
+    }
+    
+  };
+  
+
   if (!word || !answer || !form) {
     return <div>Word loading...</div>;
   }
@@ -138,7 +153,10 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
       </div>
       <p><h2>{getForm(form)}</h2></p>
       <div className='mt-8'>
-        <form onKeyDown={onKeyDown}><input className='textField' name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off"></input></form>
+        <form onKeyDown={onKeyDown}><input className='textField' name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off" disabled={showAnswer}></input></form>
+        <p><button className='btn' type='submit'>Try</button></p>
+        <p><button className='btn' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button></p>
+
       </div>
     </div>
   );
