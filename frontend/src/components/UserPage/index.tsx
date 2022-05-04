@@ -142,6 +142,7 @@ export const UserPage = () => {
   if (!user) {
     return <>Error, no login found. Try to login again!</>;
   }
+
   const getMoodTableData = () => {
     if (!user) {
       return null;
@@ -179,12 +180,15 @@ export const UserPage = () => {
       )
     );
   };
+
   const dwDates = user.doneWords.map(dw => new Date(dw.date).getDate());
   const uniqueDates = new Set(dwDates).size.toString();
 
   const uniqueTenseMoods = new Set(
     user.doneWords.map(dw => dw.word.tense.concat(dw.word.mood))
   ).size;
+
+  const uniqueVerbs = new Set(user.doneWords.map(dw => dw.word.infinitive_english)).size;
 
   const getPracticeHistory = () => {
     return (
@@ -193,9 +197,11 @@ export const UserPage = () => {
         <div className=''>
           <div className='m-4 ml-4'>
           <ul>
-            <li>conjugated <span className='text-amber-400 font-bold'>{user?.doneWords.length} words</span> in total</li>
+            <li>conjugated <span className='text-amber-400 font-bold'>{user?.doneWords.length} verbs</span> in total</li>
             <li>practiced on <span className='text-sky-500 font-bold'>{uniqueDates} different days</span></li>
             <li>practiced <span className='text-orange-600 font-bold'>{uniqueTenseMoods} different unique combinations</span> of tense / mood</li>
+            <li>practiced <span className='text-blue-500 font-bold'>{uniqueVerbs} unique verbs</span>!</li>
+            
           </ul>
           </div>
           <div className='flex flex-auto gap-x-4 md:gap-x-8 mt-8'>

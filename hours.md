@@ -5,7 +5,7 @@
 | 21.2. | 2   | Made first version of conjugations practice mode and optimized backend |
 | 22.2. | 1   | Worked on frontend forms and CSS |
 | 26.2. | 3   | Worked on frontend, field selection and checking correct answers on enter | 
-| 9.3.  | 1   | Worked on login functionality |
+| 9.3.  | 1   | Worked on login functionality |rca
 | 10.3. | 2   | Login functionality again |
 | 11.3. | 3   | Login middlewares finished, minor frontend fixes |
 | 12.3. | 2   | Login page to frontend started |
@@ -39,4 +39,6 @@
 | 29.4. | 3   | Added information table of how much each tense and mood has been practiced. Added setting of strict mode for accents, which defines if accent mistakes are allowed. Fixed logic of tense/mood randoming that allowed some impossible cases. Fixed new user not logging in. |
 | 30.4. | 4.5 | (To new branch: cssBranch) Studied, installed & configured Tailwind CSS. Started re-building frontend UI with it. |
 | 1.5.  | 3.5 | Continued building frontend styles. |
-| Total hours | 101     | 
+| 2.5.  | 1   | Started building a modal component with Tailwind CSS |
+| 4.5.  | 4   | Built a working version of modal. Fixes and improvements in styles. |
+| Total hours | 106     | 
