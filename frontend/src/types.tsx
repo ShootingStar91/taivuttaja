@@ -82,7 +82,8 @@ export type TenseSelections = Array<{ tense: Tense, selected: boolean }>;
 export enum ConjugateMode {
   Single,
   Flashcard,
-  Full
+  Full,
+  Stopped
 }
 
 export type ConjugateSettings = {

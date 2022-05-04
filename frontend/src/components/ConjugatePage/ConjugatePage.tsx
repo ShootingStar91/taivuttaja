@@ -3,15 +3,17 @@ import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
 import { showNotification } from '../../reducers/notification';
 import { wordService } from '../../services/words';
-import { ConjugateSettings, Word } from '../../types';
+import { ConjugateMode, ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription, forms, getRandomForm, deAccentify } from '../../utils';
 import { EnglishFlag, SpanishFlag } from '../Flags';
 import userService from '../../services/user';
 import { addDoneWord, selectUser } from '../../reducers/user';
 import { delay } from '../../services/util';
 import { COLORS } from '../../config';
+import { Modal } from '../modal';
+import { useNavigate } from 'react-router-dom';
 
-export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings, next: () => void }) => {
+export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSettings, next: () => void, stop: () => void }) => {
 
   const [word, setWord] = useState<Word | null>(null);
   const dispatch = useAppDispatch();
@@ -20,9 +22,9 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   const [lastId, setLastId] = useState<string | null>(null);
   const user = useAppSelector(selectUser);
   const [showingAnswers, setShowingAnswers] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   forms.forEach(form => initialState[form] = '');
-
+  const [triggerClose, setTriggerClose] = useState<boolean>(false);
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
 
   useEffect(() => {
@@ -193,42 +195,50 @@ export const ConjugatePage = ({ settings, next }: { settings: ConjugateSettings,
   if (word === null) {
     return <div>Loading...</div>;
   }
+  const getContent = () => {
+    return (
+      <div className='md:pl-12'>
+        <div className='flex auto-flex gap-x-4'>
+          <SpanishFlag /> <h2>{word.infinitive}</h2>
+        </div>
+        <div className='flex auto-flex gap-x-4 pt-4'>
+          <EnglishFlag /> <h2>{word.infinitive_english}</h2>
+        </div>
+        <div className='mt-4 flex auto-flex gap-x-4'>
+          <h2 className='text-amber-600'>{word.mood_english}</h2>
+          <h2 className='text-sky-400'>{word.tense_english.toLowerCase()}</h2>
+        </div>
+        <div className='mt-8'>
+          <form onSubmit={onEnter} autoComplete='off' onKeyDown={onKeyDown}>
+            <table>
+              <tbody>
+                {forms.map((form, index) =>
+                  <React.Fragment key={form}>
+                    <tr key={form}>
+                      <td><input className='textField' type='text' id={index.toString()} name={form} onChange={emptyForms.includes(form) ? undefined : handleChange} value={formState[form]} disabled={emptyForms.includes(form) ? true : undefined} /></td>
+                      <td><div className="ml-8 min-h-[80px]"><h3>{getForm(form)}</h3><div className="description">{getFormDescription(form)}</div></div></td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
+                  </React.Fragment>
+                )}
+              </tbody>
+            </table>
+            <div className='flex gap-x-8 mt-8'>
+              <button className='btn' type='submit' disabled={showingAnswers}>Try</button>
+              <button className='btn' type='button' onClick={onSkip}>{showingAnswers ? "Next" : "Show answers"}</button>
+            </div>
+          </form>
+        </div>
+      </div>
 
+    );
+  };
+  if (!triggerClose) {
   return (
-    <div className='md:pl-12'>
-      <div className='flex auto-flex gap-x-4'>
-        <SpanishFlag /> <h2>{word.infinitive}</h2>
-      </div>
-      <div className='flex auto-flex gap-x-4 pt-4'>
-        <EnglishFlag /> <h2>{word.infinitive_english}</h2>
-      </div>
-      <div className='mt-4 flex auto-flex gap-x-4'>
-        <h2 className='text-amber-600'>{word.mood_english}</h2> 
-        <h2 className='text-sky-400'>{word.tense_english.toLowerCase()}</h2>
-      </div>
-      <div className='mt-8'>
-        <form onSubmit={onEnter} autoComplete='off' onKeyDown={onKeyDown}>
-          <table>
-            <tbody>
-              {forms.map((form, index) =>
-                <React.Fragment key={form}>
-                  <tr key={form}>
-                    <td><input className='textField' type='text' id={index.toString()} name={form} onChange={emptyForms.includes(form) ? undefined : handleChange} value={formState[form]} disabled={emptyForms.includes(form) ? true : undefined} /></td>
-                    <td><div className="ml-8 min-h-[80px]"><h3>{getForm(form)}</h3><div className="description">{getFormDescription(form)}</div></div></td>
-                  </tr>
-                  <tr></tr>
-                  <tr></tr>
-                  <tr></tr>
-                </React.Fragment>
-              )}
-            </tbody>
-          </table>
-          <div className='flex gap-x-8 mt-8'>
-            <button className='btn' type='submit' disabled={showingAnswers}>Try</button>
-            <button className='btn' type='button' onClick={onSkip}>{showingAnswers ? "Next" : "Show answers"}</button>
-          </div>
-    </form>
-      </div>
-    </div>
+    <Modal content={getContent()} closeButtonText="Stop practice" closeModal={() => stop() } />
   );
+  }
+  return null;
 };

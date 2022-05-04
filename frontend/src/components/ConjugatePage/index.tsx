@@ -23,17 +23,20 @@ export const ConjugateIndex = () => {
       setStage(stage + 1);
     }
   };
-  console.log(settings);
-  
+
+  const stop = () => {
+    setStage(0);
+  };
+
   if (stage === 0 || settings === null) {
     return <ConjugateStart startConjugating={startConjugating} />;
   }
 
   if (settings.mode === ConjugateMode.Full) {
-    return <ConjugatePage settings={settings} next={next} />;
+    return <ConjugatePage settings={settings} next={next} stop={stop} />;
   }
   
-  return <ConjugateSingle settings={settings} />;
+  return <ConjugateSingle settings={settings}  next={next} stop={stop} />;
   
   
 };

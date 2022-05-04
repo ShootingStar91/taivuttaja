@@ -5,10 +5,11 @@ import { showNotification } from "../../reducers/notification";
 import { selectUser } from "../../reducers/user";
 import { wordService } from "../../services/words";
 import { ConjugateMode, ConjugateSettings, Mood, Tense, Word } from "../../types";
-import { deAccentify, forms, getForm, getRandomForm, getWordForm } from "../../utils";
+import { deAccentify, forms, getForm, getFormDescription, getRandomForm, getWordForm } from "../../utils";
 import { EnglishFlag, SpanishFlag } from "../Flags";
+import { Modal } from "../modal";
 
-export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) => {
+export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateSettings, next: () => void, stop: () => void }) => {
 
   const [word, setWord] = useState<Word | null>(null);
   const [showing, setShowing] = useState<boolean>(false);
@@ -18,6 +19,7 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   const [tense, setTense] = useState<Tense | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
+  const [showingCorrect, setShowingCorrect] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
@@ -74,91 +76,125 @@ export const ConjugateSingle = ({ settings }: { settings: ConjugateSettings }) =
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
+
+    if (event.key === "Tab" || event.key === "Enter") {
+      event.preventDefault();
+      onTry();
+    }
+  };
+
+  const onTry = () => {
     if (!answer) {
       void dispatch(showNotification("Error: invalid word data"));
       return;
     }
-    if (event.key === "Tab" || event.key === "Enter") {
-      event.preventDefault();
-      console.log(attempt);
-      console.log(answer);
 
-
-      if (attempt.toLowerCase() === answer.toLowerCase()) {
-        void newWord();
-        setAttempt("");
-      } else {
-        if (user && !user.strictAccents && deAccentify(attempt.toLowerCase()) === deAccentify(answer.toLowerCase())) {
-          void dispatch(showNotification(`Correct, but the accents are: ${answer}`));
-          void newWord();
-          setAttempt("");
-        }
-        const field = document.getElementsByName("attemptField")[0];
-        field.style.backgroundColor = COLORS.WRONG;
-        setTimeout(() => {
-          field.style.backgroundColor = COLORS.BLANK;
-        }, 2000);
+    if (attempt.toLowerCase() === answer.toLowerCase()) {
+      void correctAnswer();
+    } else {
+      if (user && !user.strictAccents && deAccentify(attempt.toLowerCase()) === deAccentify(answer.toLowerCase())) {
+        void correctAnswer();
+        return;
       }
+      const field = document.getElementsByName("attemptField")[0];
+      field.style.backgroundColor = COLORS.WRONG;
+
+      setTimeout(() => {
+        field.style.backgroundColor = COLORS.BLANK;
+      }, 1000);
     }
   };
 
+  const correctAnswer = () => {
+    if (!answer) return;
+
+    setShowingCorrect(true);
+    const field = document.getElementsByName("attemptField")[0];
+    field.style.backgroundColor = COLORS.CORRECT;
+
+    setTimeout(() => {
+      setShowingCorrect(false);
+
+      void newWord();
+      setAttempt("");
+      next();
+      field.style.backgroundColor = COLORS.BLANK;
+    }, 2000);
+
+    console.log(showingCorrect);
+
+  };
+
   const onClickSkip = () => {
-    if (!word) { return; }
+    if (!word || !answer) { return; }
     if (!showAnswer) {
       setShowAnswer(true);
-      setAttempt(word.infinitive);
+      setAttempt(answer);
     } else {
       setShowAnswer(false);
       void newWord();
       setAttempt("");
+      next();
     }
-    
+
   };
-  
+
 
   if (!word || !answer || !form) {
     return <div>Word loading...</div>;
   }
 
-  if (settings.mode === ConjugateMode.Flashcard) {
-    return (
-      <div>
-        <div className='flex auto-flex gap-x-4'>
-          <SpanishFlag /> <h2>{tense}</h2>
+  const getContent = (mode: ConjugateMode) => {
+    if (mode === ConjugateMode.Flashcard) {
+      return (
+        <div>
+          <div className='flex auto-flex gap-x-4'>
+            <SpanishFlag /> <h2>{tense}</h2>
+          </div>
+          <div className='flex auto-flex gap-x-4 pt-4'>
+            <EnglishFlag /> <h2>{mood}</h2>
+          </div>
+          <div className='mt-4 flex auto-flex gap-x-4'>
+            <h2 className='text-amber-600'>{word.mood_english}</h2>
+            <h2 className='text-sky-400'>{word.tense_english.toLowerCase()}</h2>
+          </div>
+          <button type='button' onClick={onClick}>{showing ? 'Next' : 'Show'}</button>
+          {showing && answer}
         </div>
-        <div className='flex auto-flex gap-x-4 pt-4'>
-          <EnglishFlag /> <h2>{mood}</h2>
+      );
+    }
+
+    if (mode === ConjugateMode.Single) {
+      return (
+        <div className='m-8'>
+          <div className='flex auto-flex gap-x-4'>
+            <SpanishFlag /> <h2>{word.infinitive}</h2>
+          </div>
+          <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px]'>
+            <EnglishFlag /> <h2>{word.infinitive_english}</h2>
+          </div>
+          <div className='mt-4 flex auto-flex gap-x-4'>
+            <h2 className='text-amber-600'>{tense}</h2>
+            <h2 className='text-sky-400'>{mood}</h2>
+          </div>
+          <h2 className='mt-4 text-yellow-400'>{getForm(form)}</h2>
+          <span className="description pl-4">{getFormDescription(form)}</span>
+          <div className='mt-8'>
+            <form onKeyDown={onKeyDown}><div className={'p-4 bg-amber-50 shadow-lg rounded-lg'}><input className={'textField shadow ' + (showAnswer ? ' bg-amber-300 ' : '') + (showingCorrect ? ' bg-green-300 ' : '')} name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off" disabled={showAnswer}></input></div></form>
+            <p><button className='btn' type='submit' onClick={onTry}>Try</button></p>
+            <p><button className='btn' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button></p>
+
+          </div>
         </div>
-        <div className='mt-4 flex auto-flex gap-x-4'>
-          <h2 className='text-amber-600'>{word.mood_english}</h2>
-          <h2 className='text-sky-400'>{word.tense_english.toLowerCase()}</h2>
-        </div>
-        <button type='button' onClick={onClick}>{showing ? 'Next' : 'Show'}</button>
-        {showing && answer}
-      </div>
-    );
-  }
+      );
+    }
+    return <></>;
+
+  };
 
   return (
-    <div>
-      <div className='flex auto-flex gap-x-4'>
-        <SpanishFlag /> <h2>{word.infinitive}</h2>
-      </div>
-      <div className='flex auto-flex gap-x-4 pt-4'>
-        <EnglishFlag /> <h2>{word.infinitive_english}</h2>
-      </div>
-      <div className='mt-4 flex auto-flex gap-x-4'>
-        <h2 className='text-amber-600'>{tense}</h2>
-        <h2 className='text-sky-400'>{mood}</h2>
-      </div>
-      <p><h2>{getForm(form)}</h2></p>
-      <div className='mt-8'>
-        <form onKeyDown={onKeyDown}><input className='textField' name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off" disabled={showAnswer}></input></form>
-        <p><button className='btn' type='submit'>Try</button></p>
-        <p><button className='btn' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button></p>
-
-      </div>
-    </div>
+    <Modal content={getContent(settings.mode)} closeButtonText="Stop practice" closeModal={() => stop()} />
   );
+
 
 };

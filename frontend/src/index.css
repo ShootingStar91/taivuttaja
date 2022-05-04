@@ -24,6 +24,10 @@
     @apply bg-white rounded shadow-xl min-w-full p-2 pl-6;
   }
 
+  .tablecard {
+    @apply rounded shadow-lg p-4;
+  }
+
   .link {
     @apply text-blue-500 underline;
   }
@@ -52,5 +56,8 @@
     @apply outline-none;
   }
 
+  li {
+    @apply list-disc;
+  }
 
 }

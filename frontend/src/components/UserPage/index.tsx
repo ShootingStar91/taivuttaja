@@ -3,11 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
 import { removeUser, selectUser, setGoal, setUser } from "../../reducers/user";
 import { wordListService } from "../../services/wordlists";
-import { WordList } from "../../types";
+import { moodList, tenseList, WordList } from "../../types";
 import userService from '../../services/user';
 import { showNotification } from "../../reducers/notification";
-import { Modal } from "./modal";
+import { Modal } from '../modal';
 
+
+type TableData = {
+  form: string,
+  count: number
+};
 
 export const UserPage = () => {
 
@@ -137,23 +142,115 @@ export const UserPage = () => {
   if (!user) {
     return <>Error, no login found. Try to login again!</>;
   }
+  const getMoodTableData = () => {
+    if (!user) {
+      return null;
+    }
+    const tableData: TableData[] = moodList.map(mood => {
+      const count = user.doneWords.filter(dw => dw.word.mood_english === mood).length;
+      return { form: mood, count };
+    });
+    return tableData.sort((a, b) => b.count - a.count);
+  };
 
+  const getTenseTableData = () => {
+    if (!user) {
+      return null;
+    }
+    const tableData: TableData[] = tenseList.map(tense => {
+      const count = user.doneWords.filter(dw => dw.word.tense_english === tense).length;
+      return { form: tense, count };
+    });
+    return tableData.sort((a, b) => b.count - a.count);
+  };
+
+  const renderTable = (tableData: TableData[] | null) => {
+    if (!tableData) {
+      return null;
+    }
+    return (
+      tableData.map(data =>
+        <tr key={data.form}>
+          <td>{data.form}</td>
+          <td className='pl-8'>
+            {data.count}
+          </td>
+        </tr>
+      )
+    );
+  };
+  const dwDates = user.doneWords.map(dw => new Date(dw.date).getDate());
+  const uniqueDates = new Set(dwDates).size.toString();
+
+  const uniqueTenseMoods = new Set(
+    user.doneWords.map(dw => dw.word.tense.concat(dw.word.mood))
+  ).size;
+
+  const getPracticeHistory = () => {
+    return (
+      <>
+        <h2>You have ...</h2>
+        <div className=''>
+          <div className='m-4 ml-4'>
+          <ul>
+            <li>conjugated <span className='text-amber-400 font-bold'>{user?.doneWords.length} words</span> in total</li>
+            <li>practiced on <span className='text-sky-500 font-bold'>{uniqueDates} different days</span></li>
+            <li>practiced <span className='text-orange-600 font-bold'>{uniqueTenseMoods} different unique combinations</span> of tense / mood</li>
+          </ul>
+          </div>
+          <div className='flex flex-auto gap-x-4 md:gap-x-8 mt-8'>
+
+            <div className='tablecard bg-amber-100'>
+              <table>
+                <tbody>
+                  <tr>
+                    <th>Mood</th>
+                  </tr>
+                  {renderTable(getMoodTableData())}
+                </tbody>
+              </table>
+            </div>
+            <div className='tablecard bg-sky-100'>
+              <table>
+                <tbody>
+
+                  <tr>
+                    <th>Tense</th>
+                  </tr>
+                  {renderTable(getTenseTableData())}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
+  if (showModal) {
+    return <>
+      <Modal content={getPracticeHistory()} closeButtonText="Close" closeModal={() => setShowModal(false)} />
+      <div className="">
+      </div>
+    </>;
+  }
 
   if (user && user.goal) return (
-    <>{showModal && <Modal />}
+    <>
 
       <div>
+
         <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center'>
+
           <div className='optioncard'>
             <h3>Daily goal</h3>
-
             <form onSubmit={onSetDailyGoal}><p>Set daily goal:</p>
               <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> <div className='font-bold'>{dailyGoal}</div></p>
               <p><button className="btn" type='submit'>Save</button></p>
             </form>
           </div>
-          <div className='optioncard'>
 
+          <div className='optioncard'>
             <h3 className='mb-4'>Strict accents mode</h3>
             <label htmlFor="default-toggle" className="relative inline-flex items-center mb-4 cursor-pointer">
               <input type="checkbox" value="" id="default-toggle" className="sr-only peer" onClick={changeStrictAccents} checked={strictAccents} />
@@ -162,24 +259,26 @@ export const UserPage = () => {
             </label>
             <div className='description'>{"If this is on, the app will require 100% correct accents. For example, 'correis' will not be accepted for the word 'corréis'."}</div>
           </div>
+
         </div>
 
         <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center mt-12'>
+  
           <div className='optioncard'>
-            <p><button className='btn' type='button' onClick={() => setShowModal(!showModal)}>View practice history</button></p>
+            <p><button className='btn' type='button' onClick={() => { setShowModal(!showModal); window.scroll({ top: 0, left: 0, behavior: 'smooth' }); }}>View practice history</button></p>
             <p className='description'>View how many verbs you have conjugated, and which tenses and moods you have practiced the most.</p>
           </div>
 
-          <div className='optioncard'>
-
+          <div className='optioncard max-h-[500px]'>
             <h3>Your wordlists</h3>
-            {wordLists.length > 0 ?
-              wordLists.map((list) => <div key={list.title}>
-                {list._id ? <a className='link' href={"wordlist/" + list._id}>{list.title}</a> :
-                  list.title}
-              </div>)
-              : <p>No wordlists found</p>}
-
+            <div className='max-h-[40%] overflow-auto'>
+              {wordLists.length > 0 ?
+                wordLists.map((list) => <div key={list.title}>
+                  {list._id ? <a className='link' href={"wordlist/" + list._id}>{list.title}</a> :
+                    list.title}
+                </div>)
+                : <p>No wordlists found</p>}
+            </div>
             <h3 className="mt-2">New wordlist</h3>
             <form onSubmit={newWordList}><p>Name:</p>
               <p><input className='textField' type="text" onChange={onNameChange}></input></p>
@@ -188,6 +287,7 @@ export const UserPage = () => {
           </div>
 
         </div>
+
         <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center mt-8'>
 
           <div className='optioncard'>
@@ -198,12 +298,14 @@ export const UserPage = () => {
               <button className='btn' type='button' onClick={deleteUserButton}>Delete all user data</button>
             </p>
           </div>
-        </div>
 
+        </div>
+    
       </div>
+    
     </>
   );
-  
+
   return null;
 
 };
