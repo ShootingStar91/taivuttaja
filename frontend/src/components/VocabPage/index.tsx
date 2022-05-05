@@ -3,6 +3,7 @@ import { useAppDispatch } from '../../reducers/hooks';
 import { errorToast, showToast } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { Word } from '../../types';
+import { EnglishFlag, SpanishFlag } from '../Flags';
 
 export const VocabPage = () => {
 
@@ -61,15 +62,17 @@ export const VocabPage = () => {
   return (
 
     <div className="fullcard p-8">
-      <h2>
-        {word.infinitive_english}
-      </h2>
+      <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px]'>
+        <EnglishFlag /> <h2>{word.infinitive_english}</h2>
+      </div>
       <div>
-        <form onSubmit={onTry}>
-          <p><input className='textField' type='text' onChange={handleChange} value={currentTry} disabled={showAnswer} /></p>
-          <p><button className='btn w-[145px]' type='submit'>Try</button></p>
-          <p><button className='btn w-[145px]' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button></p>
-        </form>
+        <div className='flex auto-flex gap-x-4'>
+          <SpanishFlag /><input className='textField' type='text' onChange={handleChange} value={currentTry} disabled={showAnswer} />
+        </div>
+        <div className='flex auto-flex gap-x-4 pt-8'>
+          <button className='btn w-[145px]' type='button' onClick={onTry}>Try</button>
+          <button className='btn w-[145px]' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button>
+        </div>
       </div>
     </div>
   );

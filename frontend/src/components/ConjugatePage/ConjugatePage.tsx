@@ -10,7 +10,7 @@ import userService from '../../services/user';
 import { addDoneWord, selectUser } from '../../reducers/user';
 import { delay } from '../../services/util';
 import { COLORS } from '../../config';
-import { Modal } from '../Modal';
+import { FullModal } from '../Modal';
 import { useNavigate } from 'react-router-dom';
 
 export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSettings, next: () => void, stop: () => void }) => {
@@ -237,7 +237,7 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
   };
   if (!triggerClose) {
   return (
-    <Modal content={getContent()} closeButtonText="Stop practice" closeModal={() => stop() } />
+    <FullModal content={getContent()} closeButtonText="Stop practice" closeModal={() => stop() } />
   );
   }
   return null;
