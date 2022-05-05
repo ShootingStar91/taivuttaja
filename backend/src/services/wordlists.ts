@@ -59,7 +59,7 @@ const create = async (title: unknown, userId: string) => {
   const words: string[] = [];
   const nameExists = await wordlistModel.find({ title });
   if (nameExists) {
-    throw new Error('Wordlist with that name already exist. Select a different name');
+    throw new Error('Wordlist with that name already exists. Select a different name');
   }
   const newWordlist = new wordlistModel({ title, words, owner: userId });
   const savedWordlist = await newWordlist.save();
