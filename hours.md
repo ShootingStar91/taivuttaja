@@ -41,4 +41,5 @@
 | 1.5.  | 3.5 | Continued building frontend styles. |
 | 2.5.  | 1   | Started building a modal component with Tailwind CSS |
 | 4.5.  | 4   | Built a working version of modal. Fixes and improvements in styles. |
-| Total hours | 106     | 
+| 5.5.  | 3.5 | Continued building frontend UI & styles, fixed some small issues in both frontend & backends. |
+| Total hours | 109.5     | 

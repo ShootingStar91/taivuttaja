@@ -167,7 +167,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
                 className="basic-single"
                 classNamePrefix="select"
                 name="wordField"
-                options={allWordlists.map(list => {
+                options={allWordlists.filter(list => list.words.length > 0).map(list => {
                   return { label: list.title, value: list._id };
                 })}
                 onChange={onWordlistChange}
