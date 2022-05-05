@@ -25,8 +25,10 @@ export const UserPage = () => {
   const [dailyGoal, setDailyGoal] = useState<string>("50");
   const [strictAccents, setStrictAccents] = useState<boolean | undefined>(user?.strictAccents);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [userLoaded, setUserLoaded] = useState<boolean>(false);
 
   useEffect(() => {
+
     const getWordLists = async () => {
       if (user && user.token) {
         const [error, result] = await wordListService.getWordLists(user.token);
@@ -35,6 +37,8 @@ export const UserPage = () => {
           void dispatch(showToast(errorToast(error)));
           return;
         }
+        console.log("setting wordlists");
+
         setWordLists(result);
       }
     };
@@ -49,10 +53,18 @@ export const UserPage = () => {
         dispatch(setUser({ ...user, doneWords: result }));
       }
     };
-
     void getWordLists();
     void updateDoneWords();
-  }, []);
+
+
+  }, [userLoaded]);
+
+  useEffect(() => {
+    if (user) {
+      setUserLoaded(true);
+    }
+    
+  }, [user]);
 
 
 
@@ -197,13 +209,13 @@ export const UserPage = () => {
         <h2>You have ...</h2>
         <div className=''>
           <div className='m-4 ml-4'>
-          <ul>
-            <li>conjugated a verb <span className='text-amber-400 font-bold'>{user?.doneWords.length} times</span> in total</li>
-            <li>practiced on <span className='text-sky-500 font-bold'>{uniqueDates} different days</span></li>
-            <li>practiced <span className='text-orange-600 font-bold'>{uniqueTenseMoods} unique combinations</span> of tense / mood</li>
-            <li>practiced <span className='text-blue-500 font-bold'>{uniqueVerbs} different verbs</span>!</li>
-            
-          </ul>
+            <ul>
+              <li>conjugated a verb <span className='text-amber-400 font-bold'>{user?.doneWords.length} times</span> in total</li>
+              <li>practiced on <span className='text-sky-500 font-bold'>{uniqueDates} different days</span></li>
+              <li>practiced <span className='text-orange-600 font-bold'>{uniqueTenseMoods} unique combinations</span> of tense / mood</li>
+              <li>practiced <span className='text-blue-500 font-bold'>{uniqueVerbs} different verbs</span>!</li>
+
+            </ul>
           </div>
           <div className='flex flex-auto gap-x-4 md:gap-x-8 mt-8'>
 
@@ -252,8 +264,8 @@ export const UserPage = () => {
           <div className='optioncard'>
             <h3>Daily goal</h3>
             <p>Set daily goal:</p>
-              <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> <span className='font-bold'>{dailyGoal}</span></p>
-              <p><button className="btn" type='button' onClick={onSetDailyGoal}>Save</button></p>
+            <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> <span className='font-bold'>{dailyGoal}</span></p>
+            <p><button className="btn" type='button' onClick={onSetDailyGoal}>Save</button></p>
           </div>
 
           <div className='optioncard'>
@@ -269,7 +281,7 @@ export const UserPage = () => {
         </div>
 
         <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center mt-12'>
-  
+
           <div className='optioncard'>
             <p><button className='btn' type='button' onClick={() => { setShowModal(!showModal); window.scroll({ top: 0, left: 0, behavior: 'smooth' }); }}>View practice history</button></p>
             <p className='description'>View how many verbs you have conjugated, and which tenses and moods you have practiced the most.</p>
@@ -287,8 +299,8 @@ export const UserPage = () => {
             </div>
             <h3 className="mt-2">New wordlist</h3>
             <p>Name:</p>
-              <p><input className='textField' type="text" onChange={onNameChange}></input></p>
-              <p><button className='btn' type='button' onClick={newWordList}>Create</button></p>
+            <p><input className='textField' type="text" onChange={onNameChange}></input></p>
+            <p><button className='btn' type='button' onClick={newWordList}>Create</button></p>
           </div>
 
         </div>
@@ -305,9 +317,9 @@ export const UserPage = () => {
           </div>
 
         </div>
-    
+
       </div>
-    
+
     </>
   );
 

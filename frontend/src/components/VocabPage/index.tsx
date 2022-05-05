@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState, KeyboardEvent } from 'react';
 import { useAppDispatch } from '../../reducers/hooks';
 import { errorToast, showToast } from '../../reducers/notification';
 import { wordService } from '../../services/words';
@@ -29,6 +29,10 @@ export const VocabPage = () => {
 
   const onTry = (event: FormEvent) => {
     event.preventDefault();
+    check();
+  };
+
+  const check = () => {
     if (word && currentTry === word.infinitive) {
       void getWord();
       setCurrentTry("");
@@ -39,6 +43,14 @@ export const VocabPage = () => {
     const value = event.currentTarget.value;
     if (value !== null) {
       setCurrentTry(value);
+    }
+  };
+
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    
+    if (event.key === "Tab" || event.key === "Enter") {
+      event.preventDefault();
+      check();     
     }
   };
 
@@ -69,7 +81,7 @@ export const VocabPage = () => {
         <div className='flex auto-flex gap-x-4'>
           <SpanishFlag /><input className='textField' type='text' onChange={handleChange} value={currentTry} disabled={showAnswer} />
         </div>
-        <div className='flex auto-flex gap-x-4 pt-8'>
+        <div className='flex auto-flex gap-x-4 pt-8' onKeyDown={onKeyDown}>
           <button className='btn w-[145px]' type='button' onClick={onTry}>Try</button>
           <button className='btn w-[145px]' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button>
         </div>

@@ -67,7 +67,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
-
+    
     if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();
       onTry();

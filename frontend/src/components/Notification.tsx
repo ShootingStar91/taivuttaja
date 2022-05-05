@@ -27,9 +27,9 @@ export const Notification = () => {
   };
 
   return (
-    <div id="toast-default" className="fixed top-5 right-14 lg:right-20 2xl:right-96 flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 z-50" role="alert" onClick={() => void dispatch(showToast(toast("")))}>
+    <div id="toast-default" className="fixed top-5 right-14 lg:right-20 2xl:right-96 flex items-center w-full max-w-xs p-4 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 z-50" role="alert" onClick={() => void dispatch(showToast(toast("")))}>
       {getIcon(notification.type)}
-      <div className="ml-3 text-sm font-normal">{notification.message}</div>
+      <div className="ml-3 font-normal">{notification.message}</div>
 
     </div>
   );
