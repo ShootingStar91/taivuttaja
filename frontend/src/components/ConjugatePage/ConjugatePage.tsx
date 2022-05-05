@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
-import { showNotification } from '../../reducers/notification';
+import { errorToast, showToast, successToast } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { ConjugateMode, ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription, forms, getRandomForm, deAccentify } from '../../utils';
@@ -66,7 +66,7 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
 
     const [error, result] = await wordService.getWord(randomWord, 'en', mood, tense);
     if (!result) {
-      void dispatch(showNotification(error));
+      void dispatch(showToast(errorToast(error)));
       return;
     }
 
@@ -111,7 +111,7 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
       const attempt = formState[form];
       const correct = getWordForm(word, form);
       if (!correct) {
-        void dispatch(showNotification("Unexpected error: Invalid word data."));
+        void dispatch(showToast(errorToast("Unexpected error: Invalid word data.")));
         return;
       }
       if (attempt === correct) {
@@ -134,12 +134,12 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
 
     if (all_correct) {
       const message = accentMistakes ? "All correct, but remember the accents!" : "¡Todo correcto!";
-      void dispatch(showNotification(message));
+      void dispatch(showToast(successToast(message)));
       await delay(3000);
       if (user?.token) {
         const [error, result] = await userService.addDoneWord(word._id, user.token);
         if (!result) {
-          void dispatch(showNotification(error));
+          void dispatch(showToast(errorToast(error)));
         }
         dispatch(addDoneWord());
       }
@@ -167,7 +167,7 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
 
   const onSkip = async () => {
     if (!word) {
-      void dispatch(showNotification("Unexpected error happened!"));
+      void dispatch(showToast(errorToast("Unexpected error happened!")));
       return;
     }
     if (!showingAnswers) {

@@ -14,6 +14,7 @@ import { Notification } from './components/Notification';
 import userService from './services/user';
 import { InfoBar } from './components/InfoBar';
 import spain_city_flag from './resources/spain-city-flag-cropped-2.jpeg';
+import { showToast, successToast } from './reducers/notification';
 
 const App = () => {
 
@@ -25,6 +26,7 @@ const App = () => {
   const logout = () => {
     dispatch(removeUser());
     window.localStorage.clear();
+    void dispatch(showToast(successToast("You are now logged out!")));
   };
 
   useEffect(() => {

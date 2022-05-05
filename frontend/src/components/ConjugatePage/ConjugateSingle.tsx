@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState, KeyboardEvent } from "react";
 import { COLORS } from "../../config";
 import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
-import { showNotification } from "../../reducers/notification";
+import { errorToast, showToast } from "../../reducers/notification";
 import { selectUser } from "../../reducers/user";
 import { wordService } from "../../services/words";
 import { ConjugateMode, ConjugateSettings, Mood, Tense, Word } from "../../types";
@@ -42,7 +42,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     const [error, result] = await wordService.getWord(word, 'en', randomedMood, randomedTense);
 
     if (!result) {
-      void dispatch(showNotification(error));
+      void dispatch(showToast(errorToast(error)));
       return;
     }
 
@@ -85,7 +85,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
 
   const onTry = () => {
     if (!answer) {
-      void dispatch(showNotification("Error: invalid word data"));
+      void dispatch(showToast(errorToast("Error: invalid word data")));
       return;
     }
 

@@ -1,6 +1,6 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useAppDispatch } from '../../reducers/hooks';
-import { showNotification } from '../../reducers/notification';
+import { errorToast, showToast } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { Word } from '../../types';
 
@@ -20,7 +20,7 @@ export const VocabPage = () => {
   const getWord = async () => {
     const [error, result] = await wordService.getWord(null, 'en', null, null);
     if (!result) {
-      void dispatch(showNotification(error));
+      void dispatch(showToast(errorToast(error)));
       return;
     }
     setWord(result);
@@ -51,15 +51,15 @@ export const VocabPage = () => {
       void getWord();
       setCurrentTry("");
     }
-    
+
   };
-  
+
   if (word === null) {
     return <div>Loading...</div>;
   }
 
   return (
-    
+
     <div className="fullcard p-8">
       <h2>
         {word.infinitive_english}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, } from 'react';
 import Select, { SingleValue } from 'react-select';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
-import { showNotification } from '../../reducers/notification';
+import { errorToast, showToast } from '../../reducers/notification';
 import { selectUser } from '../../reducers/user';
 import { wordListService } from '../../services/wordlists';
 import { ConjugateMode, ConjugateSettings, Mood, moodList, MoodSelections, Tense, tenseList, TenseSelections, validCombinations, WordList } from '../../types';
@@ -33,7 +33,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
       const [error, result] = await wordListService.getWordLists(user.token);
       if (!result) {
-        void dispatch(showNotification(error));
+        void dispatch(showToast(errorToast(error)));
         return;
       }
       setAllWordlists(result);
@@ -80,7 +80,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   const onStart = async (mode: ConjugateMode) => {
 
     if (!tenseSelections.find(s => s.selected) || !moodSelections.find(s => s.selected)) {
-      void dispatch(showNotification("Select at least one mood and tense"));
+      void dispatch(showToast(errorToast("Select at least one mood and tense")));
       return;
     }
 
@@ -90,7 +90,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       const [error, result] = await wordListService.getWordList(wordlistId, user.token);
 
       if (!result) {
-        void dispatch(showNotification(error));
+        void dispatch(showToast(errorToast(error)));
         return;
       }
       wordlist = result;

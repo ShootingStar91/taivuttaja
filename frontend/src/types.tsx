@@ -101,6 +101,7 @@ export interface DoneWord {
 }
 
 export enum ToastType {
-  OK,
-  ERR
+  NORMAL,
+  SUCCESS,
+  ERROR
 }

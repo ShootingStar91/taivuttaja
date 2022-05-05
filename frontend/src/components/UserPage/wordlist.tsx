@@ -6,7 +6,7 @@ import { wordService } from "../../services/words";
 import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
 import { selectUser } from "../../reducers/user";
 import Select, { SingleValue } from 'react-select';
-import { showNotification } from "../../reducers/notification";
+import { errorToast, showToast, successToast } from "../../reducers/notification";
 import { ERRORS } from "../../config";
 
 type WordOption = {
@@ -31,14 +31,14 @@ export const WordListView = () => {
     const getWordlist = async () => {
       if (!id || !user || !user.token) {
         console.log(id, user);
-        void dispatch(showNotification(ERRORS.INVALID_LOGIN));
+        void dispatch(showToast(errorToast(ERRORS.INVALID_LOGIN)));
         return;
       }
       const [error, result] = await wordListService.getWordList(id, user.token);
       if (!result) {
         console.log(result);
 
-        void dispatch(showNotification(error));
+        void dispatch(showToast(errorToast(error)));
         return;
       }
       setWordlist(result);
@@ -53,7 +53,7 @@ export const WordListView = () => {
     const getStrippedWords = async () => {
       const [error, result] = await wordService.getStrippedWords();
       if (!result) {
-        void dispatch(showNotification(error));
+        void dispatch(showToast(errorToast(error)));
         return;
       }
       setAllWords(result.map(w => { return { value: w.infinitive_english, label: w.infinitive_english }; }));
@@ -78,10 +78,10 @@ export const WordListView = () => {
     const [error, result] = await wordListService.deleteWordlist(wordlist._id, user.token);
 
     if (!result) {
-      void dispatch(showNotification(error));
+      void dispatch(showToast(errorToast(error)));
       return;
     }
-    void dispatch(showNotification("Wordlist deleted successfully"));
+    void dispatch(showToast(successToast("Wordlist deleted successfully")));
     navigate('/userpage/');
 
   };
@@ -91,7 +91,7 @@ export const WordListView = () => {
     event.preventDefault();
     if (!allWords) { return; }
     if (!wordlist) {
-      void dispatch(showNotification("Error: Wordlist not found"));
+      void dispatch(showToast(errorToast("Wordlist not found!") ));
       return;
     }
     if (word && wordlist._id && user && user.token
@@ -100,7 +100,7 @@ export const WordListView = () => {
       setWordlist({ ...wordlist, words: [...wordlist.words, word.value] });
       const [error, result] = await wordListService.addWord(word.value, wordlist._id, user.token);
       if (!result) {
-        void dispatch(showNotification(error));
+        void dispatch(showToast(errorToast(error)));
         return;
       }
       const newAllWords = allWords.filter(w => w.value !== word.value);
@@ -112,7 +112,7 @@ export const WordListView = () => {
     if (!wordlist?._id || !user?.token) { return; }
     const [error, result] = await wordListService.deleteWord(wordToDelete, wordlist?._id, user.token);
     if (!result) {
-      void dispatch(showNotification(error));
+      void dispatch(showToast(errorToast(error)));
     }
     setWordlist({ ...wordlist, words: wordlist.words.filter(w => w !== wordToDelete) });
   };
