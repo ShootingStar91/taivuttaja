@@ -25,5 +25,6 @@ Here is a list of current feature. All verb practice only works from English to 
 + Frontend written in Typescript & React 17
   + Redux toolkit
   + axios
+  + Styles with Tailwind CSS
 + Backend in Typescript, NodeJS Express
   + Mongoose & MongoDB

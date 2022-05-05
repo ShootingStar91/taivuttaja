@@ -42,7 +42,7 @@ const App = () => {
   const navBarLinkStyle = "float-left hover:text-yellow-100";
 
   return (
-    <div id='mainContainer' className="bg-amber-200 container sm mx-auto mb-6 max-w-[1024px] rounded-b-lg shadow-lg">
+    <div id='mainContainer' className="bg-amber-200 container sm mx-auto mb-6 max-w-[1024px] min-w-[728px] rounded-b-lg shadow-lg">
       <BrowserRouter>
         <img src={spain_city_flag}></img>
         <Notification />

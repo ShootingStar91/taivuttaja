@@ -48,6 +48,14 @@
     @apply hover:bg-blue-700;
   }
 
+  .btn-orange {
+    @apply bg-amber-400 text-white font-bold py-2 px-4 rounded;
+  }
+
+  .btn-orange:hover {
+    @apply hover:bg-amber-600;
+  }
+
   .textField {
     @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight;
   }

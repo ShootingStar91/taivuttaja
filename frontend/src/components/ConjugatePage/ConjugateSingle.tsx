@@ -7,7 +7,7 @@ import { wordService } from "../../services/words";
 import { ConjugateMode, ConjugateSettings, Mood, Tense, Word } from "../../types";
 import { deAccentify, forms, getForm, getFormDescription, getRandomForm, getWordForm } from "../../utils";
 import { EnglishFlag, SpanishFlag } from "../Flags";
-import { Modal } from "../modal";
+import { Modal } from "../Modal";
 
 export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateSettings, next: () => void, stop: () => void }) => {
 

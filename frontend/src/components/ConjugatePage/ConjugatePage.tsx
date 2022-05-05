@@ -10,7 +10,7 @@ import userService from '../../services/user';
 import { addDoneWord, selectUser } from '../../reducers/user';
 import { delay } from '../../services/util';
 import { COLORS } from '../../config';
-import { Modal } from '../modal';
+import { Modal } from '../Modal';
 import { useNavigate } from 'react-router-dom';
 
 export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSettings, next: () => void, stop: () => void }) => {
@@ -226,8 +226,8 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
               </tbody>
             </table>
             <div className='flex gap-x-8 mt-8'>
-              <button className='btn' type='submit' disabled={showingAnswers}>Try</button>
-              <button className='btn' type='button' onClick={onSkip}>{showingAnswers ? "Next" : "Show answers"}</button>
+              <button className='btn w-[220px]' type='submit' disabled={showingAnswers}>Try</button>
+              <button className={'w-[220px]' + (showingAnswers ? ' btn-orange ' : ' btn ')} type='button' onClick={onSkip}>{showingAnswers ? "Next" : "Show answers"}</button>
             </div>
           </form>
         </div>

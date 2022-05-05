@@ -43,7 +43,7 @@ const deleteWordlist = async (wordlistId: unknown, userId: string) => {
     throw new Error("Invalid parameters");
   }
 
-  const result = await wordlistModel.findOneAndRemove({ _id: wordlistId, owner: userId});
+  const result = await wordlistModel.findOneAndRemove({ _id: wordlistId, owner: userId });
 
   if (!result) {
     throw new Error('Wordlist not found');
@@ -57,7 +57,10 @@ const create = async (title: unknown, userId: string) => {
   }
 
   const words: string[] = [];
-
+  const nameExists = await wordlistModel.find({ title });
+  if (nameExists) {
+    throw new Error('Wordlist with that name already exist. Select a different name');
+  }
   const newWordlist = new wordlistModel({ title, words, owner: userId });
   const savedWordlist = await newWordlist.save();
   if (!savedWordlist) {

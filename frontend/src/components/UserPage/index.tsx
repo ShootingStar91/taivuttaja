@@ -6,7 +6,7 @@ import { wordListService } from "../../services/wordlists";
 import { moodList, tenseList, WordList } from "../../types";
 import userService from '../../services/user';
 import { showNotification } from "../../reducers/notification";
-import { Modal } from '../modal';
+import { Modal } from '../Modal';
 
 
 type TableData = {
@@ -197,10 +197,10 @@ export const UserPage = () => {
         <div className=''>
           <div className='m-4 ml-4'>
           <ul>
-            <li>conjugated <span className='text-amber-400 font-bold'>{user?.doneWords.length} verbs</span> in total</li>
+            <li>conjugated a verb <span className='text-amber-400 font-bold'>{user?.doneWords.length} times</span> in total</li>
             <li>practiced on <span className='text-sky-500 font-bold'>{uniqueDates} different days</span></li>
-            <li>practiced <span className='text-orange-600 font-bold'>{uniqueTenseMoods} different unique combinations</span> of tense / mood</li>
-            <li>practiced <span className='text-blue-500 font-bold'>{uniqueVerbs} unique verbs</span>!</li>
+            <li>practiced <span className='text-orange-600 font-bold'>{uniqueTenseMoods} unique combinations</span> of tense / mood</li>
+            <li>practiced <span className='text-blue-500 font-bold'>{uniqueVerbs} different verbs</span>!</li>
             
           </ul>
           </div>
@@ -250,16 +250,15 @@ export const UserPage = () => {
 
           <div className='optioncard'>
             <h3>Daily goal</h3>
-            <form onSubmit={onSetDailyGoal}><p>Set daily goal:</p>
-              <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> <div className='font-bold'>{dailyGoal}</div></p>
-              <p><button className="btn" type='submit'>Save</button></p>
-            </form>
+            <p>Set daily goal:</p>
+              <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> <span className='font-bold'>{dailyGoal}</span></p>
+              <p><button className="btn" type='button' onClick={onSetDailyGoal}>Save</button></p>
           </div>
 
           <div className='optioncard'>
             <h3 className='mb-4'>Strict accents mode</h3>
             <label htmlFor="default-toggle" className="relative inline-flex items-center mb-4 cursor-pointer">
-              <input type="checkbox" value="" id="default-toggle" className="sr-only peer" onClick={changeStrictAccents} checked={strictAccents} />
+              <input type="checkbox" value="" id="default-toggle" className="sr-only peer" onChange={changeStrictAccents} checked={strictAccents} />
               <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
               <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{strictAccents ? "On" : "Off"}</span>
             </label>
@@ -286,10 +285,9 @@ export const UserPage = () => {
                 : <p>No wordlists found</p>}
             </div>
             <h3 className="mt-2">New wordlist</h3>
-            <form onSubmit={newWordList}><p>Name:</p>
+            <p>Name:</p>
               <p><input className='textField' type="text" onChange={onNameChange}></input></p>
-              <p><button className='btn' type='submit'>Create</button></p>
-            </form>
+              <p><button className='btn' type='button' onClick={newWordList}>Create</button></p>
           </div>
 
         </div>

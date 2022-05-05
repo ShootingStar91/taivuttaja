@@ -16,7 +16,7 @@ type WordOption = {
 
 export const WordListView = () => {
 
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
   const user = useAppSelector(selectUser);
   const { id } = useParams();
   const [wordlist, setWordlist] = useState<WordList | undefined>();
@@ -37,7 +37,7 @@ export const WordListView = () => {
       const [error, result] = await wordListService.getWordList(id, user.token);
       if (!result) {
         console.log(result);
-        
+
         void dispatch(showNotification(error));
         return;
       }
@@ -133,9 +133,11 @@ export const WordListView = () => {
       />
       <p><button className='btn' type="button" onClick={addWord}>Add</button></p>
 
-      <div className='fullcard'>
-        {wordlist.words.map(w => <p key={w}><span className='link' onClick={() => deleteWord(w)}>Delete</span> | {w}</p>)}
-      </div>
+      {wordlist.words.length > 0 &&
+        <div className='fullcard'>
+          {wordlist.words.map(w => <p key={w}><span className='link' onClick={() => deleteWord(w)}>Delete</span> | {w}</p>)}
+        </div>
+      }
       <div>
         <p><button className='btn' type="button" onClick={deleteWordlistButton}>Delete list</button></p>
       </div>
