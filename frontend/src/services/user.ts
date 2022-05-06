@@ -63,9 +63,9 @@ const checkLogin = () => {
   }
 };
 
-const changePassword = async (password: string, token: string): Promise<[string, undefined | boolean]> => {
+const changePassword = async (currentPassword: string, newPassword: string, token: string): Promise<[string, undefined | boolean]> => {
   try {
-    const result = await axios.post<boolean>(`${url}/changepassword/`, { password }, getHeader(token));
+    const result = await axios.post<boolean>(`${url}/changepassword/`, { currentPassword, newPassword }, getHeader(token));
     return success<boolean>(result.data);
   } catch (e) {
     return error(e);

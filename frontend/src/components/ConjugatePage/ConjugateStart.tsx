@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from 'react';
+import React, { ChangeEvent, useEffect, useState, } from 'react';
 import Select, { SingleValue } from 'react-select';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
 import { errorToast, showToast } from '../../reducers/notification';
@@ -21,6 +21,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   const [availableTenses, setAvailableTenses] = useState<Tense[]>(tenseList);
   const [wordlistId, setWordlist] = useState<string | null>(null);
   const [allWordlists, setAllWordlists] = useState<WordList[] | null>(null);
+  const [amount, setAmount] = useState<number>(10);
   const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
@@ -100,7 +101,8 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       tenseSelections,
       moodSelections,
       wordlist,
-      mode: mode
+      mode: mode,
+      amount
     };
 
     startConjugating(settings);
@@ -114,6 +116,17 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
     }
   };
 
+  const onChangeAmount = (e: ChangeEvent<HTMLSelectElement>) => {
+    const val = parseInt(e.currentTarget?.value); 
+    if (val) {
+      setAmount(val);
+      
+    }
+    console.log("val", val);
+    
+  };
+
+  const amountOptions = [5, 10, 15, 20, 30, 40, 50];
 
   return (
     <div>
@@ -176,7 +189,13 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
             }
           </div>
         </div>}
-        <div className='pt-6'>
+        <div className='flex justify-center mb-6 pt-4'>
+          <h2 className='pr-4'>How many verbs to practice?</h2>
+          <select className='bg-white font-bold text-xl' name='amount' onChange={onChangeAmount} value={amount}>
+            {amountOptions.map(amt => <option key={amt} value={amt.toString()}>{amt}</option>)}
+          </select>
+        </div>
+        <div className=''>
           <h2 className='flex justify-center'>Begin by choosing mode!</h2>
           <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto p-1 ">
             <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'

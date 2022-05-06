@@ -13,7 +13,7 @@ import { COLORS } from '../../config';
 import { FullModal } from '../Modal';
 import { useNavigate } from 'react-router-dom';
 
-export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSettings, next: () => void, stop: () => void }) => {
+export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSettings, next: (max: number) => void, stop: () => void }) => {
 
   const [word, setWord] = useState<Word | null>(null);
   const dispatch = useAppDispatch();
@@ -148,8 +148,7 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
       resetFormColors();
       const nextField = document.getElementById("0");
       nextField?.focus();
-      next();
-
+      next(settings.amount);
     }
   };
 
@@ -188,7 +187,7 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
       setFormState({ ...initialState });
       await getWord();
       resetFormColors();
-      next();
+      next(settings.amount);
     }
   };
 
@@ -236,9 +235,9 @@ export const ConjugatePage = ({ settings, next, stop }: { settings: ConjugateSet
     );
   };
   if (!triggerClose) {
-  return (
-    <FullModal content={getContent()} closeButtonText="Stop practice" closeModal={() => stop() } />
-  );
+    return (
+      <FullModal content={getContent()} closeButtonText="Stop practice" closeModal={() => stop()} />
+    );
   }
   return null;
 };

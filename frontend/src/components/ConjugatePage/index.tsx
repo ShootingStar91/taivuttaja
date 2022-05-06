@@ -1,6 +1,6 @@
 import React, { useState, } from 'react';
 import { ConjugateMode, ConjugateSettings } from '../../types';
-import { ConjugatePage } from './ConjugatePage';
+import { ConjugateFull } from './ConjugateFull';
 import { ConjugateSingle } from './ConjugateSingle';
 import { ConjugateStart } from './ConjugateStart';
 
@@ -16,8 +16,11 @@ export const ConjugateIndex = () => {
     setStage(1);
   };
 
-  const next = () => {
-    if (stage === 10) {
+  const next = (max: number) => {
+    console.log("max", max);
+    console.log("stage:", stage);
+    
+    if (stage >= max) {
       setStage(0);
     } else {
       setStage(stage + 1);
@@ -33,7 +36,7 @@ export const ConjugateIndex = () => {
   }
 
   if (settings.mode === ConjugateMode.Full) {
-    return <ConjugatePage settings={settings} next={next} stop={stop} />;
+    return <ConjugateFull settings={settings} next={next} stop={stop} />;
   }
   
   return <ConjugateSingle settings={settings}  next={next} stop={stop} />;

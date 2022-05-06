@@ -8,7 +8,7 @@ import userService from '../../services/user';
 import { errorToast, showToast, successToast } from "../../reducers/notification";
 import { Modal } from '../Modal';
 import { ERRORS } from "../../config";
-
+import { PasswordModal } from './passwordModal';
 
 type TableData = {
   form: string,
@@ -24,7 +24,8 @@ export const UserPage = () => {
   const dispatch = useAppDispatch();
   const [dailyGoal, setDailyGoal] = useState<string>("50");
   const [strictAccents, setStrictAccents] = useState<boolean | undefined>(user?.strictAccents);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showHistoryModal, setShowHistoryModal] = useState<boolean>(false);
+  const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
   const [userLoaded, setUserLoaded] = useState<boolean>(false);
 
   useEffect(() => {
@@ -37,7 +38,6 @@ export const UserPage = () => {
           void dispatch(showToast(errorToast(error)));
           return;
         }
-        console.log("setting wordlists");
 
         setWordLists(result);
       }
@@ -62,8 +62,9 @@ export const UserPage = () => {
   useEffect(() => {
     if (user) {
       setUserLoaded(true);
+
     }
-    
+
   }, [user]);
 
 
@@ -109,20 +110,6 @@ export const UserPage = () => {
       setDailyGoal(newDailyGoal);
     }
   };
-  /*
-    const changePassword = async () => {
-      if (!user?.token) {
-        void dispatch(showToast("Error: Invalid user. Try logging in again"));
-        return;
-      }
-      const [error, result] = await userService.changePassword(password, user.token);
-      if (!result) {
-        void dispatch(showToast(error));
-        return;
-      }
-      void dispatch(showToast("Password changed"));
-    };
-  */
 
   const newWordList = async (event: FormEvent) => {
     event.preventDefault();
@@ -246,15 +233,24 @@ export const UserPage = () => {
     );
   };
 
-  if (showModal) {
+  if (showHistoryModal) {
     return <>
-      <Modal content={getPracticeHistory()} closeButtonText="Close" closeModal={() => setShowModal(false)} />
+      <Modal content={getPracticeHistory()} closeButtonText="Close" closeModal={() => setShowHistoryModal(false)} />
       <div className="">
       </div>
     </>;
   }
 
-  if (user && user.goal) return (
+
+  if (showPasswordModal) {
+    return <>
+      <Modal content={<PasswordModal />} closeButtonText="Close" closeModal={() => setShowPasswordModal(false)} />
+      <div className="">
+      </div>
+    </>;
+  }
+
+  if (user) return (
     <>
 
       <div>
@@ -283,7 +279,7 @@ export const UserPage = () => {
         <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center mt-12'>
 
           <div className='optioncard'>
-            <p><button className='btn' type='button' onClick={() => { setShowModal(!showModal); window.scroll({ top: 0, left: 0, behavior: 'smooth' }); }}>View practice history</button></p>
+            <p><button className='btn' type='button' onClick={() => { setShowHistoryModal(!showHistoryModal); window.scroll({ top: 0, left: 0, behavior: 'smooth' }); }}>View practice history</button></p>
             <p className='description'>View how many verbs you have conjugated, and which tenses and moods you have practiced the most.</p>
           </div>
 
@@ -309,7 +305,7 @@ export const UserPage = () => {
 
           <div className='optioncard'>
             <p>
-              <button className='btn' type='button'>Change password</button>
+              <button className='btn' type='button' onClick={() => setShowPasswordModal(true)}>Change password</button>
             </p>
             <p>
               <button className='btn' type='button' onClick={deleteUserButton}>Delete all user data</button>
@@ -326,4 +322,3 @@ export const UserPage = () => {
   return null;
 
 };
-

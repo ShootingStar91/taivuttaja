@@ -42,7 +42,7 @@ router.post('/goal/', middleware.userExtractor, async (req, res) => {
 });
 
 router.post('/changepassword/', middleware.userExtractor, async (req, res) => {
-  const result = await userService.changePassword(req.body.password, req.user);
+  const result = await userService.changePassword(req.body.currentPassword, req.body.newPassword, req.user);  
   res.status(200).send(result);
 });
 

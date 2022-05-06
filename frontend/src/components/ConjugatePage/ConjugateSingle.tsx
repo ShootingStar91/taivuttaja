@@ -9,7 +9,7 @@ import { deAccentify, forms, getForm, getFormDescription, getRandomForm, getWord
 import { EnglishFlag, SpanishFlag } from "../Flags";
 import { FullModal } from "../Modal";
 
-export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateSettings, next: () => void, stop: () => void }) => {
+export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateSettings, next: (max: number) => void, stop: () => void }) => {
 
   const [word, setWord] = useState<Word | null>(null);
   const [answer, setAnswer] = useState<string | null>(null);
@@ -24,6 +24,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
 
   useEffect(() => {
     void newWord();
+    // Can create unmounted error
   }, []);
 
   const newWord = async () => {
@@ -108,14 +109,14 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
 
       void newWord();
       setAttempt("");
-      next();
+      next(settings.amount);
       field.style.backgroundColor = COLORS.BLANK;
     }, 2000);
 
     console.log(showingCorrect);
 
   };
-
+  console.log("amount: " , settings.amount);
   const onClickSkip = () => {
     if (!word || !answer) { return; }
     if (!showAnswer) {
@@ -125,7 +126,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
       setShowAnswer(false);
       void newWord();
       setAttempt("");
-      next();
+      next(settings.amount);
     }
 
   };

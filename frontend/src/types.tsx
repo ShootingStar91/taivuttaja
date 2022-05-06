@@ -90,7 +90,8 @@ export type ConjugateSettings = {
   wordlist: WordList | null,
   moodSelections: MoodSelections,
   tenseSelections: TenseSelections,
-  mode: ConjugateMode
+  mode: ConjugateMode,
+  amount: number
 };
 
 

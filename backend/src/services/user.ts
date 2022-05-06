@@ -129,10 +129,21 @@ const setGoal = async (goal: unknown, user: User) => {
   return result;
 };
 
-const changePassword = async (rawPassword: unknown, user: User) => {
-  const password = await createPasswordHash(parsePassword(rawPassword));
+const changePassword = async (rawOldPassword: unknown, rawNewPassword: unknown, user: User) => {
+  const newPassword = await createPasswordHash(parsePassword(rawNewPassword));
+  const oldPassword = parsePassword(rawOldPassword);
 
-  const result = await userModel.updateOne({ _id: user._id }, { password });
+  const dbUser = await userModel.findOne({_id: user._id});
+
+  if (!dbUser || !dbUser.password) {
+    throw new Error('User not found');
+  }
+
+  const passwordCorrect = await bcrypt.compare(oldPassword, dbUser.password);
+  if (!passwordCorrect) {
+    throw new Error("Invalid password");
+  }
+  const result = await userModel.updateOne({ _id: user._id }, { password: newPassword });
   if (result) {
     return true;
   }
