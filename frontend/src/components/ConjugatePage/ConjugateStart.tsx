@@ -38,11 +38,31 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
         return;
       }
       setAllWordlists(result);
+      const loadedSettings = loadOldSettings();
+
+      if (loadedSettings && result.filter(wl => wl._id && loadedSettings.wordlist && wl._id === loadedSettings.wordlist._id)) {
+        if (loadedSettings?.wordlist?._id && loadedSettings.wordlist.words.length > 0) {
+          setWordlist(loadedSettings.wordlist._id);
+        }
+      }
+
     };
 
+    if (!user) { loadOldSettings(); }
     void getWordLists();
 
   }, [user]);
+
+  const loadOldSettings = () => {
+    const oldSettingsData = window.localStorage.getItem('conjugateSettings');
+    if (oldSettingsData) {
+      const loadedSettings = JSON.parse(oldSettingsData) as ConjugateSettings;
+      setMoodSelections(loadedSettings.moodSelections);
+      setTenseSelections(loadedSettings.tenseSelections);
+      setAmount(loadedSettings.amount);
+      return loadedSettings;
+    }
+  };
 
   const switchMoodSelection = (mood: Mood) => {
 
@@ -105,28 +125,51 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       amount
     };
 
-    startConjugating(settings);
+    window.localStorage.setItem('conjugateSettings', JSON.stringify(settings));
 
+    startConjugating(settings);
 
   };
 
   const onWordlistChange = (newValue: SingleValue<WordlistOption>) => {
-    if (newValue?.value) {
+    console.log(newValue);
+    console.log(wordlistId);
+    
+    if (newValue?.value !== undefined) {
       setWordlist(newValue.value);
     }
   };
 
   const onChangeAmount = (e: ChangeEvent<HTMLSelectElement>) => {
-    const val = parseInt(e.currentTarget?.value); 
+    const val = parseInt(e.currentTarget?.value);
     if (val) {
       setAmount(val);
-      
+
     }
-    console.log("val", val);
-    
+
   };
 
-  const amountOptions = [5, 10, 15, 20, 30, 40, 50];
+  const getOptions = (): {value: string, label: string}[] => {
+    if (!allWordlists) return [];
+    const list = allWordlists
+      .filter(list => list.words.length > 0)
+      .map(list => { return { label: list.title, value: list._id ? list._id : '' }; });
+    list.push({ label: 'All words', value: ''});
+    return list;
+  };
+
+  const getValue = () => {
+    if (!allWordlists || !wordlistId) {
+      return { label: 'All words', value: ''};
+    }
+    const wl = allWordlists.find(wl => wl._id === wordlistId);
+    if (wl && wl._id) {
+      return { label: wl.title, value: wl._id };
+    }
+    return { label: 'All words', value: ''};
+  };
+
+  const amountOptions = [5, 10, 15, 20, 30, 40, 50, 75, 100];
 
   return (
     <div>
@@ -180,10 +223,9 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
                 className="basic-single"
                 classNamePrefix="select"
                 name="wordField"
-                options={allWordlists.filter(list => list.words.length > 0).map(list => {
-                  return { label: list.title, value: list._id };
-                })}
+                options={getOptions()}
                 onChange={onWordlistChange}
+                value={getValue()}
               /> :
               user && <p className='flex justify-center'>No wordlists found. Create wordlists on user page.</p>
             }

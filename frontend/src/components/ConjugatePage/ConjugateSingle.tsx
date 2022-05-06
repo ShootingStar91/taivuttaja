@@ -116,7 +116,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     console.log(showingCorrect);
 
   };
-  console.log("amount: " , settings.amount);
+
   const onClickSkip = () => {
     if (!word || !answer) { return; }
     if (!showAnswer) {

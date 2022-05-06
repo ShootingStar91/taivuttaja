@@ -319,6 +319,6 @@ export const UserPage = () => {
     </>
   );
 
-  return null;
+  return <div>User not found!</div>;
 
 };
