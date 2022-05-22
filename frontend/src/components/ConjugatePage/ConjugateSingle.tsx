@@ -38,8 +38,8 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     const word = settings.wordlist === null ?
       null :
       settings.wordlist.words[Math.floor(Math.random() * settings.wordlist.words.length)];
-
-    const [error, result] = await wordService.getWord(word, 'en', randomedMood, randomedTense);
+    const wordParam = word ? word.infinitive_english : null;
+    const [error, result] = await wordService.getWord(wordParam, 'en', randomedMood, randomedTense);
 
     if (!result) {
       void dispatch(showToast(errorToast(error)));

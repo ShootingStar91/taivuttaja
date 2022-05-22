@@ -16,10 +16,7 @@ export const ConjugateIndex = () => {
     setStage(1);
   };
 
-  const next = (max: number) => {
-    console.log("max", max);
-    console.log("stage:", stage);
-    
+  const next = (max: number) => {    
     if (stage >= max) {
       setStage(0);
     } else {

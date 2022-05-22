@@ -63,8 +63,8 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
     const randomWord = settings.wordlist === null ?
       null :
       settings.wordlist.words[Math.floor(Math.random() * settings.wordlist.words.length)];
-
-    const [error, result] = await wordService.getWord(randomWord, 'en', mood, tense);
+    const wordParam = randomWord ? randomWord.infinitive_english : null;
+    const [error, result] = await wordService.getWord(wordParam, 'en', mood, tense);
     if (!result) {
       void dispatch(showToast(errorToast(error)));
       return;
@@ -155,7 +155,6 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
   const onKeyDown = async (e: KeyboardEvent<HTMLFormElement>) => {
 
     if (e.key === "Tab") {
-      console.log(word);
       const activeField = document.activeElement?.getAttribute('id');
       if (activeField !== null && activeField !== undefined && activeField === "5" && !e.shiftKey) {
         e.preventDefault();

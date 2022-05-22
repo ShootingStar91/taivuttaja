@@ -42,4 +42,5 @@
 | 2.5.  | 1   | Started building a modal component with Tailwind CSS |
 | 4.5.  | 4   | Built a working version of modal. Fixes and improvements in styles. |
 | 5.5.  | 3.5 | Continued building frontend UI & styles, fixed some small issues in both frontend & backends. |
-| Total hours | 109.5     | 
+| 6.5.  | 3.5 | Added changing password functionality into a modal. Made practice settings save & load into localstorage. Fixed small issues. |
+| Total hours | 103     | 

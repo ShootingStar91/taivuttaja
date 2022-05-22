@@ -1,7 +1,7 @@
 import React, { FormEvent, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { wordListService } from "../../services/wordlists";
-import { WordList } from "../../types";
+import { StrippedWord, WordList } from "../../types";
 import { wordService } from "../../services/words";
 import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
 import { selectUser } from "../../reducers/user";
@@ -21,7 +21,7 @@ export const WordListView = () => {
   const { id } = useParams();
   const [wordlist, setWordlist] = useState<WordList | undefined>();
   const [word, setWord] = useState<WordOption | null>(null);
-  const [allWords, setAllWords] = useState<WordOption[] | undefined>();
+  const [allWords, setAllWords] = useState<StrippedWord[] | undefined>();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -30,18 +30,17 @@ export const WordListView = () => {
     }
     const getWordlist = async () => {
       if (!id || !user || !user.token) {
-        console.log(id, user);
         void dispatch(showToast(errorToast(ERRORS.INVALID_LOGIN)));
         return;
       }
       const [error, result] = await wordListService.getWordList(id, user.token);
       if (!result) {
-        console.log(result);
-
         void dispatch(showToast(errorToast(error)));
         return;
       }
       setWordlist(result);
+      console.log("result", result);
+      
     };
 
     void getWordlist();
@@ -56,7 +55,8 @@ export const WordListView = () => {
         void dispatch(showToast(errorToast(error)));
         return;
       }
-      setAllWords(result.map(w => { return { value: w.infinitive_english, label: w.infinitive_english }; }));
+      setAllWords(result);
+      
     };
 
     void getStrippedWords();
@@ -95,15 +95,22 @@ export const WordListView = () => {
       return;
     }
     if (word && wordlist._id && user && user.token
-      && !wordlist.words.includes(word.value)) {
-
-      setWordlist({ ...wordlist, words: [...wordlist.words, word.value] });
+      && wordlist.words) {
+      const wordToAdd = allWords.find(w => w.infinitive_english === word.value);
+      console.log(wordlist);
+      
+      if (!wordToAdd) {
+        console.log("wordtoadd empty", wordToAdd, word);
+        
+        return;
+      }
+      setWordlist({ ...wordlist, words: [...wordlist.words, wordToAdd] });
       const [error, result] = await wordListService.addWord(word.value, wordlist._id, user.token);
       if (!result) {
         void dispatch(showToast(errorToast(error)));
         return;
       }
-      const newAllWords = allWords.filter(w => w.value !== word.value);
+      const newAllWords = allWords.filter(w => w.infinitive_english !== word.value);
       setAllWords(newAllWords);
     }
   };
@@ -114,13 +121,13 @@ export const WordListView = () => {
     if (!result) {
       void dispatch(showToast(errorToast(error)));
     }
-    setWordlist({ ...wordlist, words: wordlist.words.filter(w => w !== wordToDelete) });
+    setWordlist({ ...wordlist, words: wordlist.words.filter(w => w.infinitive_english !== wordToDelete) });
+    // Word should be added back to allWords but ... do we have the strippedword still somewhere
   };
 
   if (!wordlist || !allWords) {
     return (<div>Wordlist not loaded or found.</div>);
   }
-
 
   return (
     <div><h3>Add words to wordlist: {wordlist.title}</h3>
@@ -128,14 +135,15 @@ export const WordListView = () => {
         className="basic-single"
         classNamePrefix="select"
         name="wordField"
-        options={allWords}
+        options={allWords.map(w => { return { label: w.infinitive + " | " + w.infinitive_english, value: w.infinitive_english }; } )}
         onChange={onChange}
       />
+
       <p><button className='btn' type="button" onClick={addWord}>Add</button></p>
 
       {wordlist.words.length > 0 &&
         <div className='fullcard'>
-          {wordlist.words.map(w => <p key={w}><span className='link' onClick={() => deleteWord(w)}>Delete</span> | {w}</p>)}
+          {wordlist.words.map(w => <p key={w.infinitive_english}><span className='link' onClick={() => deleteWord(w.infinitive_english)}>Delete</span> | {w.infinitive_english}</p>)}
         </div>
       }
       <div>

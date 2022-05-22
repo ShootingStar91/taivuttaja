@@ -95,7 +95,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       return t;
     });
     setTenseSelections(newTenseSelections);
-    console.log(newTenseSelections);
+
   };
 
   const onStart = async (mode: ConjugateMode) => {
@@ -132,8 +132,6 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   };
 
   const onWordlistChange = (newValue: SingleValue<WordlistOption>) => {
-    console.log(newValue);
-    console.log(wordlistId);
     
     if (newValue?.value !== undefined) {
       setWordlist(newValue.value);
