@@ -43,4 +43,5 @@
 | 4.5.  | 4   | Built a working version of modal. Fixes and improvements in styles. |
 | 5.5.  | 3.5 | Continued building frontend UI & styles, fixed some small issues in both frontend & backends. |
 | 6.5.  | 3.5 | Added changing password functionality into a modal. Made practice settings save & load into localstorage. Fixed small issues. |
-| Total hours | 103     | 
+| 20.6. | 3   | Fixed problems on wordlist page, merged cssBranch to main branch |
+| Total hours | 106     | 
