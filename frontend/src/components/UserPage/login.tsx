@@ -61,14 +61,14 @@ export const LoginForm = () => {
         <div className='container flex flex-col justify-center'>
           <h2>Username</h2>
             <p>
-              <input type='text' onChange={handleUsernameChange} value={username}
+              <input id='usernamefield' type='text' onChange={handleUsernameChange} value={username}
               className='textField'></input></p>
-          <h2>Password</h2><p><input type='password' onChange={handlePasswordChange} value={password}
+          <h2>Password</h2><p><input id='passwordfield' type='password' onChange={handlePasswordChange} value={password}
           className='textField'></input></p>
         </div>
         <div className='container flex gap-8'>
-          <p><button type='submit' className='btn'>Log in</button></p>
-          <p><button type="button" onClick={tryNewUser} className='btn'>Create new user</button></p>
+          <p><button id='loginbutton' type='submit' className='btn'>Log in</button></p>
+          <p><button id='newuserbutton' type="button" onClick={tryNewUser} className='btn'>Create new user</button></p>
         </div>
       </form>
     </div>

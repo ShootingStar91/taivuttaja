@@ -148,7 +148,7 @@ export const WordListView = () => {
           {wordlist.words.map(w => 
             <p className='float' key={w.infinitive_english}>
               
-              <XCircleIcon className='h-5 w-5 inline' onClick={() => deleteWord(w.infinitive_english)} /> <span className='text-amber-500'>{w.infinitive}</span> | {w.infinitive_english} | </p>)}
+              <XCircleIcon className='h-5 w-5 inline' onClick={() => deleteWord(w.infinitive_english)} /> <span className='text-amber-500'>{w.infinitive}</span>  {w.infinitive_english} </p>)}
         </div>
       }
       <div>

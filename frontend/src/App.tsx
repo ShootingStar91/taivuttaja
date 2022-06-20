@@ -49,7 +49,7 @@ const App = () => {
         <img src={spain_city_flag}></img>
         <Notification />
 
-        <div className="container flex flex-wrap justify-center items-center sm:gap-4 md:gap-12 mx-auto h-12 
+        <div id="navbar" className="container flex flex-wrap justify-center items-center sm:gap-4 md:gap-12 mx-auto h-12 
                         rounded-t-md font-sans sm:text-lg md:text-xl lg:text-2xl">
           <Link className={navBarLinkStyle} to="/">Home</Link>
           <Link className={navBarLinkStyle} to="/conjugatestart">Conjugate</Link>
@@ -59,7 +59,7 @@ const App = () => {
             <Link className={navBarLinkStyle} to="/" onClick={logout}>Logout</Link>}
         </div>
         <InfoBar />
-        <div className="bg-amber-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg shadow-2xl min-h-[500px]">
+        <div id="contentdiv" className="bg-amber-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg shadow-2xl min-h-[500px]">
           <Routes>
             <Route path="conjugatestart" element={<ConjugateIndex />} />
             <Route path="vocab" element={<VocabPage />} />

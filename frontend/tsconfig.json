@@ -21,6 +21,6 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src", "tailwind.config.js", "postcss.config.js"
+    "src", "tailwind.config.js", "postcss.config.js", "cypress"
   ]
 }
