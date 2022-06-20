@@ -8,6 +8,7 @@ import { selectUser } from "../../reducers/user";
 import Select, { SingleValue } from 'react-select';
 import { errorToast, showToast, successToast } from "../../reducers/notification";
 import { ERRORS } from "../../config";
+import { XCircleIcon } from '@heroicons/react/solid';
 
 type WordOption = {
   label: string,
@@ -40,7 +41,7 @@ export const WordListView = () => {
       }
       setWordlist(result);
       console.log("result", result);
-      
+
     };
 
     void getWordlist();
@@ -56,7 +57,7 @@ export const WordListView = () => {
         return;
       }
       setAllWords(result);
-      
+
     };
 
     void getStrippedWords();
@@ -75,9 +76,10 @@ export const WordListView = () => {
       return;
     }
 
-    const [error, result] = await wordListService.deleteWordlist(wordlist._id, user.token);
-
-    if (!result) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [error, _] = await wordListService.deleteWordlist(wordlist._id, user.token);
+    
+    if (error) {
       void dispatch(showToast(errorToast(error)));
       return;
     }
@@ -91,17 +93,17 @@ export const WordListView = () => {
     event.preventDefault();
     if (!allWords) { return; }
     if (!wordlist) {
-      void dispatch(showToast(errorToast("Wordlist not found!") ));
+      void dispatch(showToast(errorToast("Wordlist not found!")));
       return;
     }
     if (word && wordlist._id && user && user.token
       && wordlist.words) {
       const wordToAdd = allWords.find(w => w.infinitive_english === word.value);
       console.log(wordlist);
-      
+
       if (!wordToAdd) {
         console.log("wordtoadd empty", wordToAdd, word);
-        
+
         return;
       }
       setWordlist({ ...wordlist, words: [...wordlist.words, wordToAdd] });
@@ -128,14 +130,14 @@ export const WordListView = () => {
   if (!wordlist || !allWords) {
     return (<div>Wordlist not loaded or found.</div>);
   }
-
+  console.log(wordlist);
   return (
     <div><h3>Add words to wordlist: {wordlist.title}</h3>
       <Select
         className="basic-single"
         classNamePrefix="select"
         name="wordField"
-        options={allWords.map(w => { return { label: w.infinitive + " | " + w.infinitive_english, value: w.infinitive_english }; } )}
+        options={allWords.map(w => { return { label: w.infinitive + " | " + w.infinitive_english, value: w.infinitive_english }; })}
         onChange={onChange}
       />
 
@@ -143,7 +145,10 @@ export const WordListView = () => {
 
       {wordlist.words.length > 0 &&
         <div className='fullcard'>
-          {wordlist.words.map(w => <p key={w.infinitive_english}><span className='link' onClick={() => deleteWord(w.infinitive_english)}>Delete</span> | {w.infinitive_english}</p>)}
+          {wordlist.words.map(w => 
+            <p className='float' key={w.infinitive_english}>
+              
+              <XCircleIcon className='h-5 w-5 inline' onClick={() => deleteWord(w.infinitive_english)} /> <span className='text-amber-500'>{w.infinitive}</span> | {w.infinitive_english} | </p>)}
         </div>
       }
       <div>

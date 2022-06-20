@@ -40,12 +40,6 @@ export interface WordList {
   _id?: string,
 }
 
-export interface StrippedWordOld {
-  english: string,
-  spanish: string,
-  id: string
-}
-
 export interface StrippedWord {
   infinitive: string,
   infinitive_english: string

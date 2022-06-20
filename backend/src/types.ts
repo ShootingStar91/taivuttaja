@@ -10,10 +10,19 @@ export interface WordList {
 }
 
 
-export interface StrippedWord {
+export interface StrippedWordWithId {
   infinitive_english: string,
   infinitive: string,
   id: string
+}
+
+export type StrippedWord = Omit<StrippedWordWithId, 'id'>;
+
+export interface FrontendWordlist {
+    _id: string,
+    title: string,
+    words: StrippedWord[],
+    owner: User,
 }
 
 
