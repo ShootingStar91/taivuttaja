@@ -1,4 +1,5 @@
 
+
 const login = () => {
   cy.get('#navbar').contains('Login').click();
   cy.wait(500);
@@ -7,11 +8,22 @@ const login = () => {
   cy.get('#loginbutton').click();
 };
 
+const logout = () => {
+  cy.get('#navbar').contains('Logout').click();
+  cy.wait(500);
+};
+
 
 describe('taivuttaja-app', () => {
-  it('is running', () => {
+
+  it('Backend is running', () => {
+    cy.visit('http://localhost:3001/health');
+  });
+
+  it('Frontend is running', () => {
     cy.visit('http://localhost:3000');
   });
+
   
   context('when unlogged', () => {
     it('Conjugate-page opens and does not have wordlist form', () => {
@@ -51,7 +63,35 @@ describe('taivuttaja-app', () => {
       cy.wait(500);
       cy.contains('Strict accents mode');
     });
-    
+
+    it('Logging out works', () => {
+      logout();
+      cy.contains('Logged in as').should('not.exist');
+    });
+
+  });
+
+  context('when on user page', () => {
+    // daily goal can be set -test not done, have to figure out how to work with sliders
+
+    it('Strict accent mode can be set', () => {
+      login();
+      cy.wait(300);
+      cy.get('#strictaccentmode').click({force: true});
+      cy.wait(300);
+      logout();
+      login();
+      cy.contains('On');
+    });
+
+    it('Practice history works', () => {
+      cy.contains("View practice history").click();
+      cy.wait(300);
+      cy.contains("conjugated a verb");
+      cy.contains("Close").click();
+
+    });
+
   });
 
 });

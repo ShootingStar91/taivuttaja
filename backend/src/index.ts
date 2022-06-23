@@ -40,6 +40,10 @@ app.use(cors(options));
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/wordlists', wordlistsRouter);
+app.get('/health', (_req, res) => {
+  res.send('ok');
+});
+
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 

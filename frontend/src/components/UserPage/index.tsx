@@ -260,16 +260,16 @@ export const UserPage = () => {
           <div className='optioncard'>
             <h3>Daily goal</h3>
             <p>Set daily goal:</p>
-            <p><input type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> <span className='font-bold'>{dailyGoal}</span></p>
-            <p><button className="btn" type='button' onClick={onSetDailyGoal}>Save</button></p>
+            <p><input id='dailygoalslider' type="range" min="5" max="100" step="5" onChange={changeDailyGoal} style={{ width: "200px" }}></input> <span className='font-bold'>{dailyGoal}</span></p>
+            <p><button id='setdailygoal' className="btn" type='button' onClick={onSetDailyGoal}>Save</button></p>
           </div>
 
           <div className='optioncard'>
             <h3 className='mb-4'>Strict accents mode</h3>
-            <label htmlFor="default-toggle" className="relative inline-flex items-center mb-4 cursor-pointer">
-              <input type="checkbox" value="" id="default-toggle" className="sr-only peer" onChange={changeStrictAccents} checked={strictAccents} />
+            <label htmlFor="strictaccentmode" className="relative inline-flex items-center mb-4 cursor-pointer">
+              <input id="strictaccentmode" type="checkbox" value="" className="sr-only peer" onChange={changeStrictAccents} checked={strictAccents} />
               <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{strictAccents ? "On" : "Off"}</span>
+              <span id="strictaccentonoff" className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{strictAccents ? "On" : "Off"}</span>
             </label>
             <div className='description'>{"If this is on, the app will require 100% correct accents. For example, 'correis' will not be accepted for the word 'corréis'."}</div>
           </div>

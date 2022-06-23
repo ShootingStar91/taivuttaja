@@ -44,4 +44,5 @@
 | 5.5.  | 3.5 | Continued building frontend UI & styles, fixed some small issues in both frontend & backends. |
 | 6.5.  | 3.5 | Added changing password functionality into a modal. Made practice settings save & load into localstorage. Fixed small issues. |
 | 20.6. | 4   | Fixed problems on wordlist page, merged cssBranch to main branch, started writing cypress tests |
-| Total hours | 107     | 
+| 23.6. | 3   | Continued writing cypress e2e tests |
+| Total hours | 110     | 
