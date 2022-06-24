@@ -45,4 +45,5 @@
 | 6.5.  | 3.5 | Added changing password functionality into a modal. Made practice settings save & load into localstorage. Fixed small issues. |
 | 20.6. | 4   | Fixed problems on wordlist page, merged cssBranch to main branch, started writing cypress tests |
 | 23.6. | 3   | Continued writing cypress e2e tests |
-| Total hours | 110     | 
+| 24.6. | 4   | Set up test database in docker image, started writing backend unit tests with jest |
+| Total hours | 114     | 

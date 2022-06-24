@@ -1,1 +1,1 @@
-GET http://localhost:3001/api/words/word/-/tense/Present/mood/Subjunctive/
+GET http://localhost:3001/api/words/word/en/-/tense/Present/mood/Indicative/

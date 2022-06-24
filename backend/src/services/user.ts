@@ -170,3 +170,10 @@ export default {
   setStrictAccents
 };
 
+const testExports = {
+  parsePassword,
+  parseUsername,
+  toNewUser
+};
+
+export { testExports };

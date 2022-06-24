@@ -2,8 +2,12 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
+export const TEST_MODE = process.env.TEST_MODE;
 export const PORT = process.env.PORT || 3001;
 export const MONGODB_URI = process.env.MONGODB_URI;
+export const TEST_MONGODB_URI = process.env.TEST_MONGODB_URI;
+console.log(TEST_MODE, TEST_MONGODB_URI);
+
 export const SECRET = process.env.SECRET;
 export const loginValidSeconds = 60 * 60 * 12;
 export const PASSWORD_MIN_LENGTH = 5;

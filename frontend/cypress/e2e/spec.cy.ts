@@ -1,66 +1,88 @@
 
-
 const login = () => {
   cy.get('#navbar').contains('Login').click();
-  cy.wait(500);
+  wait();
   cy.get('#usernamefield').type('testuser');
   cy.get('#passwordfield').type('testpass');
   cy.get('#loginbutton').click();
+  wait();
 };
+const deleteUsers = () => {
+  cy.request('http://localhost:3001/api/test/deleteall');
+  wait();
+};
+
+const createUser = () => {
+  cy.get('#navbar').contains('Login').click();
+  wait();
+  cy.get('#usernamefield').type('testuser');
+  cy.get('#passwordfield').type('testpass');
+  cy.contains('Create new user').click();
+  wait();
+}
 
 const logout = () => {
   cy.get('#navbar').contains('Logout').click();
-  cy.wait(500);
+  wait();
 };
 
 
+const wait = () => {
+  cy.wait(300);
+}
+
 describe('taivuttaja-app', () => {
 
+
+
   it('Backend is running', () => {
-    cy.visit('http://localhost:3001/health');
+    deleteUsers();
   });
 
   it('Frontend is running', () => {
     cy.visit('http://localhost:3000');
   });
 
-  
+
+
   context('when unlogged', () => {
     it('Conjugate-page opens and does not have wordlist form', () => {
       cy.get('#navbar').contains('Conjugate').click();
-      cy.wait(500);
+      wait();
       cy.contains('Begin by choosing mode!');
       cy.contains('Select wordlist').should('not.exist');
     });
     it('Vocab-page opens', () => {
       cy.get('#navbar').contains('Vocab').click();
-      cy.wait(500);
+      wait();
       cy.contains('Try');
-    });
-    it('Login page opens', () => {
-      cy.get('#navbar').contains('Login').click();
-      cy.wait(500);
-      cy.contains('Create new user');
     });
     it('Home page opens', () => {
       cy.get('#navbar').contains('Home').click();
-      cy.wait(500);
+      wait();
       cy.contains('Welcome to the conjugation app!');
+    });
+    it('User creation works', () => {
+      createUser();
+      wait();
+      cy.contains('Strict accents mode');
+      logout();
     });
   });
 
   context('when logged in', () => {
+    before(() => {
+      login();
+    })
 
     it('Conjugate-page opens and contains wordlist form', () => {
-      login();
-      cy.wait(500);
       cy.get('#navbar').contains('Conjugate').click();
-      cy.wait(500);
+      wait();
       cy.contains('Select wordlist');
     });
     it('User page opens', () => {
       cy.get('#navbar').contains('User page').click();
-      cy.wait(500);
+      wait();
       cy.contains('Strict accents mode');
     });
 
@@ -76,9 +98,9 @@ describe('taivuttaja-app', () => {
 
     it('Strict accent mode can be set', () => {
       login();
-      cy.wait(300);
-      cy.get('#strictaccentmode').click({force: true});
-      cy.wait(300);
+      wait();
+      cy.get('#strictaccentmode').click({ force: true });
+      wait();
       logout();
       login();
       cy.contains('On');
@@ -86,9 +108,9 @@ describe('taivuttaja-app', () => {
 
     it('Practice history works', () => {
       cy.contains("View practice history").click();
-      cy.wait(300);
+      wait();
       cy.contains("conjugated a verb");
-      cy.contains("Close").click();
+      cy.contains("Close").click({ force: true });
 
     });
 
@@ -96,4 +118,4 @@ describe('taivuttaja-app', () => {
 
 });
 
-export {};
+export { };
