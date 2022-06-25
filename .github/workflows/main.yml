@@ -27,15 +27,11 @@ jobs:
         run: cd backend && npm ci && npm test
       - name: start backend in test mode
         run: cd backend && npm run start:test &
-      - name: reinstall cypress 
-        run: cd frontend && npm install cypress
       - name: start frontend for testing
-        run: cd frontend && npm ci && npm start &
+        run: cd frontend && npm install && npm install cypress && npm start &
       - name: e2e test
         uses: cypress-io/github-action@v2
         with:
           working-directory: ./frontend
           command: npm run test:e2e
           wait-on: http://localhost:3001
-      
-      
