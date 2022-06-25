@@ -30,7 +30,7 @@ jobs:
       - name: start frontend for testing
         run: cd frontend && npm install && npm install cypress && npm start &
       - name: e2e test
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           working-directory: ./frontend
           command: npm run test:e2e
