@@ -8,6 +8,10 @@ on:
     branches: [main]
     types: [opened, synchronize]
 
+env:
+  PORT: ${{ secrets.PORT }}
+  SECRET: ${{ secrets.SECRET }}
+
 jobs:
   run_all_tests:
     timeout-minutes: 10
