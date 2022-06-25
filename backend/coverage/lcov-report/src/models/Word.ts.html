@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/utils/validators.ts</title>
+    <title>Code coverage report for src/models/Word.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/utils</a> validators.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">src/models</a> Word.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/5</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -89,52 +89,52 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Tense, tenseList, Mood, moodList, Language } from "../types";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Schema, model } from 'mongoose';
+import { Word } from '../types';
 &nbsp;
-export const isString = (text: unknown): text is string =&gt; {
-  return typeof text === 'string' || text instanceof String;
-};
+const wordSchema = new Schema&lt;Word&gt;({
+  infinitive: { type: String, required: true },
+  infinitive_english: { type: String , required: true },
+  mood: { type: String , required: true },
+  mood_english: { type: String , required: true },
+  tense: { type: String , required: true },
+  tense_english: { type: String , required: true },
+  verb__english: { type: String , required: true },
+  form_1s: { type: String, required: true },
+  form_2s: { type: String, required: true },
+  form_3s: { type: String, required: true },
+  form_1p: { type: String, required: true },
+  form_2p: { type: String, required: true },
+  form_3p: { type: String, required: true },
+  gerund: { type: String, required: true },
+  gerund_english: { type: String, required: true },
+  pastparticiple: { type: String, required: true },
+  pastparticiple_english: { type: String, required: true },
+}, { collection: 'jehle_verb_mongo'});
 &nbsp;
-export const isBoolean = <span class="fstat-no" title="function not covered" >(v</span>ariable: unknown): variable is boolean =&gt; {
-<span class="cstat-no" title="statement not covered" >  return typeof variable == "boolean";</span>
-};
-&nbsp;
-&nbsp;
-&nbsp;
-export const isTense = (text: unknown): text is Tense =&gt; {
-  return isString(text) &amp;&amp; tenseList.includes(text);
-};
-&nbsp;
-export const isMood = (text: unknown): text is Mood =&gt; {
-  return isString(text) &amp;&amp; moodList.includes(text);
-};
-&nbsp;
-export const isLanguage = (text: unknown): text is Language =&gt; {
-  return isString(text) &amp;&amp; text === Language.English || <span class="branch-2 cbranch-no" title="branch not covered" >text === Language.Spanish;</span>
-};
-&nbsp;
+export const wordModel = model&lt;Word&gt;('Word', wordSchema);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->

@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+jobs:
+  run_all_tests:
+    timeout-minutes: 10
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '16.x'
+      - name: launch test database
+        run: cd backend && docker-compose -f "docker-compose.yml" up -d
+      - name: backend unit tests
+        run: cd backend && npm ci && npm test
+      - name: start backend in test mode
+        run: cd backend && npm run start:test &
+      - name: e2e tests
+        run: cd frontend && npm ci && npm run test:e2e
+      
+      

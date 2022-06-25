@@ -92,6 +92,6 @@ const unknownEndpoint = (_req: express.Request, res: express.Response) => {
   res.status(404).send({ error: 'Unknown endpoint' });
 };
 
-export default exports = {
+export default {
   logger, tokenExtractor, userExtractor, errorHandler, unknownEndpoint
 };
