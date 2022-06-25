@@ -9,7 +9,6 @@ on:
     types: [opened, synchronize]
 
 env:
-  PORT: ${{ secrets.PORT }}
   SECRET: ${{ secrets.SECRET }}
 
 jobs:
