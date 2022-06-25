@@ -28,3 +28,7 @@ Here is a list of current feature. All verb practice only works from English to 
   + Styles with Tailwind CSS
 + Backend in Typescript, NodeJS Express
   + Mongoose & MongoDB
++ Tests
+  + Jest, supertest, cypress
++ CI
+  + GitHub Actions
