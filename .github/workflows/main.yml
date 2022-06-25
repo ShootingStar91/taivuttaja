@@ -26,11 +26,12 @@ jobs:
         run: cd backend && npm ci && npm test
       - name: start backend in test mode
         run: cd backend && npm run start:test &
-      - name: start frontend for testing
-        run: cd frontend && npm install && npm install cypress --save-dev && echo $PORT && npm start
+      - name: npm install frontend
+        run: cd frontend && npm install && npm install cypress --save-dev
       - name: e2e test
         uses: cypress-io/github-action@v4.1.0
         with:
           working-directory: ./frontend
           command: npm run test:e2e
+          start: npm start
           wait-on: http://localhost:3000
