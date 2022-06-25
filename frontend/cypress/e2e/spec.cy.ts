@@ -66,12 +66,13 @@ describe('taivuttaja-app', () => {
       createUser();
       wait();
       cy.contains('Strict accents mode');
-      logout();
     });
   });
 
   context('when logged in', () => {
     before(() => {
+      logout();
+
       login();
     })
 
