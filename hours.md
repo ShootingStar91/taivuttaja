@@ -46,4 +46,5 @@
 | 20.6. | 4   | Fixed problems on wordlist page, merged cssBranch to main branch, started writing cypress tests |
 | 23.6. | 3   | Continued writing cypress e2e tests |
 | 24.6. | 4   | Set up test database in docker image, started writing backend unit tests with jest |
-| Total hours | 114     | 
+| 25.6. | 5   | Set up CI with Github Actions, started api tests with supertest |
+| Total hours | 129     | 
