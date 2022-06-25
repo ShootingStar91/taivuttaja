@@ -17,8 +17,8 @@ jobs:
     timeout-minutes: 10
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
       - name: launch test database
@@ -30,7 +30,7 @@ jobs:
       - name: start frontend for testing
         run: cd frontend && npm install && npm install cypress --save-dev && npm start &
       - name: e2e test
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v4.1.0
         with:
           working-directory: ./frontend
           command: npm run test:e2e
