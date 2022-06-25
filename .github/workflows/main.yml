@@ -27,9 +27,7 @@ jobs:
         run: cd backend && npm ci && npm test
       - name: start backend in test mode
         run: cd backend && npm run start:test &
-      - name: start frontend
-        run: cd frontend && npm start &
       - name: e2e tests
-        run: cd frontend && npm ci && npm run test:e2e
+        run: cd frontend && npm ci && npm start & && npm run test:e2e
       
       
