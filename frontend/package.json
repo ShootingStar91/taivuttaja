@@ -35,7 +35,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .tsx .",
     "lintfix": "eslint --fix --ext .tsx .",
-    "test:e2e": "cypress run",
+    "test:e2e": "cypress run --browser chrome",
     "cypress:open": "cypress open"
   },
   "eslintConfig": {
