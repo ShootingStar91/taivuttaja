@@ -1,3 +1,5 @@
+[![Test](https://github.com/ShootingStar91/taivuttaja/actions/workflows/main.yml/badge.svg)](https://github.com/ShootingStar91/taivuttaja/actions/workflows/main.yml)
+
 # Taivuttaja
 
 A web-app for practicing conjugating Spanish verbs. Work in progress. Practice project for https://fullstackopen.com course, aiming for 175 hours of work. This project is completely non-profit and open-source and is authored by Arttu Kangas.
