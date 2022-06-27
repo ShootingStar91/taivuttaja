@@ -1,4 +1,7 @@
-
+const openPage = (page) => {
+  cy.get('#navbar').contains(page).click();
+  wait();
+}
 const login = () => {
   cy.get('#navbar').contains('Login').click();
   wait();
@@ -96,9 +99,11 @@ describe('taivuttaja-app', () => {
 
   context('when on user page', () => {
     // daily goal can be set -test not done, have to figure out how to work with sliders
-
-    it('Strict accent mode can be set', () => {
+    beforeEach(() => {
+      cy.visit('http://localhost:3000');
       login();
+    })
+    it('Strict accent mode can be set', () => {
       wait();
       cy.get('#strictaccentmode').click({ force: true });
       wait();
@@ -112,10 +117,115 @@ describe('taivuttaja-app', () => {
       wait();
       cy.contains("conjugated a verb");
       cy.contains("Close").click({ force: true });
+    });
+
+    it('Wordlist adding works', () => {
+      cy.get('#wordlistnamefield').type('wordlist1');
+      cy.contains('Create').click();
+      wait();
+      cy.contains('Add words to wordlist: wordlist1');
+      cy.contains('User page').click();
+      wait();
+      cy.contains('Create');
+      cy.contains('wordlist1');
+      wait();
+    });
+
+    it('Can add words to wordlist', () => {
+      wait();
+      cy.get('#wordlists').contains('wordlist1').click();
+      wait();
+      cy.get('#wordselectfield').type('a');
+      wait();
+      cy.contains('aceptar').click();
+      wait();
+      cy.get('#addwordbutton').contains('Add').click();
+      wait();
+      cy.get('#words').contains('aceptar');
+      cy.get('#navbar').contains('User page').click();
+      wait();
+      cy.get('#wordlists').contains('wordlist1').click();
+      wait();
+      cy.get('#words').contains('aceptar');
 
     });
 
+    it('Can delete words from wordlist', () => {
+      cy.get('#wordlists').contains('wordlist1').click();
+      wait();
+      cy.get('#words').contains('aceptar').get('#deleteicon').click();
+      wait();
+      cy.get('#words').should('not.exist');
+      cy.get('#navbar').contains('User page').click();
+      wait();
+      cy.get('#wordlists').contains('wordlist1').click();
+      wait();
+      cy.get('#words').should('not.exist');
+    });
+
+    it('Can delete wordlist', () => {
+      cy.get('#wordlists').contains('wordlist1').click();
+      wait();
+      cy.get('#deletewordlistbutton').click();
+      wait();
+      cy.get('#wordlists').contains('wordlist1').should('not.exist');
+    })
+
+    it('Can change password', () => {
+      const changePass = (oldpass: string, newpass: string) => {
+        cy.contains('Change password').click();
+        wait();
+        cy.get('#currentpasswordfield').type(oldpass);
+        cy.get('#newpasswordfield1').type(newpass);
+        cy.get('#newpasswordfield2').type(newpass);
+        cy.get('#changepasswordbutton').click();
+        wait();
+        cy.get('#toast-default').click();
+        wait();
+        cy.contains('Close').click();
+        wait();
+      };
+      changePass('testpass', 'newtestpass');
+      logout();
+      cy.get('#navbar').contains('Login').click();
+      wait();
+      cy.get('#usernamefield').type('testuser');
+      cy.get('#passwordfield').type('newtestpass');
+      cy.get('#loginbutton').click();
+      wait();
+      changePass('newtestpass', 'testpass');
+      wait();
+    });
+
+    it('Can delete account', () => {
+      cy.contains('Delete all user data').click();
+      wait();
+      cy.get('#navbar').contains('Login').click();
+      wait();
+      cy.get('#usernamefield').type('testuser');
+      cy.get('#passwordfield').type('testpass');
+      cy.get('#loginbutton').click();
+      wait();
+      cy.contains('Logged in as').should('not.exist');
+      createUser();
+    });
+
   });
+
+  describe('Single conjugation works', () => {
+    beforeEach(() => {
+      openPage('Conjugate');
+    });
+
+    it('Correct answer works', () => {
+      cy.get('body').then(($body) => {
+        let word = "";
+        
+      });
+    });
+  });
+
+
 
 });
 

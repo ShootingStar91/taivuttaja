@@ -285,7 +285,7 @@ export const UserPage = () => {
 
           <div className='optioncard max-h-[500px]'>
             <h3>Your wordlists</h3>
-            <div className='max-h-[40%] overflow-auto'>
+            <div id='wordlists' className='max-h-[40%] overflow-auto'>
               {wordLists.length > 0 ?
                 wordLists.map((list) => <div key={list.title}>
                   {list._id ? <a className='link' href={"wordlist/" + list._id}>{list.title}</a> :
@@ -295,7 +295,7 @@ export const UserPage = () => {
             </div>
             <h3 className="mt-2">New wordlist</h3>
             <p>Name:</p>
-            <p><input className='textField' type="text" onChange={onNameChange}></input></p>
+            <p><input id='wordlistnamefield' className='textField' type="text" onChange={onNameChange}></input></p>
             <p><button className='btn' type='button' onClick={newWordList}>Create</button></p>
           </div>
 

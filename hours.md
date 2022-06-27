@@ -47,4 +47,5 @@
 | 23.6. | 3   | Continued writing cypress e2e tests |
 | 24.6. | 4   | Set up test database in docker image, started writing backend unit tests with jest |
 | 25.6. | 5   | Set up CI with Github Actions, started api tests with supertest |
-| Total hours | 129     | 
+| 27.6. | 2   | Writing cypress tests |
+| Total hours | 131     | 
