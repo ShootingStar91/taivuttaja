@@ -9,4 +9,4 @@ export const COLORS = {
   ALMOST_CORRECT: "#e2ff8a",
 
 };
-export const baseUrl = process.env.BACKEND_URL || 'http://localhost:3001/api/';
+export const baseUrl = process.env.TAIVUTTAJA_BACKEND === 'local' ? 'http://localhost:3001/api/' : 'http://16.16.67.83:3001/api/';
