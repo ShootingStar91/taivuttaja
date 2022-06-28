@@ -1,6 +1,5 @@
 import { MoodSelections, TenseSelections, validCombinations, Word } from './types';
 
-export const baseUrl = 'http://localhost:3001/api/';
 
 export const forms = ['1s', '2s', '3s', '1p', '2p', '3p'];
 
