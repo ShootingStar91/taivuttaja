@@ -1,4 +1,4 @@
-const app = require('./app.ts');
+import app from './app';
 import { PORT } from './config';
 require('express-async-errors');
 
