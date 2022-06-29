@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.ef93d7f2.css",
-    "main.js": "/static/js/main.2c50b9be.js",
+    "main.js": "/static/js/main.951e4396.js",
     "static/media/spain-city-flag-cropped-2.jpeg": "/static/media/spain-city-flag-cropped-2.ed5cc96b511875a8178a.jpeg",
     "index.html": "/index.html",
     "main.ef93d7f2.css.map": "/static/css/main.ef93d7f2.css.map",
-    "main.2c50b9be.js.map": "/static/js/main.2c50b9be.js.map"
+    "main.951e4396.js.map": "/static/js/main.951e4396.js.map"
   },
   "entrypoints": [
     "static/css/main.ef93d7f2.css",
-    "static/js/main.2c50b9be.js"
+    "static/js/main.951e4396.js"
   ]
 }
