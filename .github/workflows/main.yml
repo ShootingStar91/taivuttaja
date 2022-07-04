@@ -21,17 +21,17 @@ jobs:
         with:
           node-version: '16.x'
       - name: frontend lint
-        run: cd frontend && npm run lint
+        run: cd frontend && npm install && npm run lint
       - name: backend lint
-        run: cd backend && npm run lint
+        run: cd backend && npm install && npm run lint
       - name: launch test database
         run: cd backend && docker-compose -f "docker-compose.yml" up -d
       - name: backend unit tests
-        run: cd backend && npm ci && npm test
+        run: cd backend && npm test
       - name: start backend in test mode
         run: cd backend && npm run start:test &
-      - name: npm install frontend
-        run: cd frontend && npm install && npm install cypress --save-dev
+      - name: npm install cypress
+        run: cd frontend && npm install cypress --save-dev
       - name: e2e test
         uses: cypress-io/github-action@v4.1.0
         with:
