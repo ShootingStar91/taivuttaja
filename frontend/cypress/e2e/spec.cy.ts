@@ -147,7 +147,7 @@ const logout = () => {
 
 
 const wait = () => {
-  cy.wait(220);
+  cy.wait(400);
 }
 
 describe('taivuttaja-app', () => {
