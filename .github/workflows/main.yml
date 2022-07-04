@@ -21,9 +21,9 @@ jobs:
         with:
           node-version: '16.x'
       - name: frontend lint
-        run: cd frontend && npm lint
+        run: cd frontend && npm run lint
       - name: backend lint
-        run: cd backend && npm lint
+        run: cd backend && npm run lint
       - name: launch test database
         run: cd backend && docker-compose -f "docker-compose.yml" up -d
       - name: backend unit tests
