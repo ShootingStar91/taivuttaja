@@ -134,6 +134,7 @@ export const WordListView = () => {
   return (
     <div><h3>Add words to wordlist: {wordlist.title}</h3>
       <Select
+        id='wordselectfield'
         className="basic-single"
         classNamePrefix="select"
         name="wordField"
@@ -141,18 +142,18 @@ export const WordListView = () => {
         onChange={onChange}
       />
 
-      <p><button className='btn' type="button" onClick={addWord}>Add</button></p>
+      <p><button id='addwordbutton' className='btn' type="button" onClick={addWord}>Add</button></p>
 
       {wordlist.words.length > 0 &&
-        <div className='fullcard'>
+        <div id='words' className='fullcard'>
           {wordlist.words.map(w => 
             <p className='float' key={w.infinitive_english}>
               
-              <XCircleIcon className='h-5 w-5 inline' onClick={() => deleteWord(w.infinitive_english)} /> <span className='text-amber-500'>{w.infinitive}</span>  {w.infinitive_english} </p>)}
+              <XCircleIcon id='deleteicon' className='h-5 w-5 inline' onClick={() => deleteWord(w.infinitive_english)} /> <span className='text-amber-500'>{w.infinitive}</span>  {w.infinitive_english} </p>)}
         </div>
       }
       <div>
-        <p><button className='btn' type="button" onClick={deleteWordlistButton}>Delete list</button></p>
+        <p><button id='deletewordlistbutton' className='btn' type="button" onClick={deleteWordlistButton}>Delete list</button></p>
       </div>
     </div>
   );

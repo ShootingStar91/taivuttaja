@@ -9,3 +9,4 @@ export const COLORS = {
   ALMOST_CORRECT: "#e2ff8a",
 
 };
+export const baseUrl = process.env.REACT_APP_LOCAL ? 'http://localhost:3001/api/' : 'http://16.16.67.83:3001/api/';

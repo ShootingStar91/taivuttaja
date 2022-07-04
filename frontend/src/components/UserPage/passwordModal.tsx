@@ -52,10 +52,10 @@ export const PasswordModal = () => {
       <h2>Change password</h2>
       <p></p>
       <div className='font-bold max-w-[600px]' onKeyDown={onKeyDown}>
-        <div className="p-6"><label>Current password</label><input className='textField' type='password' value={currentPass} onChange={onChangeCurrentPass}></input></div>
-        <div className="p-6"><label>Type new password</label><input className='textField' type='password' value={newPass} onChange={onChangeNewPass}></input></div>
-        <div className="p-6"><label>Type new password again</label><input className='textField' type='password' value={newPassVerify} onChange={onChangeNewPassVerify}></input></div>
+        <div className="p-6"><label>Current password</label><input id='currentpasswordfield' className='textField' type='password' value={currentPass} onChange={onChangeCurrentPass}></input></div>
+        <div className="p-6"><label>Type new password</label><input id='newpasswordfield1' className='textField' type='password' value={newPass} onChange={onChangeNewPass}></input></div>
+        <div className="p-6"><label>Type new password again</label><input id='newpasswordfield2' className='textField' type='password' value={newPassVerify} onChange={onChangeNewPassVerify}></input></div>
       </div>
-      <div  className="pt-6 pl-6"><button type='button' className="btn" onClick={onClickChangePassword}>Change password</button></div>
+      <div  className="pt-6 pl-6"><button id='changepasswordbutton' type='button' className="btn" onClick={onClickChangePassword}>Change password</button></div>
     </div>);
 };

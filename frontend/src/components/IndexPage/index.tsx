@@ -15,6 +15,9 @@ export const IndexPage = () => {
         <li><span className='font-bold'>Flashcard</span>: No typing, just guess the verb form and click to show it</li>
       </ul>
       <p></p>
+      <h2>About</h2>
+      <p>Version 1.0.1</p>
+      <p></p>
     </div>
   );
 };

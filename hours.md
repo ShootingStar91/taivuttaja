@@ -47,4 +47,7 @@
 | 23.6. | 3   | Continued writing cypress e2e tests |
 | 24.6. | 4   | Set up test database in docker image, started writing backend unit tests with jest |
 | 25.6. | 5   | Set up CI with Github Actions, started api tests with supertest |
-| Total hours | 129     | 
+| 27.6. | 2   | Writing cypress tests |
+| 29.6. | 4   | More e2e tests. Setup AWS lightsail server for deployment of the project. |
+| 30.6. | 4   | Setting up CD pipeline |
+| Total hours | 139     | 

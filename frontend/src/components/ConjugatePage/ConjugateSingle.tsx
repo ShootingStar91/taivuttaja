@@ -19,6 +19,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   const [mood, setMood] = useState<Mood | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showingCorrect, setShowingCorrect] = useState<boolean>(false);
+  const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
@@ -103,10 +104,10 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     setShowingCorrect(true);
     const field = document.getElementsByName("attemptField")[0];
     field.style.backgroundColor = COLORS.CORRECT;
-
+    setCorrectAnswers(correctAnswers + 1);
     setTimeout(() => {
       setShowingCorrect(false);
-
+      
       void newWord();
       setAttempt("");
       next(settings.amount);
@@ -148,25 +149,25 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     return (
       <div>
         <div className='flex auto-flex gap-x-4'>
-          <SpanishFlag /> <h2>{word.infinitive}</h2>
+          <SpanishFlag /> <h2 id="spanishword">{word.infinitive}</h2>
         </div>
         <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px]'>
           <EnglishFlag /> <h2>{word.infinitive_english}</h2>
         </div>
         <div className='mt-4 flex auto-flex gap-x-4'>
-          <h2 className='text-amber-600'>{tense}</h2>
-          <h2 className='text-sky-400'>{mood}</h2>
+          <h2 id='tense' className='text-amber-600'>{tense}</h2>
+          <h2 id='mood' className='text-sky-400'>{mood}</h2>
         </div>
-        <h2 className='mt-4 text-yellow-400'>{getForm(form)}</h2>
+        <h2 id='personform' className='mt-4 text-yellow-400'>{getForm(form)}</h2>
         <span className="description pl-4">{getFormDescription(form)}</span>
         <div className='mt-8'>
           {mode === ConjugateMode.Single && <>
-            <form onKeyDown={onKeyDown}><div className={'p-4 bg-amber-50 shadow-lg rounded-lg'}><input className={'textField shadow ' + (showAnswer ? ' bg-amber-300 ' : '') + (showingCorrect ? ' bg-green-300 ' : '')} name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off" disabled={showAnswer}></input></div></form>
+            <form onKeyDown={onKeyDown}><div className={'p-4 bg-amber-50 shadow-lg rounded-lg'}><input id="answerfield" className={'textField shadow ' + (showAnswer ? ' bg-amber-300 ' : '') + (showingCorrect ? ' bg-green-300 ' : '')} name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off" disabled={showAnswer}></input></div></form>
             <p><button className='btn w-[200px]' type='button' onClick={onTry}>Try</button></p>
           </>}
           {mode === ConjugateMode.Flashcard && getFlashcardPart()}
           <p><button className='btn w-[200px]' type='button' onClick={onClickSkip}>{showAnswer ? "Next" : "Show"}</button></p>
-
+            <div id='correctanswers' style={{display: 'none'}}>{correctAnswers}</div>
         </div>
       </div>
     );

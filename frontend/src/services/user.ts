@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
-import { baseUrl } from "../utils";
+import { baseUrl } from "../config";
 import { DoneWord, User } from "../types";
 import { getHeader, success, error, customError } from "./util";
 const url = baseUrl + 'user';

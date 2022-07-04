@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Mood, StrippedWord, Tense, Word } from '../types';
-import { baseUrl } from '../utils';
+import { baseUrl } from '../config';
 import { error, success } from './util';
 
 const url = baseUrl + 'words'; // /api/words/

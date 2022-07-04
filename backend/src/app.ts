@@ -10,7 +10,6 @@ import cors from 'cors';
 import { userModel } from './models/User';
 require('express-async-errors');
 
-//import { wordModel } from './models/Word';
 const app = express();
 
 app.use(express.json());
@@ -42,12 +41,14 @@ const options: cors.CorsOptions = {
 
 app.use(cors(options));
 
-// These have to be AFTER cors!
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/wordlists', wordlistsRouter);
 app.get('/health', (_req, res) => {
   res.send('ok');
+});
+app.get('/version', (_req, res) => {
+  res.send('1.0.1');
 });
 app.get('/api/test/deleteall', async (_req, res) => {
   if (!TEST_MODE) {
@@ -61,3 +62,4 @@ app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
 module.exports = app;
+export default app;
