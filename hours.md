@@ -49,4 +49,5 @@
 | 25.6. | 5   | Set up CI with Github Actions, started api tests with supertest |
 | 27.6. | 2   | Writing cypress tests |
 | 29.6. | 4   | More e2e tests. Setup AWS lightsail server for deployment of the project. |
-| Total hours | 135     | 
+| 30.6. | 4   | Setting up CD pipeline |
+| Total hours | 139     | 

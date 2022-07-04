@@ -42,12 +42,14 @@ const options: cors.CorsOptions = {
 
 app.use(cors(options));
 
-// These have to be AFTER cors!
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/wordlists', wordlistsRouter);
 app.get('/health', (_req, res) => {
   res.send('ok');
+});
+app.get('/version', (_req, res) => {
+  res.send('1.0.1');
 });
 app.get('/api/test/deleteall', async (_req, res) => {
   if (!TEST_MODE) {

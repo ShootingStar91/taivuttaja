@@ -46,12 +46,14 @@ const options = {
     origin: allowedOrigins
 };
 app.use((0, cors_1.default)(options));
-// These have to be AFTER cors!
 app.use('/api/words', words_1.default);
 app.use('/api/user', user_1.default);
 app.use('/api/wordlists', wordlists_1.default);
 app.get('/health', (_req, res) => {
     res.send('ok');
+});
+app.get('/version', (_req, res) => {
+    res.send('1.0.1');
 });
 app.get('/api/test/deleteall', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!config_1.TEST_MODE) {
