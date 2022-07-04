@@ -10,7 +10,6 @@ import cors from 'cors';
 import { userModel } from './models/User';
 require('express-async-errors');
 
-//import { wordModel } from './models/Word';
 const app = express();
 
 app.use(express.json());

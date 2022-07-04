@@ -29,7 +29,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "REACT_APP_LOCAL=true react-scripts start",
     "build": "react-scripts build",
     "test": "jest --verbose",
     "eject": "react-scripts eject",
