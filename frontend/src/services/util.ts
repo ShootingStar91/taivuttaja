@@ -9,7 +9,11 @@ export const success = <T>(item: T): [string, T | undefined] => {
 };
 
 export const error = (e: any): [string, undefined] => {
-  return [e.response.data.message as string, undefined];
+  if (e?.response?.data?.message) {
+    return [e.response.data.message as string, undefined];
+  } else {
+    return ["Error with server", undefined];
+  }
 };
 
 export const customError = (message: string): [string, undefined] => {

@@ -15,7 +15,7 @@ const getWord = async (wordParam: string | null, langParam: string, moodParam: M
     const mood: Mood = moodParam !== null ? moodParam : 'Indicative';
     const tense: Tense = tenseParam !== null ? tenseParam : 'Present';
     const word: string = wordParam !== null ? wordParam : '-';
-    const lang = langParam;
+    const lang = langParam;   
     const response = await axios.get<Word>(`${url}/word/${lang}/${word}/tense/${tense}/mood/${mood}`);
     return success<Word>(response.data);
   } catch (e: any) {
