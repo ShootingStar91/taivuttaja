@@ -40,7 +40,7 @@ mongoose_1.default.connect(mongo_url, {}).then(() => {
 }).catch((error) => {
     console.log('Error connecting to MongoDB: ' + error.message);
 });
-const allowedOrigins = ['http://localhost:3000'];
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:80'];
 const options = {
     origin: allowedOrigins
 };
