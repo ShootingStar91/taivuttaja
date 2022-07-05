@@ -6,7 +6,7 @@ A web-app for practicing conjugating Spanish verbs. Work in progress. Practice p
 
 It uses the database of conjugated Spanish verbs created by Fred Jehle and compiled by @ghidinelli: https://github.com/ghidinelli/fred-jehle-spanish-verbs
 
-Project is not yet deployed.
+[Project is deployed here!](http://13.50.0.15/)
 
 # Features
 

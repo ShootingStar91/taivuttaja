@@ -50,4 +50,5 @@
 | 27.6. | 2   | Writing cypress tests |
 | 29.6. | 4   | More e2e tests. Setup AWS lightsail server for deployment of the project. |
 | 30.6. | 4   | Setting up CD pipeline |
-| Total hours | 139     | 
+| 4.7.  | 3   | CI/CD |
+| Total hours | 142     | 
