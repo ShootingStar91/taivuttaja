@@ -23,7 +23,6 @@ const config_1 = require("./config");
 const cors_1 = __importDefault(require("cors"));
 const User_1 = require("./models/User");
 require('express-async-errors');
-//import { wordModel } from './models/Word';
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.static('build'));
@@ -49,11 +48,11 @@ app.use((0, cors_1.default)(options));
 app.use('/api/words', words_1.default);
 app.use('/api/user', user_1.default);
 app.use('/api/wordlists', wordlists_1.default);
-app.get('/health', (_req, res) => {
+app.get('/api/health', (_req, res) => {
     res.send('ok');
 });
-app.get('/version', (_req, res) => {
-    res.send('1.0.1');
+app.get('/api/version', (_req, res) => {
+    res.send('1.0.2');
 });
 app.get('/api/test/deleteall', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!config_1.TEST_MODE) {
