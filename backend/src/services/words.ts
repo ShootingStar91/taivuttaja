@@ -1,5 +1,6 @@
 import { wordModel } from "../models/Word";
 import { Language, Mood, StrippedWord, Tense, Word } from "../types";
+import { isString } from "../utils/validators";
 
 
 const getWord = async (word: string, language: Language, tense: Tense, mood: Mood) => {
@@ -24,8 +25,19 @@ const getStrippedWords = async () => {
   return result;
 };
 
+const getVerbDetails = async (verb: any) => {
+  if (!isString(verb)) {
+    throw new Error('Invalid verb');
+  }
+  console.log({verb});
+  
+  const result: Word[] = await wordModel.find({ infinitive: verb });
+  return result;
+};
+
 export default {
   getWord,
   getRandomWord,
-  getStrippedWords
+  getStrippedWords,
+  getVerbDetails
 };

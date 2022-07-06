@@ -32,8 +32,18 @@ const getStrippedWords = async () => {
   }
 };
 
+const getVerbDetails = async (verb: string) => {
+  try {
+    const response = await axios.get<Word[]>(`${url}/verbdetails/${verb}`);
+    return success<Word[]>(response.data);
+  } catch (e: any) {
+    return error(e);
+  }
+};
+
 export const wordService = {
   getWord,
   getStrippedWords,
+  getVerbDetails
 };
 

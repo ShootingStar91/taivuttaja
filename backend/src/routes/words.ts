@@ -29,7 +29,7 @@ router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
   if (!isLanguage(lang)) {
     throw new Error("Invalid language parameter. Give either 'en' or 'es'");
   }
-  
+
   if (!rawMood || !rawTense) {
     throw new Error("Mood or tense missing");
   }
@@ -59,6 +59,13 @@ router.get('/random', async (_req, res, _next) => {
   res.send(word);
 });
 
+router.get('/verbdetails/:verb', async (req, res) => {
+  const verb = req.params.verb;
+  const result = await wordService.getVerbDetails(verb);
+  console.log({result});
+  
+  res.send(result);
+});
 
 router.get('/allwordsstripped', async (_req, res, _next) => {
   const result = await wordService.getStrippedWords();
