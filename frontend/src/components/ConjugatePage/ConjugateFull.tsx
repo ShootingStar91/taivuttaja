@@ -39,7 +39,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
     const newEmptyForms: string[] = [];
     forms.forEach(form => {
       if (getWordForm(word, form) === "") {
-        document.getElementsByName(form)[0].style.backgroundColor = "#878787"; // color for blocked text inputs
+        document.getElementsByName(form)[0].style.backgroundColor = COLORS.BLOCKED;
         newEmptyForms.push(form);
       }
     });
@@ -76,7 +76,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
 
 
   const resetFormColors = () => {
-    forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffffff");
+    forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = COLORS.BLANK);
   };
 
 
@@ -176,7 +176,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
         newFormState[f] = answer !== undefined ? answer : "";
         setFormState({ ...newFormState });
         document.getElementsByName(f).forEach(element => element.setAttribute('disabled', 'true'));
-        document.getElementsByName(f)[0].style.backgroundColor = "#ffec99";
+        document.getElementsByName(f)[0].style.backgroundColor = COLORS.SHOWANSWER;
       });
 
     } else {
