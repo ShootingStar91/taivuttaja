@@ -47,6 +47,8 @@ export const VocabPage = () => {
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    console.log(event.key);
+    console.log("moi");
     
     if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();
@@ -73,7 +75,7 @@ export const VocabPage = () => {
 
   return (
 
-    <div className="fullcard p-8">
+    <div className="fullcard p-8" onKeyDown={onKeyDown}>
       <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px]'>
         <EnglishFlag /> <h2>{word.infinitive_english}</h2>
       </div>
@@ -81,7 +83,7 @@ export const VocabPage = () => {
         <div className='flex auto-flex gap-x-4'>
           <SpanishFlag /><input className='textField' type='text' onChange={handleChange} value={currentTry} disabled={showAnswer} />
         </div>
-        <div className='flex auto-flex gap-x-4 pt-8' onKeyDown={onKeyDown}>
+        <div className='flex auto-flex gap-x-4 pt-8'>
           <button className='btn w-[145px]' type='button' onClick={onTry}>Try</button>
           <button className='btn w-[145px]' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button>
         </div>

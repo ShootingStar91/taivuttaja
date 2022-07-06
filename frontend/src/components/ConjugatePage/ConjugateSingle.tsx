@@ -20,6 +20,8 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showingCorrect, setShowingCorrect] = useState<boolean>(false);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
+  const [timeoutId, setTimeoutId] = useState<number | null>(null);
+
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
@@ -72,7 +74,11 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     
     if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();
-      onTry();
+      if (!showingCorrect) {
+        onTry();
+      } else {
+        goNext();
+      }
     }
   };
 
@@ -105,17 +111,25 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     const field = document.getElementsByName("attemptField")[0];
     field.style.backgroundColor = COLORS.CORRECT;
     setCorrectAnswers(correctAnswers + 1);
-    setTimeout(() => {
-      setShowingCorrect(false);
-      
-      void newWord();
-      setAttempt("");
-      next(settings.amount);
-      field.style.backgroundColor = COLORS.BLANK;
+    const newTimeoutId = window.setTimeout(() => {
+      goNext();
     }, 2000);
 
-    console.log(showingCorrect);
+    setTimeoutId(newTimeoutId);
 
+  };
+
+  const goNext = () => {
+    if (timeoutId !== null) {
+      window.clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+    setShowingCorrect(false);
+    const field = document.getElementsByName("attemptField")[0];
+    void newWord();
+    setAttempt("");
+    next(settings.amount);
+    field.style.backgroundColor = COLORS.BLANK;
   };
 
   const onClickSkip = () => {
