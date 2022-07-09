@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useEffect } from 'react';
 import { IndexPage } from './components/IndexPage';
 import { VocabPage } from './components/VocabPage';
@@ -14,6 +13,8 @@ import userService from './services/user';
 import { InfoBar } from './components/InfoBar';
 import spain_city_flag from './resources/spain-city-flag-cropped-2.jpeg';
 import { showToast, successToast } from './reducers/notification';
+import { VerbsPage } from './components/VerbsPage';
+import { VerbView } from './components/VerbsPage/VerbView';
 
 const App = () => {
 
@@ -49,10 +50,11 @@ const App = () => {
         <Notification />
 
         <div id="navbar" className="container flex flex-wrap justify-center items-center sm:gap-4 md:gap-12 mx-auto h-12 
-                        rounded-t-md font-sans sm:text-lg md:text-xl lg:text-2xl">
+                        rounded-t-md font-sans sm:text-lg md:text-xl lg:text-xl">
           <Link className={navBarLinkStyle} to="/">Home</Link>
           <Link className={navBarLinkStyle} to="/conjugatestart">Conjugate</Link>
           <Link className={navBarLinkStyle} to="/vocab">Vocab</Link>
+          <Link className={navBarLinkStyle} to="/verbs">Search</Link>
           {user && <Link className={navBarLinkStyle} to="/userpage">User page</Link>}
           {!user ? <Link className={navBarLinkStyle} to="/login">Login</Link> :
             <Link className={navBarLinkStyle} to="/" onClick={logout}>Logout</Link>}
@@ -63,8 +65,10 @@ const App = () => {
             <Route path="conjugatestart" element={<ConjugateIndex />} />
             <Route path="vocab" element={<VocabPage />} />
             <Route path="login" element={<LoginForm />} />
+            <Route path="verbs" element={<VerbsPage />} />
             <Route path="userpage" element={<UserPage />} />
             <Route path="wordlist/:id" element={<WordListView />} />
+            <Route path="verb/:verb" element={<VerbView />} />
             <Route path="*" element={<IndexPage />} />
           </Routes>
         </div>

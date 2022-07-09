@@ -9,6 +9,8 @@ export const COLORS = {
   CORRECT: "#45bd13",
   BLANK: "#ffffff",
   ALMOST_CORRECT: "#e2ff8a",
+  BLOCKED: "#878787",
+  SHOWANSWER: "#ffec99"
 
 };
 

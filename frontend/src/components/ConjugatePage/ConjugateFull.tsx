@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
 import { errorToast, showToast, successToast } from '../../reducers/notification';
 import { wordService } from '../../services/words';
-import { ConjugateMode, ConjugateSettings, Word } from '../../types';
+import { ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription, forms, getRandomForm, deAccentify } from '../../utils';
 import { EnglishFlag, SpanishFlag } from '../Flags';
 import userService from '../../services/user';
@@ -11,7 +10,6 @@ import { addDoneWord, selectUser } from '../../reducers/user';
 import { delay } from '../../services/util';
 import { COLORS } from '../../config';
 import { FullModal } from '../Modal';
-import { useNavigate } from 'react-router-dom';
 
 export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSettings, next: (max: number) => void, stop: () => void }) => {
 
@@ -19,12 +17,9 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
   const dispatch = useAppDispatch();
   const [emptyForms, setEmptyForms] = useState<string[]>([]);
   const initialState: { [fieldName: string]: string } = {};
-  const [lastId, setLastId] = useState<string | null>(null);
   const user = useAppSelector(selectUser);
   const [showingAnswers, setShowingAnswers] = useState<boolean>(false);
-  const navigate = useNavigate();
   forms.forEach(form => initialState[form] = '');
-  const [triggerClose, setTriggerClose] = useState<boolean>(false);
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({ ...initialState });
 
   useEffect(() => {
@@ -39,19 +34,11 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
     const newEmptyForms: string[] = [];
     forms.forEach(form => {
       if (getWordForm(word, form) === "") {
-        document.getElementsByName(form)[0].style.backgroundColor = "#878787"; // color for blocked text inputs
+        document.getElementsByName(form)[0].style.backgroundColor = COLORS.BLOCKED;
         newEmptyForms.push(form);
       }
     });
 
-    // what is the id of the last active input field
-    const emptyFormsAsNumbers = emptyForms.map(f => parseInt(f.charAt(0)));
-    for (let i = 5; i >= 0; i--) {
-      if (emptyFormsAsNumbers.includes(i)) {
-        setLastId(i.toString());
-        break;
-      }
-    }
     setEmptyForms(newEmptyForms);
   }, [word]);
 
@@ -76,7 +63,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
 
 
   const resetFormColors = () => {
-    forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = "#ffffff");
+    forms.forEach(form => document.getElementsByName(form)[0].style.backgroundColor = COLORS.BLANK);
   };
 
 
@@ -111,7 +98,6 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
       const attempt = formState[form];
       const correct = getWordForm(word, form);
       if (!correct) {
-        void dispatch(showToast(errorToast("Unexpected error: Invalid word data.")));
         return;
       }
       if (attempt === correct) {
@@ -176,7 +162,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
         newFormState[f] = answer !== undefined ? answer : "";
         setFormState({ ...newFormState });
         document.getElementsByName(f).forEach(element => element.setAttribute('disabled', 'true'));
-        document.getElementsByName(f)[0].style.backgroundColor = "#ffec99";
+        document.getElementsByName(f)[0].style.backgroundColor = COLORS.SHOWANSWER;
       });
 
     } else {
@@ -233,10 +219,8 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
 
     );
   };
-  if (!triggerClose) {
-    return (
-      <FullModal content={getContent()} closeButtonText="Stop practice" closeModal={() => stop()} />
-    );
-  }
-  return null;
+  return (
+    <FullModal content={getContent()} closeButtonText="Stop practice" closeModal={() => stop()} />
+  );
+
 };
