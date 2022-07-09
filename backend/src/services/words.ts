@@ -31,7 +31,7 @@ const getStrippedWords = async () => {
   return result;
 };
 
-const getVerbDetails = async (verb: any) => {
+const getVerbDetails = async (verb: unknown) => {
   if (!isString(verb)) {
     throw new Error('Invalid verb');
   }
