@@ -4,11 +4,17 @@ import { isString } from "../utils/validators";
 
 
 const getWord = async (word: string, language: Language, tense: Tense, mood: Mood) => {
+  let result;
   if (language === Language.English) {
-    return await wordModel.findOne({ infinitive_english: word, mood_english: mood, tense_english: tense });
+    result = await wordModel.findOne({ infinitive_english: word, mood_english: mood, tense_english: tense });
+
   } else {
-    return await wordModel.findOne({ infinitive: word, mood_english: mood, tense_english: tense });
+    result = await wordModel.findOne({ infinitive: word, mood_english: mood, tense_english: tense });
   }
+  if (!result) {
+    throw new Error('Word not found');
+  }
+  return result;
 };
 
 const getRandomWord = async (tense: Tense, mood: Mood) => {

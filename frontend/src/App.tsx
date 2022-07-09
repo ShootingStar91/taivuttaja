@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React, { useEffect } from 'react';
 import { IndexPage } from './components/IndexPage';
 import { VocabPage } from './components/VocabPage';

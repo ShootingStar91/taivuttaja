@@ -51,4 +51,6 @@
 | 29.6. | 4   | More e2e tests. Setup AWS lightsail server for deployment of the project. |
 | 30.6. | 4   | Setting up CD pipeline |
 | 4.7.  | 3   | CI/CD |
-| Total hours | 142     | 
+| 6.7.  | 3   | Added verb search page, fixed UX issues |
+| 9.7.  | 2   | Added individual verb conjugation table page, code quality fixes | 
+| Total hours | 147     | 
