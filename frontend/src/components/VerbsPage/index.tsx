@@ -52,6 +52,7 @@ export const VerbsPage = () => {
   return (
     <div>
       <h2>Search for verbs</h2>
+      <p></p>
       <input className='textField' type='text' onChange={handleChange} value={searchText} />
       <p></p>
       {searchText !== '' && getResults()}

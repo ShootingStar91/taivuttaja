@@ -16,7 +16,7 @@ export const IndexPage = () => {
       </ul>
       <p></p>
       <h2>About</h2>
-      <p>Version 1.0.1</p>
+      <p>Verb database consists of over 600 verbs from <a className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600' href='https://github.com/ghidinelli/fred-jehle-spanish-verbs'>this database</a>. There are some errors in the database, at least <span className='font-bold'>imperative forms have errors</span>: 3rd singular and 2nd plural forms are swapped, and 1st plural form is missing.</p>
       <p></p>
     </div>
   );

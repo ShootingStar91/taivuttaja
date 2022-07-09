@@ -31,7 +31,7 @@ export const VerbView = () => {
 
   const getTable = (words: Word[]) => {
     return (
-      <table className='-mx-4'>
+      <table className='-ml-4'>
         <thead>
           <tr>
             <th></th>
