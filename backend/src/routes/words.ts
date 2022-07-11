@@ -51,7 +51,6 @@ router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
   }
 
   throw new Error("Word invalid. Either give valid string word, or a dash (-) for random.");
-
 });
 
 router.get('/random', async (_req, res, _next) => {
@@ -61,6 +60,7 @@ router.get('/random', async (_req, res, _next) => {
 
 router.get('/verbdetails/:verb', async (req, res) => {
   const verb = req.params.verb;
+  
   const result = await wordService.getVerbDetails(verb);
   console.log({result});
   
@@ -69,7 +69,6 @@ router.get('/verbdetails/:verb', async (req, res) => {
 
 router.get('/allwordsstripped', async (_req, res, _next) => {
   const result = await wordService.getStrippedWords();
-
   res.send(result);
 });
 

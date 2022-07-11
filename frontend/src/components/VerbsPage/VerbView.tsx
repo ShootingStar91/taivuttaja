@@ -49,7 +49,7 @@ export const VerbView = () => {
               <tr>
                 <td className='min-w-[150px] justify-start whitespace-nowrap align-center font-bold'>{d.tense}</td>
               </tr>
-              <tr key={d._id} className='border-b'>
+              <tr key={d._id} className='border-b last:border-hidden'>
                 <td></td>
                 <td className='min-w-[120px]'>{d.form_1s || '---'}</td>
                 <td className='pl-2 min-w-[120px]'>{d.form_2s || '---'}</td>
@@ -69,13 +69,13 @@ export const VerbView = () => {
 
 
   return (
-    <div className='text-xs -mx-8'>
-      {moodList.map((mood) => 
-        <div key={mood} >
+    <div className='text-xs -mx-8 -mt-8'>
+      {moodList.map((mood) =>
+        <div key={mood} className='mb-8'>
+          <h2>{mood}</h2>
           <div className='fullcard -ml-2'>
-            <h2>{mood}</h2>
             {getTable(data.filter(d => d.mood_english === mood))}
-            </div>
+          </div>
           <p></p>
         </div>)}
     </div>
