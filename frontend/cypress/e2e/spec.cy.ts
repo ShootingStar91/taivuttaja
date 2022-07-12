@@ -18,6 +18,26 @@ const words = [{
   "pastparticiple_english": "invented"
 },
 {
+  _id: "5f25d1488a24ce3410dab868",
+  infinitive: "inventar",
+  infinitive_english: "to invent",
+  mood: "Subjuntivo",
+  mood_english: "Subjunctive",
+  tense: "Imperfecto",
+  tense_english: "Imperfect",
+  verb_english: "I invented, was inventing",
+  form_1s: "inventara",
+  form_2s: "inventaras",
+  form_3s: "inventara",
+  form_1p: "inventáramos",
+  form_2p: "inventarais",
+  form_3p: "inventaran",
+  gerund: "inventando",
+  gerund_english: "inventing",
+  pastparticiple: "inventado",
+  pastparticiple_english: "invented"
+},
+{
   "infinitive": "despertarse",
   "infinitive_english": "to wake up, lie down",
   "mood": "Indicativo",
@@ -35,6 +55,46 @@ const words = [{
   "gerund_english": "waking up",
   "pastparticiple": "despertado",
   "pastparticiple_english": "waken up"
+},
+{
+  _id: "5f25d1488a24ce3410daae37",
+  infinitive: "despertarse",
+  infinitive_english: "to wake up, lie down",
+  mood: "Subjuntivo",
+  mood_english: "Subjunctive",
+  tense: "Imperfecto",
+  tense_english: "Imperfect",
+  verb_english: "I woke up, was waking up",
+  form_1s: "me despertara",
+  form_2s: "te despertaras",
+  form_3s: "se despertara",
+  form_1p: "nos despertáramos",
+  form_2p: "os despertarais",
+  form_3p: "se despertaran",
+  gerund: "despertándose",
+  gerund_english: "waking up",
+  pastparticiple: "despertado",
+  pastparticiple_english: "waken up"
+},
+{
+  _id: "5f25d1488a24ce3410dab953",
+  infinitive: "lamentar",
+  infinitive_english: "to lament, regret, feel sorry about",
+  mood: "Subjuntivo",
+  mood_english: "Subjunctive",
+  tense: "Imperfecto",
+  tense_english: "Imperfect",
+  verb_english: "I lamented, was lamenting",
+  form_1s: "lamentara",
+  form_2s: "lamentaras",
+  form_3s: "lamentara",
+  form_1p: "lamentáramos",
+  form_2p: "lamentarais",
+  form_3p: "lamentaran",
+  gerund: "lamentando",
+  gerund_english: "lamenting",
+  pastparticiple: "lamentado",
+  pastparticiple_english: "lamented"
 },
 {
   "infinitive": "lamentar",
@@ -75,6 +135,26 @@ const words = [{
   "pastparticiple_english": "accepted"
 },
 {
+  _id: "5f25d1488a24ce3410da9f18",
+  infinitive: "aceptar",
+  infinitive_english: "to accept, approve; to agree to",
+  mood: "Subjuntivo",
+  mood_english: "Subjunctive",
+  tense: "Imperfecto",
+  tense_english: "Imperfect",
+  verb_english: "I accepted, was accepting",
+  form_1s: "aceptara",
+  form_2s: "aceptaras",
+  form_3s: "aceptara",
+  form_1p: "aceptáramos",
+  form_2p: "aceptarais",
+  form_3p: "aceptaran",
+  gerund: "aceptando",
+  gerund_english: "accepting",
+  pastparticiple: "aceptado",
+  pastparticiple_english: "accepted"
+},
+{
   "infinitive": "callar",
   "infinitive_english": "to keep quiet about, pass over in silence; to hush",
   "mood": "Indicativo",
@@ -92,6 +172,26 @@ const words = [{
   "gerund_english": "keeping quiet about",
   "pastparticiple": "callado",
   "pastparticiple_english": "kept quiet about"
+},
+{
+  _id: "5f25d1488a24ce3410daa5b6",
+  infinitive: "callar",
+  infinitive_english: "to keep quiet about, pass over in silence; to hush",
+  mood: "Subjuntivo",
+  mood_english: "Subjunctive",
+  tense: "Imperfecto",
+  tense_english: "Imperfect",
+  verb_english: "I kept quiet about, was keeping quiet about",
+  form_1s: "callara",
+  form_2s: "callaras",
+  form_3s: "callara",
+  form_1p: "calláramos",
+  form_2p: "callarais",
+  form_3p: "callaran",
+  gerund: "callando",
+  gerund_english: "keeping quiet about",
+  pastparticiple: "callado",
+  pastparticiple_english: "kept quiet about"
 }];
 
 const getRightAnswer = (word: string, tense: string, mood: string, personform: string) => {
@@ -117,7 +217,7 @@ const getRightAnswer = (word: string, tense: string, mood: string, personform: s
 const openPage = (page: string) => {
   cy.get('#navbar').contains(page).click();
   wait();
-}
+};
 const login = () => {
   cy.get('#navbar').contains('Login').click();
   wait();
@@ -138,7 +238,7 @@ const createUser = () => {
   cy.get('#passwordfield').type('testpass');
   cy.contains('Create new user').click();
   wait();
-}
+};
 
 const logout = () => {
   cy.get('#navbar').contains('Logout').click();
@@ -148,7 +248,7 @@ const logout = () => {
 
 const wait = () => {
   cy.wait(400);
-}
+};
 
 describe('taivuttaja-app', () => {
 
@@ -193,7 +293,7 @@ describe('taivuttaja-app', () => {
       logout();
 
       login();
-    })
+    });
 
     it('Conjugate-page opens and contains wordlist form', () => {
       cy.get('#navbar').contains('Conjugate').click();
@@ -218,7 +318,7 @@ describe('taivuttaja-app', () => {
     beforeEach(() => {
       cy.visit('http://localhost:3000');
       login();
-    })
+    });
     it('Strict accent mode can be set', () => {
       wait();
       cy.get('#strictaccentmode').click({ force: true });
@@ -285,7 +385,7 @@ describe('taivuttaja-app', () => {
       cy.get('#deletewordlistbutton').click();
       wait();
       cy.get('#wordlists').contains('wordlist1').should('not.exist');
-    })
+    });
 
     it('Can change password', () => {
       const changePass = (oldpass: string, newpass: string) => {
@@ -339,15 +439,15 @@ describe('taivuttaja-app', () => {
       cy.contains('Single').click();
       wait();
       cy.get('body').then(($body) => {
-        let tense = $body.find('#tense').text();
-        let mood = $body.find('#mood').text();
-        let personform = $body.find('#personform').text();
-        let word = $body.find('#spanishword').text();
+        const tense = $body.find('#tense').text();
+        const mood = $body.find('#mood').text();
+        const personform = $body.find('#personform').text();
+        const word = $body.find('#spanishword').text();
 
         console.log("Word:", word);
         console.log("Tense: ", tense);
         console.log("Mood:", mood);
-        console.log("Peresonform: ", personform);
+        console.log("Personform: ", personform);
 
         const answer = getRightAnswer(word, tense, mood, personform);
 
@@ -358,7 +458,7 @@ describe('taivuttaja-app', () => {
         cy.get('#answerfield').type('wronganswer');
         cy.contains('Try').click();
         wait();
-        cy.get('#correctanswers').contains('1');  
+        cy.get('#correctanswers').contains('1');
 
       });
 

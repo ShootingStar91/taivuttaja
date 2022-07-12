@@ -53,4 +53,5 @@
 | 4.7.  | 3   | CI/CD |
 | 6.7.  | 3   | Added verb search page, fixed UX issues |
 | 9.7.  | 2   | Added individual verb conjugation table page, code quality fixes | 
-| Total hours | 147     | 
+| 11.7. | 1   | Fixed flag icons not working on windows, code quality |
+| Total hours | 148     | 
