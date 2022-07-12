@@ -40,15 +40,15 @@ export const getFormDescription = (form: string): string => {
     case '2s':
       return 'Second person singular (you)';
     case '3s':
-      return 'Third person singular (she/her/it) / Formal "you"';
+      return 'Third person singular (she/her/it) / Formal \'you\'';
     case '1p':
       return 'First person plural (we)';
     case '2p':
       return 'Second person plural (you all)';
     case '3p':
-      return 'Third person plural (they) / Formal "you all"';
+      return 'Third person plural (they) / Formal \'you all\'';
   }
-  return "Error, form description missing!";
+  return 'Error, form description missing!';
 };
 
 export const getForm = (form: string): string => {
@@ -66,7 +66,7 @@ export const getForm = (form: string): string => {
     case '3p':
       return 'ellas / ustedes';
   }
-  return "Error, form description missing!";
+  return 'Error, form description missing!';
 };
 
 export const getRandomForm = (tenseSelections: TenseSelections, moodSelections: MoodSelections) => {

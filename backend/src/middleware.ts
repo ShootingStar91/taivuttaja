@@ -43,12 +43,12 @@ const tokenExtractor = (request: express.Request, _response: express.Response, n
 const userExtractor = (request: express.Request, response: express.Response, next: Next) => {
   
   if (request.token === undefined || request.token === null) {
-    throw new JsonWebTokenError("Invalid token");
+    throw new JsonWebTokenError('Invalid token');
   }
 
   jwt.verify(request.token, SECRET as Secret, (_err, decoded) => {
     if (!decoded) {
-      throw new JsonWebTokenError("Token has expired");
+      throw new JsonWebTokenError('Token has expired');
     }
     const id = (decoded as TokenInterface).id;
     
@@ -57,7 +57,7 @@ const userExtractor = (request: express.Request, response: express.Response, nex
         request.user = user;
         return next();
       } else {
-        throw new JsonWebTokenError("Invalid token");
+        throw new JsonWebTokenError('Invalid token');
       }
     }).catch(_e => response.status(500).json({ error: 'Internal server error at user extraction' }));
     return;
@@ -66,22 +66,22 @@ const userExtractor = (request: express.Request, response: express.Response, nex
 };
 
 const errorHandler = (err: Error, _req: express.Request, res: express.Response, _next: Next) => {
-  console.log("Error: ", err.message);
+  console.log('Error: ', err.message);
   
   if (err.name === 'CastError') {
-    return res.status(400).send({ message: "Invalid id" });
+    return res.status(400).send({ message: 'Invalid id' });
   } else if (err.name === 'ValidationError') {
     return res.status(400).json({ message: err.message });
   } else if (err.name === 'JsonWebTokenError') {
-    return res.status(401).send({ message: "Login invalid or expired. Please try to login again" });
+    return res.status(401).send({ message: 'Login invalid or expired. Please try to login again' });
   } else if (err.name === 'TokenExpiredError') {
     return res.status(401).send({ message: 'Login expired' });
   } else if (err.name === 'MongoServerError') {
     const mongoError = err as MongoServerError;
     if (mongoError.code === 11000) {
-      return res.status(400).send({ message: "Username already exists" });
+      return res.status(400).send({ message: 'Username already exists' });
     }
-    return res.status(400).send({ message: "Error in database" });
+    return res.status(400).send({ message: 'Error in database' });
   }
 
   return res.status(400).send({ message: err.message });

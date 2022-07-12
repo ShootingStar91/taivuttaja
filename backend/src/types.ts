@@ -1,6 +1,6 @@
-import { User } from "./models/User";
+import { User } from './models/User';
 
-import { Request } from "express";
+import { Request } from 'express';
 
 export interface WordList {
   _id: string,
