@@ -40,6 +40,10 @@
     @apply mt-4 mb-4
   }
 
+  p, li, body {
+    @apply text-sm
+  }
+
   .btn {
     @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
   }

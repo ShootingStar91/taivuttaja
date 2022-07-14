@@ -23,7 +23,7 @@ export const InfoBar = () => {
     return null;
   }
   return (
-    <div className="bg-blue-200 container flex flex-wrap justify-center items-center gap-12 mx-auto p-1">
+    <div className="bg-blue-300 container flex flex-wrap justify-center items-center gap-12 mx-auto p-1">
       <span>Logged in as <span className='text-blue-600 font-bold'>{user.username}</span></span>
       <span>{goalInfo()}</span>
     </div>

@@ -36,20 +36,16 @@ const App = () => {
 
   }, []);
 
-  useEffect(() => {
-    //document.getElementsByTagName('body')[0].className = 'bg-customamber';
-  }, []);
-
-  const navBarLinkStyle = 'float-left hover:text-yellow-100';
+  const navBarLinkStyle = 'float-left hover:text-white';
 
   return (
-    <div id='mainContainer' className='bg-blue-100 container sm mx-auto max-w-[1024px] min-w-[728px]'>
+    <div id='mainContainer' className=' container mx-auto max-w-[1024px]'>
       <BrowserRouter>
         <Notification />
         <InfoBar />
 
-        <div id='navbar' className='container flex flex-wrap justify-center items-center sm:gap-4 md:gap-12 mx-auto 
-                        rounded-t-md font-sans md:text-lg lg:text-lg'>
+        <div id='navbar' className='bg-slate-300 container flex flex-wrap justify-center 
+        items-center sm:gap-2 md:gap-8 mx-auto font-sans md:text-lg lg:text-lg min-w-[728px]'>
           <Link className={navBarLinkStyle} to='/'>Home</Link>
           <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
           <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
@@ -58,7 +54,8 @@ const App = () => {
           {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
             <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}
         </div>
-        <div id='contentdiv' className='h-full bg-gray-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 min-h-[500px]'>
+        <div id='contentdiv' className='h-full bg-gray-50 pl-4 md:pl-12 pt-12 md:pr-20 
+              pb-6 flex flex-col space-y-4 min-h-[500px] max-w-[1024px] min-w-[728px]'>
           <Routes>
             <Route path='conjugatestart' element={<ConjugateIndex />} />
             <Route path='vocab' element={<VocabPage />} />
