@@ -42,6 +42,9 @@ const App = () => {
     <div id='mainContainer' className=' container mx-auto max-w-[1024px]'>
       <BrowserRouter>
         <Notification />
+        <div className='bg-blue-400 flex flex-wrap justify-center'>
+          <h2 className=''>Conjugation app</h2>
+        </div>
         <InfoBar />
 
         <div id='navbar' className='bg-slate-200 container flex flex-wrap justify-center 
