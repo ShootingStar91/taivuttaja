@@ -54,4 +54,5 @@
 | 6.7.  | 3   | Added verb search page, fixed UX issues |
 | 9.7.  | 2   | Added individual verb conjugation table page, code quality fixes | 
 | 11.7. | 1   | Fixed flag icons not working on windows, code quality |
-| Total hours | 148     | 
+| 12.7. | 2   | Changed UI styles |
+| Total hours | 150     | 

@@ -54,7 +54,7 @@ const App = () => {
           {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
             <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}
         </div>
-        <div id='contentdiv' className='h-full bg-gray-50 pl-4 md:pl-12 pt-12 md:pr-20 
+        <div id='contentdiv' className='h-full bg-slate-100 pl-4 md:pl-12 pt-12 md:pr-20 
               pb-6 flex flex-col space-y-4 min-h-[500px] max-w-[1024px] min-w-[728px]'>
           <Routes>
             <Route path='conjugatestart' element={<ConjugateIndex />} />
