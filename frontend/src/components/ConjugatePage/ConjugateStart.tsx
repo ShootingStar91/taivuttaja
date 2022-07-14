@@ -235,14 +235,14 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
             {amountOptions.map(amt => <option key={amt} value={amt.toString()}>{amt}</option>)}
           </select>
         </div>
-        <div className=''>
+        <div>
           <h2 className='flex justify-center'>Begin by choosing mode!</h2>
           <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto p-1">
-            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            <p><button type="button" className='btn'
               onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
-            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            <p><button type="button" className='btn'
               onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>
-            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            <p><button type="button" className='btn'
               onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button></p>
           </div>
         </div>

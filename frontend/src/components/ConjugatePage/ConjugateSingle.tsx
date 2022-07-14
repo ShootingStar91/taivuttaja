@@ -176,7 +176,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
         <span className="description pl-4">{getFormDescription(form)}</span>
         <div className='mt-8'>
           {mode === ConjugateMode.Single && <>
-            <form onKeyDown={onKeyDown}><div className={'rounded-lg'}><input id="answerfield" className={'textField shadow ' + (showAnswer ? ' bg-amber-300 ' : '') + (showingCorrect ? ' bg-green-300 ' : '')} name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off" disabled={showAnswer}></input></div></form>
+            <form onKeyDown={onKeyDown}><div className={'rounded-lg'}><input id="answerfield" className={'textField ' + (showAnswer ? ' bg-amber-300 ' : '') + (showingCorrect ? ' bg-green-300 ' : '')} name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off" disabled={showAnswer}></input></div></form>
             <p><button className='btn w-[200px]' type='button' onClick={onTry}>Try</button></p>
           </>}
           {mode === ConjugateMode.Flashcard && getFlashcardPart()}

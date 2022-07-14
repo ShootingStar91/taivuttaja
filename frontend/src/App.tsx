@@ -44,7 +44,7 @@ const App = () => {
         <Notification />
         <InfoBar />
 
-        <div id='navbar' className='bg-slate-300 container flex flex-wrap justify-center 
+        <div id='navbar' className='bg-slate-200 container flex flex-wrap justify-center 
         items-center sm:gap-2 md:gap-8 mx-auto font-sans md:text-lg lg:text-lg min-w-[728px]'>
           <Link className={navBarLinkStyle} to='/'>Home</Link>
           <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
