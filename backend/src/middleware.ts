@@ -59,7 +59,7 @@ const userExtractor = (request: express.Request, response: express.Response, nex
       } else {
         throw new JsonWebTokenError('Invalid token');
       }
-    }).catch(_e => response.status(500).json({ error: 'Internal server error at user extraction' }));
+    }).catch(_e => response.status(401).json({ message: 'User does not exist anymore' }));
     return;
   });
   return;

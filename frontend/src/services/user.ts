@@ -37,7 +37,7 @@ const tryLogin = async (username: string, password: string) => {
   try {
     const result = await axios.post<User>(`${url}/login/`, { username, password });
     
-    if (result.data) {
+    if (result && result.data) {
       return getReadyUser(result.data);
     } else {
       return customError("Unknown error when trying to log in");

@@ -48,7 +48,7 @@ export const showToast = createAsyncThunk<
       await delay(NOTIFICATION_DELAY);
       const currentState = thunkAPI.getState();
       if (currentState.notification.id === id) {
-        thunkAPI.dispatch(setNotification({ message: "", type: ToastType.NORMAL }));
+        thunkAPI.dispatch(setNotification({ message: '', type: ToastType.NORMAL }));
       }
     }
   );

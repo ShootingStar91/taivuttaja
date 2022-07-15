@@ -215,11 +215,11 @@ const getRightAnswer = (word: string, tense: string, mood: string, personform: s
 };
 
 const openPage = (page: string) => {
-  cy.get('#navbar').contains(page).click();
+  cy.get('#navbar').contains(page).click({force: true});
   wait();
 };
 const login = () => {
-  cy.get('#navbar').contains('Login').click();
+  openPage('Login');
   wait();
   cy.get('#usernamefield').type('testuser');
   cy.get('#passwordfield').type('testpass');
@@ -232,7 +232,7 @@ const deleteUsers = () => {
 };
 
 const createUser = () => {
-  cy.get('#navbar').contains('Login').click();
+  openPage('Login');
   wait();
   cy.get('#usernamefield').type('testuser');
   cy.get('#passwordfield').type('testpass');
@@ -241,7 +241,7 @@ const createUser = () => {
 };
 
 const logout = () => {
-  cy.get('#navbar').contains('Logout').click();
+  openPage('Logout');
   wait();
 };
 
@@ -266,18 +266,18 @@ describe('taivuttaja-app', () => {
 
   context('when unlogged', () => {
     it('Conjugate-page opens and does not have wordlist form', () => {
-      cy.get('#navbar').contains('Conjugate').click();
+      openPage('Conjugate');
       wait();
       cy.contains('Begin by choosing mode!');
       cy.contains('Select wordlist').should('not.exist');
     });
     it('Vocab-page opens', () => {
-      cy.get('#navbar').contains('Vocab').click();
+      openPage('Vocab');
       wait();
       cy.contains('Try');
     });
     it('Home page opens', () => {
-      cy.get('#navbar').contains('Home').click();
+      openPage('Home');
       wait();
       cy.contains('Welcome to the conjugation app!');
     });
@@ -295,13 +295,13 @@ describe('taivuttaja-app', () => {
       login();
     });
 
-    it('Conjugate-page opens and contains wordlist form', () => {
-      cy.get('#navbar').contains('Conjugate').click();
+    it('Conjugate-page opens and does not contain wordlist form', () => {
+      openPage('Conjugate');
       wait();
-      cy.contains('Select wordlist');
+      cy.contains('No wordlists found');
     });
     it('User page opens', () => {
-      cy.get('#navbar').contains('User page').click();
+      openPage('User page');
       wait();
       cy.contains('Strict accents mode');
     });
@@ -340,7 +340,7 @@ describe('taivuttaja-app', () => {
       cy.contains('Create').click();
       wait();
       cy.contains('Add words to wordlist: wordlist1');
-      cy.contains('User page').click();
+      openPage('User page');
       wait();
       cy.contains('Create');
       cy.contains('wordlist1');
@@ -358,7 +358,7 @@ describe('taivuttaja-app', () => {
       cy.get('#addwordbutton').contains('Add').click();
       wait();
       cy.get('#words').contains('aceptar');
-      cy.get('#navbar').contains('User page').click();
+      openPage('User page');
       wait();
       cy.get('#wordlists').contains('wordlist1').click();
       wait();
@@ -372,7 +372,7 @@ describe('taivuttaja-app', () => {
       cy.get('#words').contains('aceptar').get('#deleteicon').click();
       wait();
       cy.get('#words').should('not.exist');
-      cy.get('#navbar').contains('User page').click();
+      openPage('User page');
       wait();
       cy.get('#wordlists').contains('wordlist1').click();
       wait();
@@ -403,7 +403,7 @@ describe('taivuttaja-app', () => {
       };
       changePass('testpass', 'newtestpass');
       logout();
-      cy.get('#navbar').contains('Login').click();
+      openPage('Login');
       wait();
       cy.get('#usernamefield').type('testuser');
       cy.get('#passwordfield').type('newtestpass');
@@ -416,7 +416,7 @@ describe('taivuttaja-app', () => {
     it('Can delete account', () => {
       cy.contains('Delete all user data').click();
       wait();
-      cy.get('#navbar').contains('Login').click();
+      openPage('Login');
       wait();
       cy.get('#usernamefield').type('testuser');
       cy.get('#passwordfield').type('testpass');

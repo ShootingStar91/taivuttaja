@@ -9,10 +9,13 @@ export const success = <T>(item: T): [string, T | undefined] => {
 };
 
 export const error = (e: any): [string, undefined] => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  console.log({e});
+  
   if (e?.response?.data?.message) {
     return [e.response.data.message as string, undefined];
   } else {
-    return ["Error with server", undefined];
+    return ["Something went wrong", undefined];
   }
 };
 

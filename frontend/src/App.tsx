@@ -47,7 +47,7 @@ const App = () => {
         <Notification />
         <div className='bg-blue-400 flex flex-wrap justify-center'>
           <div className='flex auto-flex gap-x-4'>
-            <div className='mt-1 -mx-2'><SpanishFlag /></div> <h2 id="spanishword">Conjugation app</h2>
+            <div className='mt-1 -mx-2'><SpanishFlag /></div> <h2>Conjugation app</h2>
           </div>
         </div>
         <InfoBar />
