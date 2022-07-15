@@ -144,7 +144,14 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
         <div>
           <MoodTenseSelection {...{ availableTenses, switchMoodSelection, switchTenseSelection, moodSelections, tenseSelections }} />
         </div>
-        {user ? <WordListOption {...{ allWordlists, setWordlist: (title: string) => setWordlist(title), wordlistId }} /> : <p className='flex justify-center'>No wordlists found. Create wordlists on user page.</p>}
+        {user &&
+          <>
+            {allWordlists && allWordlists.length > 0 ? 
+              <WordListOption {...{ allWordlists, setWordlist: (title: string) => setWordlist(title), wordlistId }} /> : 
+              <p className='flex justify-center'>No wordlists found. Create wordlists on user page.</p>
+            }
+          </>
+        }
         <div className='flex justify-center mb-6 pt-4'>
           <AmountOption {...{ onChangeAmount, amount }} />
         </div>
