@@ -14,6 +14,7 @@ import { InfoBar } from './components/InfoBar';
 import { showToast, successToast } from './reducers/notification';
 import { VerbsPage } from './components/VerbsPage';
 import { VerbView } from './components/VerbsPage/VerbView';
+import { SpanishFlag } from './components/Flags';
 
 const App = () => {
 
@@ -43,7 +44,9 @@ const App = () => {
       <BrowserRouter>
         <Notification />
         <div className='bg-blue-400 flex flex-wrap justify-center'>
-          <h2 className=''>Conjugation app</h2>
+          <div className='flex auto-flex gap-x-4'>
+            <div className='mt-1 -mx-2'><SpanishFlag /></div> <h2 id="spanishword">Conjugation app</h2>
+          </div>
         </div>
         <InfoBar />
 

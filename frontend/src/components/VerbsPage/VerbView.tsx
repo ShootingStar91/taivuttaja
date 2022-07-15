@@ -69,8 +69,9 @@ export const VerbView = () => {
 
 
   if (!data || !data[0]) {
-    return null;
+    return <div>Loading...</div>;
   }
+
   return (
     <div className='text-xs -mx-8 -mt-8'>
       <div className='flex auto-flex gap-x-4 -mb-2'>

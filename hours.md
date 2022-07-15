@@ -55,4 +55,5 @@
 | 9.7.  | 2   | Added individual verb conjugation table page, code quality fixes | 
 | 11.7. | 1   | Fixed flag icons not working on windows, code quality |
 | 12.7. | 2   | Changed UI styles |
-| Total hours | 150     | 
+| 14.7. | 1   | Refactoring into smaller components |
+| Total hours | 151     | 
