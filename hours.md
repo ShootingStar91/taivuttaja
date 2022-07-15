@@ -56,4 +56,5 @@
 | 11.7. | 1   | Fixed flag icons not working on windows, code quality |
 | 12.7. | 2   | Changed UI styles |
 | 14.7. | 1   | Refactoring into smaller components |
-| Total hours | 151     | 
+| 15.7. | 4   | Fixed login related bugs, error handling, broken tests |
+| Total hours | 155     | 

@@ -42,7 +42,7 @@ const App = () => {
   const navBarLinkStyle = 'float-left hover:text-white';
 
   return (
-    <div id='mainContainer' className=' container mx-auto max-w-[1024px]'>
+    <div id='mainContainer' className='mt-4 container mx-auto max-w-[1024px]'>
       <BrowserRouter>
         <Notification />
         <div className='bg-blue-400 flex flex-wrap justify-center'>
