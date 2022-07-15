@@ -12,6 +12,15 @@ require('express-async-errors');
 
 const app = express();
 
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:80'];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+  credentials: true
+};
+
+app.use(cors(options));
+
 app.use(express.json());
 app.use(express.static('build'));
 app.use(middleware.logger);
@@ -32,14 +41,6 @@ mongoose.connect(
     console.log('Error connecting to MongoDB: ' + error.message);
   });
 
-
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:80'];
-
-const options: cors.CorsOptions = {
-  origin: allowedOrigins
-};
-
-app.use(cors(options));
 
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);

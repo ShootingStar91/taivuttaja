@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { WordList } from "../types";
-import axios from "axios";
+import axios from './index';
 import { baseUrl } from "../config";
 import { getHeader, success, error } from "./util";
 

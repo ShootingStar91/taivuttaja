@@ -33,6 +33,8 @@ const App = () => {
     const loadedUser = userService.checkLogin();
     if (loadedUser) {
       dispatch(setUser(loadedUser));
+    } else {
+      dispatch(removeUser());     
     }
 
   }, []);

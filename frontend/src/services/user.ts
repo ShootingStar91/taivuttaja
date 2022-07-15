@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from "axios";
+import axios from './index';
 import { baseUrl } from "../config";
 import { DoneWord, User } from "../types";
 import { getHeader, success, error, customError } from "./util";
@@ -58,7 +58,7 @@ const deleteUser = async (token: string) => {
 
 const checkLogin = () => {
   const user = window.localStorage.getItem('loggedUser');
-  if (user) {
+  if (user && user !== 'undefined') {
     return JSON.parse(user) as User;
   }
 };
