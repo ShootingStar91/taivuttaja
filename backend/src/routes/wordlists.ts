@@ -18,7 +18,7 @@ router.post('/addword/', middleware.userExtractor, async (req, res) => {
 
   const result = await wordlistService.addWord(req.body.word, req.body.wordlistId, req.user._id);
   if (!result) {
-    throw new Error("Error adding word to wordlist");
+    throw new Error('Error adding word to wordlist');
   }
   res.send(result);
   
@@ -28,7 +28,7 @@ router.post('/addword/', middleware.userExtractor, async (req, res) => {
 router.get('/', middleware.userExtractor, async (req, res) => {  
   // Returns all owners wordlists
   const result = await wordlistService.getUsersLists(req.user._id);
-  console.log("result");
+  console.log('result');
   
   res.json(result);
 

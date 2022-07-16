@@ -5,7 +5,7 @@ export const getHeader = (token: string) => {
 };
 
 export const success = <T>(item: T): [string, T | undefined] => {
-  return ["", item];
+  return ['', item];
 };
 
 export const error = (e: any): [string, undefined] => {
@@ -15,7 +15,7 @@ export const error = (e: any): [string, undefined] => {
   if (e?.response?.data?.message) {
     return [e.response.data.message as string, undefined];
   } else {
-    return ["Something went wrong", undefined];
+    return ['Something went wrong', undefined];
   }
 };
 

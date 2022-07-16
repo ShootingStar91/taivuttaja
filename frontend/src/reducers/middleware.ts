@@ -1,5 +1,5 @@
-import { AnyAction, Middleware } from "redux";
-import { RootState } from "./store";
+import { AnyAction, Middleware } from 'redux';
+import { RootState } from './store';
 
 
 export const savingState: Middleware<undefined, RootState> = storeApi => next => (action: AnyAction) => {

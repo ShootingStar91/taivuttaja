@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { WordList } from "../types";
+import { WordList } from '../types';
 import axios from './index';
-import { baseUrl } from "../config";
-import { getHeader, success, error } from "./util";
+import { baseUrl } from '../config';
+import { getHeader, success, error } from './util';
 
 const url = baseUrl + 'wordlists'; // /api/wordlists/
 

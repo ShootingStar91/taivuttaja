@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from './index';
-import { baseUrl } from "../config";
-import { DoneWord, User } from "../types";
-import { getHeader, success, error, customError } from "./util";
+import { baseUrl } from '../config';
+import { DoneWord, User } from '../types';
+import { getHeader, success, error, customError } from './util';
 const url = baseUrl + 'user';
 
 const createUser = async (username: string, password: string) => {
@@ -16,7 +16,7 @@ const createUser = async (username: string, password: string) => {
 
 const getReadyUser = async (user: User) => {
   if (!user.token) {
-    return customError("Invalid token");
+    return customError('Invalid token');
   }
     const [err, result] = await getDoneWords(user.token);    
     if (!result) {
@@ -40,7 +40,7 @@ const tryLogin = async (username: string, password: string) => {
     if (result && result.data) {
       return getReadyUser(result.data);
     } else {
-      return customError("Unknown error when trying to log in");
+      return customError('Unknown error when trying to log in');
     }
   } catch (e: any) {
     return error(e);

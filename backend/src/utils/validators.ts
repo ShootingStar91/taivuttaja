@@ -1,11 +1,11 @@
-import { Tense, tenseList, Mood, moodList, Language } from "../types";
+import { Tense, tenseList, Mood, moodList, Language } from '../types';
 
 export const isString = (text: unknown): text is string => {
   return typeof text === 'string' || text instanceof String;
 };
 
 export const isBoolean = (variable: unknown): variable is boolean => {
-  return typeof variable == "boolean";
+  return typeof variable == 'boolean';
 };
 
 

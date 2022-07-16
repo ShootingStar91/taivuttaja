@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { NOTIFICATION_DELAY } from "../config";
-import { delay } from "../services/util";
-import { ToastType } from "../types";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NOTIFICATION_DELAY } from '../config';
+import { delay } from '../services/util';
+import { ToastType } from '../types';
 import { AppDispatch, RootState } from './store';
 
 export interface NotificationState {
@@ -11,7 +11,7 @@ export interface NotificationState {
 
 const initialState: NotificationState = {
   data: {
-    message: "",
+    message: '',
     type: ToastType.NORMAL,
   },
   id: 0,

@@ -27,18 +27,18 @@ router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
   const lang = req.params.lang;
 
   if (!isLanguage(lang)) {
-    throw new Error("Invalid language parameter. Give either 'en' or 'es'");
+    throw new Error('Invalid language parameter. Give either "en" or "es"');
   }
 
   if (!rawMood || !rawTense) {
-    throw new Error("Mood or tense missing");
+    throw new Error('Mood or tense missing');
   }
 
   const mood = rawMood.charAt(0).toUpperCase() + rawMood.slice(1);
   const tense = rawTense.charAt(0).toUpperCase() + rawTense.slice(1);
 
   if (!isMood(mood) || !isTense(tense)) {
-    throw new Error("Mood or tense invalid");
+    throw new Error('Mood or tense invalid');
   }
 
   if (isString(word) && word !== '-') {
@@ -50,7 +50,7 @@ router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
     return res.send(word);
   }
 
-  throw new Error("Word invalid. Either give valid string word, or a dash (-) for random.");
+  throw new Error('Word invalid. Either give valid string word, or a dash (-) for random.');
 });
 
 router.get('/random', async (_req, res, _next) => {

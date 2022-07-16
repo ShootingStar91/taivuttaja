@@ -179,6 +179,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
   if (word === null) {
     return <div>Loading...</div>;
   }
+  
   const getContent = () => {
     return (
       <div className='md:pl-12'>
