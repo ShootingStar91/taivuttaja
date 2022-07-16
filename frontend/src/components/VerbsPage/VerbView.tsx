@@ -73,7 +73,7 @@ export const VerbView = () => {
   return (
     <div className='text-xs -mx-8 -mt-8'>
       <div className='flex auto-flex gap-x-4 -mb-2'>
-        <SpanishFlag /> <h2 id="spanishword">{data[0].infinitive}</h2>
+        <SpanishFlag /> <h2 id='spanishword'>{data[0].infinitive}</h2>
       </div>
       <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px] -mb-4'>
         <EnglishFlag /> <h2>{data[0].infinitive_english}</h2>

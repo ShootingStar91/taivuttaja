@@ -27,7 +27,7 @@ router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
   const lang = req.params.lang;
 
   if (!isLanguage(lang)) {
-    throw new Error('Invalid language parameter. Give either "en" or "es"');
+    throw new Error('Invalid language parameter. Give either \'en\' or \'es\'');
   }
 
   if (!rawMood || !rawTense) {

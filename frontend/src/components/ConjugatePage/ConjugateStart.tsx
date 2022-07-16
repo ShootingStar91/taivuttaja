@@ -96,7 +96,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   const onStart = async (mode: ConjugateMode) => {
 
     if (!tenseSelections.find(s => s.selected) || !moodSelections.find(s => s.selected)) {
-      errorToast("Select at least one mood and tense");
+      errorToast('Select at least one mood and tense');
       return;
     }
 
@@ -156,12 +156,12 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
         </div>
         <div>
           <h2 className='flex justify-center'>Begin by choosing mode!</h2>
-          <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto p-1">
-            <p><button type="button" className='btn'
+          <div className='container flex flex-wrap justify-center items-center gap-12 mx-auto p-1'>
+            <p><button type='button' className='btn'
               onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
-            <p><button type="button" className='btn'
+            <p><button type='button' className='btn'
               onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>
-            <p><button type="button" className='btn'
+            <p><button type='button' className='btn'
               onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button></p>
           </div>
         </div>

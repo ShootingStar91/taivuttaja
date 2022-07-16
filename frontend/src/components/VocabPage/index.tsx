@@ -8,7 +8,7 @@ import { EnglishFlag, SpanishFlag } from '../Flags';
 
 export const VocabPage = () => {
 
-  const [currentTry, setCurrentTry] = useState<string>("");
+  const [currentTry, setCurrentTry] = useState<string>('');
   const [word, setWord] = useState<Word | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showingCorrect, setShowingCorrect] = useState<boolean>(false);
@@ -39,7 +39,7 @@ export const VocabPage = () => {
     if (word && currentTry.toLowerCase() === word.infinitive.toLowerCase()) {
       void correctAnswer();
     } else {
-      const field = document.getElementsByName("attemptField")[0];
+      const field = document.getElementsByName('attemptField')[0];
       if (word && deAccentify(currentTry.toLowerCase()) === deAccentify(word.infinitive.toLowerCase())) {
         field.style.backgroundColor = COLORS.ALMOST_CORRECT;
       } else {
@@ -54,7 +54,7 @@ export const VocabPage = () => {
   const correctAnswer = () => {
 
     setShowingCorrect(true);
-    const field = document.getElementsByName("attemptField")[0];
+    const field = document.getElementsByName('attemptField')[0];
     field.style.backgroundColor = COLORS.CORRECT;
     const newTimeoutId = window.setTimeout(() => {
       goNext();
@@ -70,9 +70,9 @@ export const VocabPage = () => {
       setTimeoutId(null);
     }
     setShowingCorrect(false);
-    const field = document.getElementsByName("attemptField")[0];
+    const field = document.getElementsByName('attemptField')[0];
     void getWord();
-    setCurrentTry("");
+    setCurrentTry('');
     field.style.backgroundColor = COLORS.BLANK;
   };
 
@@ -85,7 +85,7 @@ export const VocabPage = () => {
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
 
-    if (event.key === "Tab" || event.key === "Enter") {
+    if (event.key === 'Tab' || event.key === 'Enter') {
       event.preventDefault();
       if (!showingCorrect) {
         check();
@@ -101,14 +101,14 @@ export const VocabPage = () => {
     if (!showAnswer) {
       setShowAnswer(true);
       setCurrentTry(word.infinitive);
-      const field = document.getElementsByName("attemptField")[0];
+      const field = document.getElementsByName('attemptField')[0];
       field.style.backgroundColor = COLORS.SHOWANSWER;
   
     } else {
       setShowAnswer(false);
       void getWord();
-      setCurrentTry("");
-      const field = document.getElementsByName("attemptField")[0];
+      setCurrentTry('');
+      const field = document.getElementsByName('attemptField')[0];
       field.style.backgroundColor = COLORS.BLANK;
 
     }
@@ -117,7 +117,7 @@ export const VocabPage = () => {
 
 
   return (
-    <div className="fullcard p-8" onKeyDown={onKeyDown}>
+    <div className='fullcard p-8' onKeyDown={onKeyDown}>
       <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px]'>
         <EnglishFlag /> <h2>{word ? word.infinitive_english : ''}</h2>
       </div>
@@ -127,7 +127,7 @@ export const VocabPage = () => {
         </div>
         <div className='flex auto-flex gap-x-4 pt-8'>
           <button className='btn w-[145px]' type='button' onClick={onTry}>Try</button>
-          <button className='btn w-[145px]' type='button' onClick={onClickSkip}>{showAnswer ? "Skip" : "Show"}</button>
+          <button className='btn w-[145px]' type='button' onClick={onClickSkip}>{showAnswer ? 'Skip' : 'Show'}</button>
         </div>
       </div>
     </div>

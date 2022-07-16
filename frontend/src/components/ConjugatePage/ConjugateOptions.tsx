@@ -19,7 +19,7 @@ export const MoodTenseSelection = ({ availableTenses, moodSelections, tenseSelec
                   checked={moodSelections.find(m => m.mood === mood)?.selected}
                   onChange={() => switchMoodSelection(mood)}
                 />
-                <span className="pl-1">
+                <span className='pl-1'>
                   {mood}
                 </span>
 
@@ -34,11 +34,11 @@ export const MoodTenseSelection = ({ availableTenses, moodSelections, tenseSelec
             <div key={tense}>
               <label>
                 <input
-                  type="checkbox"
+                  type='checkbox'
                   checked={tenseSelections.find(t => t.tense === tense)?.selected}
                   onChange={() => switchTenseSelection(tense)}
                 />
-                <span className="pl-1">
+                <span className='pl-1'>
                   {tense}
                 </span>
               </label>
@@ -89,9 +89,9 @@ export const WordListOption = ({ allWordlists, setWordlist, wordlistId }: { allW
       <div className=''>
         {allWordlists !== null && allWordlists.length > 0 &&
           <Select
-            className="basic-single"
-            classNamePrefix="select"
-            name="wordField"
+            className='basic-single'
+            classNamePrefix='select'
+            name='wordField'
             options={getOptions()}
             onChange={onWordlistChange}
             value={getValue()}

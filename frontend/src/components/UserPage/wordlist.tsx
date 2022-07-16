@@ -1,14 +1,14 @@
-import React, { FormEvent, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { wordListService } from "../../services/wordlists";
-import { StrippedWord, WordList } from "../../types";
-import { wordService } from "../../services/words";
-import { useAppSelector } from "../../reducers/hooks";
-import { selectUser } from "../../reducers/user";
+import React, { FormEvent, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { wordListService } from '../../services/wordlists';
+import { StrippedWord, WordList } from '../../types';
+import { wordService } from '../../services/words';
+import { useAppSelector } from '../../reducers/hooks';
+import { selectUser } from '../../reducers/user';
 import Select, { SingleValue } from 'react-select';
-import { ERRORS } from "../../config";
+import { ERRORS } from '../../config';
 import { XCircleIcon } from '@heroicons/react/solid';
-import { errorToast, successToast } from "../../reducers/toastApi";
+import { errorToast, successToast } from '../../reducers/toastApi';
 
 type WordOption = {
   label: string,
@@ -39,7 +39,7 @@ export const WordListView = () => {
         return;
       }
       setWordlist(result);
-      console.log("result", result);
+      console.log('result', result);
 
     };
 
@@ -82,7 +82,7 @@ export const WordListView = () => {
       errorToast(error);
       return;
     }
-    successToast("Wordlist deleted successfully");
+    successToast('Wordlist deleted successfully');
     navigate('/userpage/');
 
   };
@@ -92,7 +92,7 @@ export const WordListView = () => {
     event.preventDefault();
     if (!allWords) { return; }
     if (!wordlist) {
-      errorToast("Wordlist not found!");
+      errorToast('Wordlist not found!');
       return;
     }
     if (word && wordlist._id && user && user.token
@@ -101,7 +101,7 @@ export const WordListView = () => {
       console.log(wordlist);
 
       if (!wordToAdd) {
-        console.log("wordtoadd empty", wordToAdd, word);
+        console.log('wordtoadd empty', wordToAdd, word);
 
         return;
       }
@@ -134,14 +134,14 @@ export const WordListView = () => {
     <div><h3>Add words to wordlist: {wordlist.title}</h3>
       <Select
         id='wordselectfield'
-        className="basic-single"
-        classNamePrefix="select"
-        name="wordField"
-        options={allWords.map(w => { return { label: w.infinitive + " | " + w.infinitive_english, value: w.infinitive_english }; })}
+        className='basic-single'
+        classNamePrefix='select'
+        name='wordField'
+        options={allWords.map(w => { return { label: w.infinitive + ' | ' + w.infinitive_english, value: w.infinitive_english }; })}
         onChange={onChange}
       />
 
-      <p><button id='addwordbutton' className='btn' type="button" onClick={addWord}>Add</button></p>
+      <p><button id='addwordbutton' className='btn' type='button' onClick={addWord}>Add</button></p>
 
       {wordlist.words.length > 0 &&
         <div id='words' className='fullcard'>
@@ -152,7 +152,7 @@ export const WordListView = () => {
         </div>
       }
       <div>
-        <p><button id='deletewordlistbutton' className='btn' type="button" onClick={deleteWordlistButton}>Delete list</button></p>
+        <p><button id='deletewordlistbutton' className='btn' type='button' onClick={deleteWordlistButton}>Delete list</button></p>
       </div>
     </div>
   );
