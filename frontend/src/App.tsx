@@ -50,17 +50,22 @@ const App = () => {
             <div className='mt-1 -mx-2'><SpanishFlag /></div> <h2>Conjugation app</h2>
           </div>
         </div>
-        <InfoBar />
+        <div className='bg-slate-300'>
 
-        <div id='navbar' className='bg-slate-200 container flex flex-wrap justify-center 
-        items-center sm:gap-2 md:gap-8 mx-auto font-sans md:text-lg lg:text-lg min-w-[728px]'>
-          <Link className={navBarLinkStyle} to='/'>Home</Link>
-          <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
-          <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
-          <Link className={navBarLinkStyle} to='/verbs'>Search</Link>
-          {user && <Link className={navBarLinkStyle} to='/userpage'>User page</Link>}
-          {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
-            <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}
+        <InfoBar />
+        </div>
+                <div className='bg-slate-200'>
+
+          <div id='navbar' className='container flex flex-wrap justify-center 
+        items-center gap-2 md:gap-4 lg:gap-8 mx-auto font-sans md:text-lg lg:text-lg min-w-[728px]'>
+            <Link className={navBarLinkStyle} to='/'>Home</Link>
+            <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
+            <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
+            <Link className={navBarLinkStyle} to='/verbs'>Search</Link>
+            {user && <Link className={navBarLinkStyle} to='/userpage'>User page</Link>}
+            {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
+              <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}
+          </div>
         </div>
         <div id='contentdiv' className='h-full bg-slate-100 pl-4 md:pl-12 pt-12 md:pr-20 
               pb-6 flex flex-col space-y-4 min-h-[500px] max-w-[1024px] min-w-[728px]'>

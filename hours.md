@@ -57,4 +57,5 @@
 | 12.7. | 2   | Changed UI styles |
 | 14.7. | 1   | Refactoring into smaller components |
 | 15.7. | 4   | Fixed login related bugs, error handling, broken tests |
-| Total hours | 155     | 
+| 16.7. | 3   | Code quality: toast API created, unified quotes |
+| Total hours | 158     | 
