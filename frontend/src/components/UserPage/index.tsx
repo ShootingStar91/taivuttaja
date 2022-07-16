@@ -5,10 +5,10 @@ import { removeUser, selectUser, setGoal, setUser } from "../../reducers/user";
 import { wordListService } from "../../services/wordlists";
 import { moodList, tenseList, WordList } from "../../types";
 import userService from '../../services/user';
-import { errorToast, showToast, successToast } from "../../reducers/notification";
 import { Modal } from '../Modal';
 import { ERRORS } from "../../config";
 import { PasswordModal } from './passwordModal';
+import { errorToast, successToast } from "../../reducers/toastApi";
 
 type TableData = {
   form: string,
@@ -35,7 +35,7 @@ export const UserPage = () => {
         const [error, result] = await wordListService.getWordLists(user.token);
 
         if (!result) {
-          void dispatch(showToast(errorToast(error)));
+          errorToast(error);
           return;
         }
 
@@ -47,7 +47,7 @@ export const UserPage = () => {
       if (user && user.token) {
         const [error, result] = await userService.getDoneWords(user.token);
         if (!result) {
-          void dispatch(showToast(errorToast(error)));
+          errorToast(error);
           return;
         }
         dispatch(setUser({ ...user, doneWords: result }));
@@ -75,14 +75,14 @@ export const UserPage = () => {
 
   const deleteUserButton = async () => {
     if (!user?.token) {
-      void dispatch(showToast(errorToast(ERRORS.INVALID_LOGIN)));
+      errorToast(ERRORS.INVALID_LOGIN);
       return;
     }
     const answer = confirm("Are you sure you want to delete all your user data? This includes your username, saved progress and all wordlists. This cannot be undone.");
     if (answer) {
       const [error, result] = await userService.deleteUser(user.token);
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
       }
       dispatch(removeUser());
       alert("All user data deleted.");
@@ -93,13 +93,13 @@ export const UserPage = () => {
   const onSetDailyGoal = async (event: FormEvent) => {
     event.preventDefault();
     if (!user?.token) {
-      void dispatch(showToast(errorToast(ERRORS.INVALID_LOGIN)));
+      errorToast(ERRORS.INVALID_LOGIN);
       return;
     }
     const result = await userService.setGoal(parseInt(dailyGoal), user.token);
     dispatch(setGoal(parseInt(dailyGoal)));
     if (result) {
-      void dispatch(showToast(successToast("Daily goal set!")));
+      successToast("Daily goal set!");
     }
   };
 
@@ -117,7 +117,7 @@ export const UserPage = () => {
       const newWordList: WordList = { title: name, words: [], owner: user };
       const [error, data] = await wordListService.createWordlist(newWordList, user.token);
       if (!data) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       const id = data._id as string;
@@ -134,7 +134,7 @@ export const UserPage = () => {
     setStrictAccents(!strictAccents);
     const [error, result] = await userService.setStrictAccents(newStrictAccents, user.token);
     if (!result) {
-      void dispatch(showToast(errorToast(error)));
+      errorToast(error);
     }
     dispatch(setUser({ ...user, strictAccents: newStrictAccents }));
   };

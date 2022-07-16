@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect, useState, } from 'react';
-import { useAppDispatch } from '../../reducers/hooks';
-import { showToast, errorToast } from '../../reducers/notification';
+import { errorToast } from '../../reducers/toastApi';
 import { wordService } from '../../services/words';
 import { StrippedWord } from '../../types';
 
@@ -8,13 +7,12 @@ export const VerbsPage = () => {
 
   const [searchText, setSearchText] = useState('');
   const [allWords, setAllWords] = useState<StrippedWord[]>([]);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getStrippedWords = async () => {
       const [error, result] = await wordService.getStrippedWords();
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       setAllWords(result);

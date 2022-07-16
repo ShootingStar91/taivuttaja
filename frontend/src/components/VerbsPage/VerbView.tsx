@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch } from '../../reducers/hooks';
-import { errorToast, showToast } from '../../reducers/notification';
+import { errorToast } from '../../reducers/toastApi';
 import { wordService } from '../../services/words';
 import { Word, moodList } from '../../types';
 import { EnglishFlag, SpanishFlag } from '../Flags';
@@ -10,7 +9,6 @@ export const VerbView = () => {
 
   const { verb } = useParams();
   const [data, setData] = useState<Word[]>([]);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const getVerb = async () => {
@@ -19,7 +17,7 @@ export const VerbView = () => {
       }
       const [error, result] = await wordService.getVerbDetails(verb);
       if (!result) {
-        void dispatch(showToast(errorToast('Error getting verb data from server: ')));
+        errorToast('Error getting verb data from server: ');
         console.log(error);
         return;
       }

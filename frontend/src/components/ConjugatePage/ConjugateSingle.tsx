@@ -1,7 +1,7 @@
 import React, { FormEvent, useEffect, useState, KeyboardEvent } from "react";
 import { COLORS } from "../../config";
-import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
-import { errorToast, showToast } from "../../reducers/notification";
+import { useAppSelector } from "../../reducers/hooks";
+import { errorToast } from "../../reducers/toastApi";
 import { selectUser } from "../../reducers/user";
 import { wordService } from "../../services/words";
 import { ConjugateMode, ConjugateSettings, Mood, Tense, Word } from "../../types";
@@ -22,7 +22,6 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
-  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
@@ -45,7 +44,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     const [error, result] = await wordService.getWord(wordParam, 'en', randomedMood, randomedTense);
 
     if (!result) {
-      void dispatch(showToast(errorToast(error)));
+      errorToast(error);
       return;
     }
 
@@ -84,7 +83,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
 
   const onTry = () => {
     if (!answer) {
-      void dispatch(showToast(errorToast("Error: invalid word data")));
+      errorToast('Invalid word data');
       return;
     }
 

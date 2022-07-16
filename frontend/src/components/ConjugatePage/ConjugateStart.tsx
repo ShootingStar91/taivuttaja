@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState, } from 'react';
-import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
-import { errorToast, showToast } from '../../reducers/notification';
+import { useAppSelector } from '../../reducers/hooks';
+import { errorToast } from '../../reducers/toastApi';
 import { selectUser } from '../../reducers/user';
 import { wordListService } from '../../services/wordlists';
 import { ConjugateMode, ConjugateSettings, Mood, moodList, MoodSelections, Tense, tenseList, TenseSelections, validCombinations, WordList } from '../../types';
@@ -19,7 +19,6 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   const [allWordlists, setAllWordlists] = useState<WordList[] | null>(null);
   const [amount, setAmount] = useState<number>(10);
   const user = useAppSelector(selectUser);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
 
@@ -30,7 +29,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
       const [error, result] = await wordListService.getWordLists(user.token);
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       setAllWordlists(result);
@@ -97,7 +96,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   const onStart = async (mode: ConjugateMode) => {
 
     if (!tenseSelections.find(s => s.selected) || !moodSelections.find(s => s.selected)) {
-      void dispatch(showToast(errorToast("Select at least one mood and tense")));
+      errorToast("Select at least one mood and tense");
       return;
     }
 
@@ -107,7 +106,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       const [error, result] = await wordListService.getWordList(wordlistId, user.token);
 
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       wordlist = result;

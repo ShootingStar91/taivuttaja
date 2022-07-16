@@ -3,12 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { wordListService } from "../../services/wordlists";
 import { StrippedWord, WordList } from "../../types";
 import { wordService } from "../../services/words";
-import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
+import { useAppSelector } from "../../reducers/hooks";
 import { selectUser } from "../../reducers/user";
 import Select, { SingleValue } from 'react-select';
-import { errorToast, showToast, successToast } from "../../reducers/notification";
 import { ERRORS } from "../../config";
 import { XCircleIcon } from '@heroicons/react/solid';
+import { errorToast, successToast } from "../../reducers/toastApi";
 
 type WordOption = {
   label: string,
@@ -23,7 +23,6 @@ export const WordListView = () => {
   const [wordlist, setWordlist] = useState<WordList | undefined>();
   const [word, setWord] = useState<WordOption | null>(null);
   const [allWords, setAllWords] = useState<StrippedWord[] | undefined>();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!user) {
@@ -31,12 +30,12 @@ export const WordListView = () => {
     }
     const getWordlist = async () => {
       if (!id || !user || !user.token) {
-        void dispatch(showToast(errorToast(ERRORS.INVALID_LOGIN)));
+        errorToast(ERRORS.INVALID_LOGIN);
         return;
       }
       const [error, result] = await wordListService.getWordList(id, user.token);
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       setWordlist(result);
@@ -53,7 +52,7 @@ export const WordListView = () => {
     const getStrippedWords = async () => {
       const [error, result] = await wordService.getStrippedWords();
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       setAllWords(result);
@@ -80,10 +79,10 @@ export const WordListView = () => {
     const [error, _] = await wordListService.deleteWordlist(wordlist._id, user.token);
     
     if (error) {
-      void dispatch(showToast(errorToast(error)));
+      errorToast(error);
       return;
     }
-    void dispatch(showToast(successToast("Wordlist deleted successfully")));
+    successToast("Wordlist deleted successfully");
     navigate('/userpage/');
 
   };
@@ -93,7 +92,7 @@ export const WordListView = () => {
     event.preventDefault();
     if (!allWords) { return; }
     if (!wordlist) {
-      void dispatch(showToast(errorToast("Wordlist not found!")));
+      errorToast("Wordlist not found!");
       return;
     }
     if (word && wordlist._id && user && user.token
@@ -109,7 +108,7 @@ export const WordListView = () => {
       setWordlist({ ...wordlist, words: [...wordlist.words, wordToAdd] });
       const [error, result] = await wordListService.addWord(word.value, wordlist._id, user.token);
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       const newAllWords = allWords.filter(w => w.infinitive_english !== word.value);
@@ -121,7 +120,7 @@ export const WordListView = () => {
     if (!wordlist?._id || !user?.token) { return; }
     const [error, result] = await wordListService.deleteWord(wordToDelete, wordlist?._id, user.token);
     if (!result) {
-      void dispatch(showToast(errorToast(error)));
+      errorToast(error);
     }
     setWordlist({ ...wordlist, words: wordlist.words.filter(w => w.infinitive_english !== wordToDelete) });
     // Word should be added back to allWords but ... do we have the strippedword still somewhere

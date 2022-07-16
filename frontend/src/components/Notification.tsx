@@ -1,11 +1,11 @@
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../reducers/hooks";
-import { selectNotification, showToast, toast } from "../reducers/notification";
+import { useAppSelector } from "../reducers/hooks";
+import { selectNotification } from "../reducers/notification";
+import { clearToast } from "../reducers/toastApi";
 import { ToastType } from "../types";
 
 export const Notification = () => {
   const notification = useAppSelector(selectNotification);
-  const dispatch = useAppDispatch();
   if (notification.message === "") {
     return null;
   }
@@ -27,7 +27,7 @@ export const Notification = () => {
   };
 
   return (
-    <div id="toast-default" className="fixed top-5 right-14 lg:right-20 2xl:right-96 flex items-center w-full max-w-xs p-4 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 z-50" role="alert" onClick={() => void dispatch(showToast(toast("")))}>
+    <div id="toast-default" className="fixed top-5 right-14 lg:right-20 2xl:right-96 flex items-center w-full max-w-xs p-4 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 z-50" role="alert" onClick={() => clearToast()}>
       {getIcon(notification.type)}
       <div className="ml-3 font-normal">{notification.message}</div>
 

@@ -11,10 +11,10 @@ import { ConjugateIndex } from './components/ConjugatePage';
 import { Notification } from './components/Notification';
 import userService from './services/user';
 import { InfoBar } from './components/InfoBar';
-import { showToast, successToast } from './reducers/notification';
 import { VerbsPage } from './components/VerbsPage';
 import { VerbView } from './components/VerbsPage/VerbView';
 import { SpanishFlag } from './components/Flags';
+import { successToast } from './reducers/toastApi';
 
 const App = () => {
 
@@ -26,7 +26,7 @@ const App = () => {
   const logout = () => {
     dispatch(removeUser());
     window.localStorage.clear();
-    void dispatch(showToast(successToast('You are now logged out!')));
+    successToast('You are now logged out!');
   };
 
   useEffect(() => {

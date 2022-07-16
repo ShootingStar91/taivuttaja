@@ -1,8 +1,8 @@
+import { AppDispatch, RootState } from './store';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NOTIFICATION_DELAY } from '../config';
 import { delay } from '../services/util';
 import { ToastType } from '../types';
-import { AppDispatch, RootState } from './store';
 
 export interface NotificationState {
   data: ToastData;
@@ -20,18 +20,6 @@ const initialState: NotificationState = {
 type ToastData = {
   message: string;
   type?: ToastType;
-};
-
-export const errorToast = (message: string) => {
-  return { message, type: ToastType.ERROR };
-};
-
-export const successToast = (message: string) => {
-  return { message, type: ToastType.SUCCESS };
-};
-
-export const toast = (message: string) => {
-  return { message, type: ToastType.NORMAL };
 };
 
 export const showToast = createAsyncThunk<

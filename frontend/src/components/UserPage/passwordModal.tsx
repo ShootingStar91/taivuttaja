@@ -1,7 +1,7 @@
 import React, { useState, FormEvent, KeyboardEvent } from "react";
 import { ERRORS } from "../../config";
-import { useAppSelector, useAppDispatch } from "../../reducers/hooks";
-import { showToast, errorToast, successToast } from "../../reducers/notification";
+import { useAppSelector } from "../../reducers/hooks";
+import { errorToast, successToast } from "../../reducers/toastApi";
 import { selectUser } from "../../reducers/user";
 import userService from '../../services/user';
 
@@ -10,22 +10,21 @@ export const PasswordModal = () => {
   const [newPass, setNewPass] = useState<string>("");
   const [newPassVerify, setNewPassVerify] = useState<string>("");
   const user = useAppSelector(selectUser);
-  const dispatch = useAppDispatch();
 
   const onClickChangePassword = async () => {
     if (!user?.token) {
-      void dispatch(showToast(errorToast(ERRORS.INVALID_LOGIN)));
+      errorToast(ERRORS.INVALID_LOGIN);
       return;
     }
     if (newPass === newPassVerify) {
       const [error, result] = await userService.changePassword(currentPass, newPass, user.token);
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
-      void dispatch(showToast(successToast("Password changed!")));
+      successToast("Password changed!");
     } else {
-      void dispatch(showToast(errorToast("New password wasn't same in both fields!")));
+      errorToast("New password wasn't same in both fields!");
     }
   };
 

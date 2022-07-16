@@ -1,6 +1,5 @@
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
-import { errorToast, showToast, successToast } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription, forms, getRandomForm, deAccentify } from '../../utils';
@@ -10,6 +9,7 @@ import { addDoneWord, selectUser } from '../../reducers/user';
 import { delay } from '../../services/util';
 import { COLORS } from '../../config';
 import { FullModal } from '../Modal';
+import { errorToast, successToast } from '../../reducers/toastApi';
 
 export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSettings, next: (max: number) => void, stop: () => void }) => {
 
@@ -53,7 +53,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
     const wordParam = randomWord ? randomWord.infinitive_english : null;
     const [error, result] = await wordService.getWord(wordParam, 'en', mood, tense);
     if (!result) {
-      void dispatch(showToast(errorToast(error)));
+      errorToast(error);
       return;
     }
 
@@ -120,12 +120,12 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
 
     if (all_correct) {
       const message = accentMistakes ? "All correct, but remember the accents!" : "¡Todo correcto!";
-      void dispatch(showToast(successToast(message)));
+      successToast(message);
       await delay(3000);
       if (user?.token) {
         const [error, result] = await userService.addDoneWord(word._id, user.token);
         if (!result) {
-          void dispatch(showToast(errorToast(error)));
+          errorToast(error);
         }
         dispatch(addDoneWord());
       }
@@ -151,7 +151,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
 
   const onSkip = async () => {
     if (!word) {
-      void dispatch(showToast(errorToast("Unexpected error happened!")));
+      errorToast('Unexpected error!');
       return;
     }
     if (!showingAnswers) {
@@ -179,7 +179,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
   if (word === null) {
     return <div>Loading...</div>;
   }
-  
+
   const getContent = () => {
     return (
       <div className='md:pl-12'>
