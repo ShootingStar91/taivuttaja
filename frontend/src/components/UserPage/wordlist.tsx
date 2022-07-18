@@ -39,7 +39,6 @@ export const WordListView = () => {
         return;
       }
       setWordlist(result);
-      console.log('result', result);
 
     };
 
@@ -98,10 +97,8 @@ export const WordListView = () => {
     if (word && wordlist._id && user && user.token
       && wordlist.words) {
       const wordToAdd = allWords.find(w => w.infinitive_english === word.value);
-      console.log(wordlist);
 
       if (!wordToAdd) {
-        console.log('wordtoadd empty', wordToAdd, word);
 
         return;
       }
@@ -123,13 +120,12 @@ export const WordListView = () => {
       errorToast(error);
     }
     setWordlist({ ...wordlist, words: wordlist.words.filter(w => w.infinitive_english !== wordToDelete) });
-    // Word should be added back to allWords but ... do we have the strippedword still somewhere
   };
 
   if (!wordlist || !allWords) {
     return (<div>Wordlist not loaded or found.</div>);
   }
-  console.log(wordlist);
+
   return (
     <div><h3>Add words to wordlist: {wordlist.title}</h3>
       <Select

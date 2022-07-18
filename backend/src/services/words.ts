@@ -35,7 +35,6 @@ const getVerbDetails = async (verb: unknown) => {
   if (!isString(verb)) {
     throw new Error('Invalid verb');
   }
-  console.log({verb});
   
   const result: Word[] = await wordModel.find({ infinitive: verb });
   return result;

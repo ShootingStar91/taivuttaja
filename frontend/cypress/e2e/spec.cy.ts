@@ -279,7 +279,7 @@ describe('taivuttaja-app', () => {
     it('Home page opens', () => {
       openPage('Home');
       wait();
-      cy.contains('Welcome to the conjugation app!');
+      cy.contains('Welcome');
     });
     it('User creation works', () => {
       createUser();

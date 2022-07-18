@@ -17,8 +17,7 @@ export const VerbView = () => {
       }
       const [error, result] = await wordService.getVerbDetails(verb);
       if (!result) {
-        errorToast('Error getting verb data from server: ');
-        console.log(error);
+        errorToast(error);
         return;
       }
       setData(result);
@@ -26,7 +25,6 @@ export const VerbView = () => {
     void getVerb();
   }, []);
 
-  console.log(data);
 
   const getTable = (words: Word[]) => {
     return (

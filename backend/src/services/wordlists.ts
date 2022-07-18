@@ -60,7 +60,6 @@ const create = async (title: unknown, userId: string) => {
 
   const words: string[] = [];
   const nameExists = await wordlistModel.findOne({ title, owner: userId });
-  console.log(nameExists);
 
   if (nameExists) {
     throw new Error('Wordlist with that name already exists. Select a different name');
@@ -103,9 +102,6 @@ const getList = async (wordlistId: unknown, userId: string) => {
   };
 
   const frontendWordlist: FrontendWordlist = { title: wordlist.title, owner: wordlist.owner, _id: wordlist._id, words: await getStrippedWords() };
-  console.log('frontendwordlist:');
-  console.log(frontendWordlist);
-  
   
   return frontendWordlist;
 

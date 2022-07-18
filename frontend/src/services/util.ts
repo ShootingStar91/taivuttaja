@@ -8,10 +8,7 @@ export const success = <T>(item: T): [string, T | undefined] => {
   return ['', item];
 };
 
-export const error = (e: any): [string, undefined] => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  console.log({e});
-  
+export const error = (e: any): [string, undefined] => {  
   if (e?.response?.data?.message) {
     return [e.response.data.message as string, undefined];
   } else {

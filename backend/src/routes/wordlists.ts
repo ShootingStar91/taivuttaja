@@ -28,7 +28,6 @@ router.post('/addword/', middleware.userExtractor, async (req, res) => {
 router.get('/', middleware.userExtractor, async (req, res) => {  
   // Returns all owners wordlists
   const result = await wordlistService.getUsersLists(req.user._id);
-  console.log('result');
   
   res.json(result);
 

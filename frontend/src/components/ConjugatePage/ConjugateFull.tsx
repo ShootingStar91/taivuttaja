@@ -56,7 +56,13 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
       errorToast(error);
       return;
     }
-
+    console.log("Correct answers: ");
+    console.log(result.form_1s);
+    console.log(result.form_2s);
+    console.log(result.form_3s);
+    console.log(result.form_1p);
+    console.log(result.form_2p);
+    console.log(result.form_3p);
     setWord(result);
 
   };

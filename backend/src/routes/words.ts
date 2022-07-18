@@ -62,7 +62,6 @@ router.get('/verbdetails/:verb', async (req, res) => {
   const verb = req.params.verb;
   
   const result = await wordService.getVerbDetails(verb);
-  console.log({result});
   
   res.send(result);
 });

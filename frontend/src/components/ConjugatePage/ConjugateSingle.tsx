@@ -57,6 +57,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     const rightAnswer = getWordForm(result, randomedForm);
     if (rightAnswer) {
       setAnswer(rightAnswer);
+      console.log(rightAnswer);
     }
 
   };

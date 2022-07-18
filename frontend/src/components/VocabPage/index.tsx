@@ -27,6 +27,9 @@ export const VocabPage = () => {
       errorToast(error);
       return;
     }
+    if (result) { 
+      console.log(result.infinitive);
+    }
     setWord(result);
   };
 
@@ -103,7 +106,7 @@ export const VocabPage = () => {
       setCurrentTry(word.infinitive);
       const field = document.getElementsByName('attemptField')[0];
       field.style.backgroundColor = COLORS.SHOWANSWER;
-  
+
     } else {
       setShowAnswer(false);
       void getWord();
@@ -114,6 +117,7 @@ export const VocabPage = () => {
     }
 
   };
+
 
 
   return (
