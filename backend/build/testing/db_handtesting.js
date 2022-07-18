@@ -28,7 +28,7 @@ exports.checkValidMoodTenses = checkValidMoodTenses;
 const checkEmptyForms = () => __awaiter(void 0, void 0, void 0, function* () {
     const words = yield Word_1.wordModel.find({});
     words.forEach(w => {
-        if ((w.form_1p === "" || w.form_2p === "" || w.form_3p === "" || w.form_1s === "" || w.form_2s === "" || w.form_3s === "") && w.mood_english === "Indicative") {
+        if ((w.form_1p === '' || w.form_2p === '' || w.form_3p === '' || w.form_1s === '' || w.form_2s === '' || w.form_3s === '') && w.mood_english === 'Indicative') {
             console.log(w);
         }
     });

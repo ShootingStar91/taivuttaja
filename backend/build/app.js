@@ -24,15 +24,21 @@ const cors_1 = __importDefault(require("cors"));
 const User_1 = require("./models/User");
 require('express-async-errors');
 const app = (0, express_1.default)();
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:80'];
+const options = {
+    origin: allowedOrigins,
+    credentials: true
+};
+app.use((0, cors_1.default)(options));
 app.use(express_1.default.json());
 app.use(express_1.default.static('build'));
 app.use(middleware_1.default.logger);
 app.use(middleware_1.default.tokenExtractor);
 if (config_1.TEST_MODE) {
-    console.log("Running in TEST_MODE");
+    console.log('Running in TEST_MODE');
 }
 else {
-    console.log("Running in normal mode");
+    console.log('Running in normal mode');
 }
 const mongo_url = config_1.TEST_MODE ? config_1.TEST_MONGODB_URI : config_1.MONGODB_URI;
 mongoose_1.default.connect(mongo_url, {}).then(() => {
@@ -40,11 +46,6 @@ mongoose_1.default.connect(mongo_url, {}).then(() => {
 }).catch((error) => {
     console.log('Error connecting to MongoDB: ' + error.message);
 });
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:80'];
-const options = {
-    origin: allowedOrigins
-};
-app.use((0, cors_1.default)(options));
 app.use('/api/words', words_1.default);
 app.use('/api/user', user_1.default);
 app.use('/api/wordlists', wordlists_1.default);
@@ -56,11 +57,11 @@ app.get('/api/version', (_req, res) => {
 });
 app.get('/api/test/deleteall', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!config_1.TEST_MODE) {
-        res.send("Not in test mode!");
+        res.send('Not in test mode!');
     }
     yield User_1.userModel.deleteMany({});
-    console.log("users deleted");
-    res.send("ok");
+    console.log('users deleted');
+    res.send('ok');
 }));
 app.use(middleware_1.default.unknownEndpoint);
 app.use(middleware_1.default.errorHandler);

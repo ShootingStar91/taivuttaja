@@ -48,11 +48,6 @@ router.post('/changepassword/', middleware_1.default.userExtractor, (req, res) =
     const result = yield user_1.default.changePassword(req.body.currentPassword, req.body.newPassword, req.user);
     res.status(200).send(result);
 }));
-// Deprecated ?
-router.post('/relog/', middleware_1.default.userExtractor, (req, res) => {
-    const result = user_1.default.relog(req.user);
-    res.status(200).send(result);
-});
 router.post('/setstrictaccents/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_1.default.setStrictAccents(req.body.strictAccents, req.user);
     res.status(200).send(result);

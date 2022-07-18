@@ -38,11 +38,11 @@ const tokenExtractor = (request, _response, next) => {
 };
 const userExtractor = (request, response, next) => {
     if (request.token === undefined || request.token === null) {
-        throw new jsonwebtoken_1.JsonWebTokenError("Invalid token");
+        throw new jsonwebtoken_1.JsonWebTokenError('Invalid token');
     }
     jsonwebtoken_1.default.verify(request.token, config_1.SECRET, (_err, decoded) => {
         if (!decoded) {
-            throw new jsonwebtoken_1.JsonWebTokenError("Token has expired");
+            throw new jsonwebtoken_1.JsonWebTokenError('Token has expired');
         }
         const id = decoded.id;
         User_1.userModel.findById(id).then(user => {
@@ -51,23 +51,23 @@ const userExtractor = (request, response, next) => {
                 return next();
             }
             else {
-                throw new jsonwebtoken_1.JsonWebTokenError("Invalid token");
+                throw new jsonwebtoken_1.JsonWebTokenError('Invalid token');
             }
-        }).catch(_e => response.status(500).json({ error: 'Internal server error at user extraction' }));
+        }).catch(_e => response.status(401).json({ message: 'User does not exist anymore' }));
         return;
     });
     return;
 };
 const errorHandler = (err, _req, res, _next) => {
-    console.log("Error: ", err.message);
+    console.log('Error: ', err.message);
     if (err.name === 'CastError') {
-        return res.status(400).send({ message: "Invalid id" });
+        return res.status(400).send({ message: 'Invalid id' });
     }
     else if (err.name === 'ValidationError') {
         return res.status(400).json({ message: err.message });
     }
     else if (err.name === 'JsonWebTokenError') {
-        return res.status(401).send({ message: "Login invalid or expired. Please try to login again" });
+        return res.status(401).send({ message: 'Login invalid or expired. Please try to login again' });
     }
     else if (err.name === 'TokenExpiredError') {
         return res.status(401).send({ message: 'Login expired' });
@@ -75,9 +75,9 @@ const errorHandler = (err, _req, res, _next) => {
     else if (err.name === 'MongoServerError') {
         const mongoError = err;
         if (mongoError.code === 11000) {
-            return res.status(400).send({ message: "Username already exists" });
+            return res.status(400).send({ message: 'Username already exists' });
         }
-        return res.status(400).send({ message: "Error in database" });
+        return res.status(400).send({ message: 'Error in database' });
     }
     return res.status(400).send({ message: err.message });
 };
