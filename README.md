@@ -2,11 +2,11 @@
 
 # Taivuttaja
 
+Try the project here: [http://conjugation.arttudev.studio](http://conjugation.arttudev.studio)
+
 A web-app for practicing conjugating Spanish verbs. Work in progress. Practice project for https://fullstackopen.com course, aiming for 175 hours of work. This project is completely non-profit and open-source and is authored by Arttu Kangas.
 
 It uses the database of conjugated Spanish verbs created by Fred Jehle and compiled by @ghidinelli: https://github.com/ghidinelli/fred-jehle-spanish-verbs
-
-[Project is deployed here!](http://13.50.0.15/)
 
 # Features
 
@@ -17,6 +17,7 @@ Here is a list of current feature. All verb practice only works from English to 
   + Full mode: Type in all forms (first person singular, etc.)
   + Single mode: You get one random form from the given mood/tense combinations, such as third person plural
   + Flashcard: No typing, get a random form and guess it
++ View conjugation table of any verb
 + Register and login
   + Create custom wordlists allowing to practice specific verbs
   + Set daily goal
@@ -27,7 +28,7 @@ Here is a list of current feature. All verb practice only works from English to 
 + Frontend written in Typescript & React 17
   + Redux toolkit
   + axios
-  + Styles with Tailwind CSS
+  + Tailwind CSS
 + Backend in Typescript, NodeJS Express
   + Mongoose & MongoDB
 + Tests
