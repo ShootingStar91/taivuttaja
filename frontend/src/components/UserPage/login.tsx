@@ -1,9 +1,9 @@
-import React, { FormEvent, useState } from "react";
-import userService from "../../services/user";
-import { useNavigate } from "react-router-dom";
-import { setUser } from "../../reducers/user";
-import { useAppDispatch } from "../../reducers/hooks";
-import { errorToast, showToast, successToast } from "../../reducers/notification";
+import React, { FormEvent, useState } from 'react';
+import userService from '../../services/user';
+import { useNavigate } from 'react-router-dom';
+import { setUser } from '../../reducers/user';
+import { useAppDispatch } from '../../reducers/hooks';
+import { errorToast, neutralToast, successToast } from '../../reducers/toastApi';
 
 export const LoginForm = () => {
 
@@ -17,10 +17,10 @@ export const LoginForm = () => {
     const [error, user] = await userService.tryLogin(username, password);
 
     if (!user) {
-      void dispatch(showToast(errorToast(error)));
+      errorToast(error);
       return;
     }
-    void dispatch(showToast(successToast("Login successful!")));
+    successToast('Login successful!');
     window.localStorage.setItem('loggedUser', JSON.stringify(user));
     dispatch(setUser({ ...user }));
     navigate('/userpage');
@@ -30,14 +30,14 @@ export const LoginForm = () => {
   const tryNewUser = async () => {
     const [userError, result] = await userService.createUser(username, password);
     if (!result) {
-      void dispatch(showToast(errorToast(userError)));
+      neutralToast(userError);
       return;
     }
 
     const [error, user] = await userService.tryLogin(username, password);
 
     if (!user) {
-      void dispatch(showToast(errorToast(error)));
+      neutralToast(error);
       return;
     }
 
@@ -56,7 +56,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className="container flex justify-center">
+    <div className='container flex justify-center'>
       <form onSubmit={tryLogin}>
         <div className='container flex flex-col justify-center'>
           <h2>Username</h2>
@@ -68,7 +68,7 @@ export const LoginForm = () => {
         </div>
         <div className='container flex gap-8'>
           <p><button id='loginbutton' type='submit' className='btn'>Log in</button></p>
-          <p><button id='newuserbutton' type="button" onClick={tryNewUser} className='btn'>Create new user</button></p>
+          <p><button id='newuserbutton' type='button' onClick={tryNewUser} className='btn'>Create new user</button></p>
         </div>
       </form>
     </div>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
+import axios from './index';
 import { Mood, StrippedWord, Tense, Word } from '../types';
 import { baseUrl } from '../config';
 import { error, success } from './util';

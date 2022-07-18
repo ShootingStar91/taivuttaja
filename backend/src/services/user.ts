@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { User, userModel } from "../models/User";
+import { User, userModel } from '../models/User';
 import bcrypt from 'bcrypt';
 import { loginValidSeconds, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, SECRET } from '../config';
-import jwt, { Secret } from "jsonwebtoken";
-import { ValidationError } from "../types";
+import jwt, { Secret } from 'jsonwebtoken';
+import { ValidationError } from '../types';
 import { isBoolean, isString } from '../utils/validators';
-import { wordlistModel } from "../models/Wordlist";
-import { doneWordModel } from "../models/DoneWord";
+import { wordlistModel } from '../models/Wordlist';
+import { doneWordModel } from '../models/DoneWord';
 
 type RawUser = Omit<User, '_id'>;
 
@@ -17,7 +17,7 @@ const createPasswordHash = async (password: string) => {
 
 const parsePassword = (password: any) => {
   if (!password || !isString(password)) {
-    throw new ValidationError("Password is not a valid string");
+    throw new ValidationError('Password is not a valid string');
   }
   if (password.length < PASSWORD_MIN_LENGTH ||
     password.length > PASSWORD_MAX_LENGTH) {
@@ -60,15 +60,15 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Use
   const password = parsePassword(rawPassword);
   const user = await userModel.findOne({ username });
   if (!user) {
-    throw new Error("User not found");
+    throw new Error('User not found');
   }
   if (!user.password) {
-    throw new Error("User did not have password in database");
+    throw new Error('User did not have password in database');
   }
 
   const result = await bcrypt.compare(password, user.password);
   if (!result) {
-    throw new Error("Invalid password");
+    throw new Error('Invalid password');
   }
 
   const userForToken = { username: user.username, id: user._id };
@@ -92,21 +92,21 @@ const deleteUser = async (user: User) => {
   const result = await userModel.deleteOne({ owner: user._id });
 
   if (!result) {
-    throw new Error("Could not find such user");
+    throw new Error('Could not find such user');
   }
 
 };
 
 const addDoneWord = async (wordId: unknown, user: User) => {
   if (!isString(wordId)) {
-    throw new ValidationError("Invalid wordId");
+    throw new ValidationError('Invalid wordId');
   }
 
   const newDoneWord = new doneWordModel({ word: wordId, date: new Date(), user: user._id });
   
   const result = await newDoneWord.save();
   if (!result) {
-    throw new Error("Could not add done word");
+    throw new Error('Could not add done word');
   }
 };
 
@@ -115,7 +115,7 @@ const getDoneWords = async (user: User) => {
   const result = await doneWordModel.find({ user: user._id }).populate({ path: 'word', model: 'Word' });
 
   if (!result) {
-    throw new Error("Could not get done words");
+    throw new Error('Could not get done words');
   }
   
   return result;
@@ -123,7 +123,7 @@ const getDoneWords = async (user: User) => {
 
 const setGoal = async (goal: unknown, user: User) => {
   if (!Number.isInteger(goal)) {
-    throw new ValidationError("Invalid goal parameter");
+    throw new ValidationError('Invalid goal parameter');
   }
   const result = await userModel.updateOne({ _id: user._id }, { goal });
   return result;
@@ -141,7 +141,7 @@ const changePassword = async (rawOldPassword: unknown, rawNewPassword: unknown, 
 
   const passwordCorrect = await bcrypt.compare(oldPassword, dbUser.password);
   if (!passwordCorrect) {
-    throw new Error("Invalid password");
+    throw new Error('Invalid password');
   }
   const result = await userModel.updateOne({ _id: user._id }, { password: newPassword });
   if (result) {
@@ -152,7 +152,7 @@ const changePassword = async (rawOldPassword: unknown, rawNewPassword: unknown, 
 
 const setStrictAccents = async (strictAccents: unknown, user: User) => {
   if (!isBoolean(strictAccents)) {
-    throw new ValidationError("Strict accents parameter was not boolean");
+    throw new ValidationError('Strict accents parameter was not boolean');
   }
   const result = await userModel.updateOne({_id: user._id }, { strictAccents });
   return result;

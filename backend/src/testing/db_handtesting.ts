@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 // Temporary snippets for gathering all valid combinations of moods and tenses existing in the database
 
-import { wordModel } from "../models/Word";
-import { tenseList, moodList } from "../types";
+import { wordModel } from '../models/Word';
+import { tenseList, moodList } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const checkValidMoodTenses = () => {
@@ -17,7 +17,7 @@ export const checkValidMoodTenses = () => {
 export const checkEmptyForms = async () => {
   const words = await wordModel.find({});
   words.forEach(w => {
-    if ((w.form_1p === "" || w.form_2p === "" || w.form_3p === "" || w.form_1s === "" || w.form_2s === "" || w.form_3s === "") && w.mood_english === "Indicative") {
+    if ((w.form_1p === '' || w.form_2p === '' || w.form_3p === '' || w.form_1s === '' || w.form_2s === '' || w.form_3s === '') && w.mood_english === 'Indicative') {
       console.log(w);
     }
   });

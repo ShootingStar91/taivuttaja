@@ -1,15 +1,15 @@
-import { WORDLIST_TITLE_MAX, WORDLIST_TITLE_MIN } from "../config";
-import { wordModel } from "../models/Word";
-import { wordlistModel } from "../models/Wordlist";
-import { FrontendWordlist, StrippedWord, WordList } from "../types";
-import { isString } from "../utils/validators";
+import { WORDLIST_TITLE_MAX, WORDLIST_TITLE_MIN } from '../config';
+import { wordModel } from '../models/Word';
+import { wordlistModel } from '../models/Wordlist';
+import { FrontendWordlist, StrippedWord, WordList } from '../types';
+import { isString } from '../utils/validators';
 
 export const isWordArray = (words: unknown): words is string[] => {
   // Possibly useless typeguard
   if (!Array.isArray(words)) {
     return false;
   }
-  if (words.length === 0 || typeof words[0] !== "string") {
+  if (words.length === 0 || typeof words[0] !== 'string') {
     return false;
   }
   return true;
@@ -17,7 +17,7 @@ export const isWordArray = (words: unknown): words is string[] => {
 
 const addWord = async (word: unknown, wordlistId: unknown, userId: string) => {
   if (!isString(word) || !isString(wordlistId)) {
-    throw new Error("Invalid parameters");
+    throw new Error('Invalid parameters');
   }
   const result = await wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: userId }, { $push: { words: word } });
 
@@ -29,7 +29,7 @@ const addWord = async (word: unknown, wordlistId: unknown, userId: string) => {
 
 const deleteWord = async (word: unknown, wordlistId: unknown, userId: string) => {
   if (!isString(word) || !isString(wordlistId)) {
-    throw new Error("Invalid parameters");
+    throw new Error('Invalid parameters');
   }
 
   const result = await wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: userId }, { $pull: { words: word } });
@@ -42,7 +42,7 @@ const deleteWord = async (word: unknown, wordlistId: unknown, userId: string) =>
 
 const deleteWordlist = async (wordlistId: unknown, userId: string) => {
   if (!isString(wordlistId)) {
-    throw new Error("Invalid parameters");
+    throw new Error('Invalid parameters');
   }
 
   const result = await wordlistModel.findOneAndRemove({ _id: wordlistId, owner: userId });
@@ -60,7 +60,6 @@ const create = async (title: unknown, userId: string) => {
 
   const words: string[] = [];
   const nameExists = await wordlistModel.findOne({ title, owner: userId });
-  console.log(nameExists);
 
   if (nameExists) {
     throw new Error('Wordlist with that name already exists. Select a different name');
@@ -68,7 +67,7 @@ const create = async (title: unknown, userId: string) => {
   const newWordlist = new wordlistModel({ title, words, owner: userId });
   const savedWordlist = await newWordlist.save();
   if (!savedWordlist) {
-    throw new Error("Creating wordlist failed on database");
+    throw new Error('Creating wordlist failed on database');
   }
   return savedWordlist;
 };
@@ -79,11 +78,11 @@ const getUsersLists = async (userId: string) => {
 
 const getList = async (wordlistId: unknown, userId: string) => {
   if (!isString(wordlistId)) {
-    throw new Error("Invalid parameters");
+    throw new Error('Invalid parameters');
   }
   const wordlist: WordList | null = await wordlistModel.findOne({ _id: wordlistId, owner: userId }).exec();
   if (!wordlist) {
-    throw new Error("No such wordlist id found from this user");
+    throw new Error('No such wordlist id found from this user');
   }
 
 
@@ -103,9 +102,6 @@ const getList = async (wordlistId: unknown, userId: string) => {
   };
 
   const frontendWordlist: FrontendWordlist = { title: wordlist.title, owner: wordlist.owner, _id: wordlist._id, words: await getStrippedWords() };
-  console.log("frontendwordlist:");
-  console.log(frontendWordlist);
-  
   
   return frontendWordlist;
 

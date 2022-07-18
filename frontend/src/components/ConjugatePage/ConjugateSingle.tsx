@@ -1,20 +1,20 @@
-import React, { FormEvent, useEffect, useState, KeyboardEvent } from "react";
-import { COLORS } from "../../config";
-import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
-import { errorToast, showToast } from "../../reducers/notification";
-import { selectUser } from "../../reducers/user";
-import { wordService } from "../../services/words";
-import { ConjugateMode, ConjugateSettings, Mood, Tense, Word } from "../../types";
-import { deAccentify, forms, getForm, getFormDescription, getRandomForm, getWordForm } from "../../utils";
-import { EnglishFlag, SpanishFlag } from "../Flags";
-import { FullModal } from "../Modal";
+import React, { FormEvent, useEffect, useState, KeyboardEvent } from 'react';
+import { COLORS } from '../../config';
+import { useAppSelector } from '../../reducers/hooks';
+import { errorToast } from '../../reducers/toastApi';
+import { selectUser } from '../../reducers/user';
+import { wordService } from '../../services/words';
+import { ConjugateMode, ConjugateSettings, Mood, Tense, Word } from '../../types';
+import { deAccentify, forms, getForm, getFormDescription, getRandomForm, getWordForm } from '../../utils';
+import { EnglishFlag, SpanishFlag } from '../Flags';
+import { FullModal } from '../Modal';
 
 export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateSettings, next: (max: number) => void, stop: () => void }) => {
 
   const [word, setWord] = useState<Word | null>(null);
   const [answer, setAnswer] = useState<string | null>(null);
   const [form, setForm] = useState<string | null>(null);
-  const [attempt, setAttempt] = useState<string>("");
+  const [attempt, setAttempt] = useState<string>('');
   const [tense, setTense] = useState<Tense | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
@@ -22,7 +22,6 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
-  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
 
   useEffect(() => {
@@ -45,19 +44,20 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     const [error, result] = await wordService.getWord(wordParam, 'en', randomedMood, randomedTense);
 
     if (!result) {
-      void dispatch(showToast(errorToast(error)));
+      errorToast(error);
       return;
     }
 
     setWord(result);
 
     // Random a form only from those that are not empty
-    const validForms = forms.filter(f => getWordForm(result, f) !== "");
+    const validForms = forms.filter(f => getWordForm(result, f) !== '');
     const randomedForm = validForms[Math.floor(Math.random() * validForms.length)];
     setForm(randomedForm);
     const rightAnswer = getWordForm(result, randomedForm);
     if (rightAnswer) {
       setAnswer(rightAnswer);
+      console.log(rightAnswer);
     }
 
   };
@@ -72,7 +72,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
 
   const onKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
     
-    if (event.key === "Tab" || event.key === "Enter") {
+    if (event.key === 'Tab' || event.key === 'Enter') {
       event.preventDefault();
       if (!showingCorrect) {
         onTry();
@@ -84,7 +84,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
 
   const onTry = () => {
     if (!answer) {
-      void dispatch(showToast(errorToast("Error: invalid word data")));
+      errorToast('Invalid word data');
       return;
     }
 
@@ -95,7 +95,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
         void correctAnswer();
         return;
       }
-      const field = document.getElementsByName("attemptField")[0];
+      const field = document.getElementsByName('attemptField')[0];
       field.style.backgroundColor = COLORS.WRONG;
 
       setTimeout(() => {
@@ -108,7 +108,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     if (!answer) return;
 
     setShowingCorrect(true);
-    const field = document.getElementsByName("attemptField")[0];
+    const field = document.getElementsByName('attemptField')[0];
     field.style.backgroundColor = COLORS.CORRECT;
     setCorrectAnswers(correctAnswers + 1);
     const newTimeoutId = window.setTimeout(() => {
@@ -125,9 +125,9 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
       setTimeoutId(null);
     }
     setShowingCorrect(false);
-    const field = document.getElementsByName("attemptField")[0];
+    const field = document.getElementsByName('attemptField')[0];
     void newWord();
-    setAttempt("");
+    setAttempt('');
     next(settings.amount);
     field.style.backgroundColor = COLORS.BLANK;
   };
@@ -140,7 +140,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     } else {
       setShowAnswer(false);
       void newWord();
-      setAttempt("");
+      setAttempt('');
       next(settings.amount);
     }
 
@@ -163,7 +163,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
     return (
       <div>
         <div className='flex auto-flex gap-x-4'>
-          <SpanishFlag /> <h2 id="spanishword">{word.infinitive}</h2>
+          <SpanishFlag /> <h2 id='spanishword'>{word.infinitive}</h2>
         </div>
         <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px]'>
           <EnglishFlag /> <h2>{word.infinitive_english}</h2>
@@ -173,14 +173,14 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
           <h2 id='mood' className='text-sky-400'>{mood}</h2>
         </div>
         <h2 id='personform' className='mt-4 text-yellow-400'>{getForm(form)}</h2>
-        <span className="description pl-4">{getFormDescription(form)}</span>
+        <span className='description pl-4'>{getFormDescription(form)}</span>
         <div className='mt-8'>
           {mode === ConjugateMode.Single && <>
-            <form onKeyDown={onKeyDown}><div className={'p-4 bg-amber-50 shadow-lg rounded-lg'}><input id="answerfield" className={'textField shadow ' + (showAnswer ? ' bg-amber-300 ' : '') + (showingCorrect ? ' bg-green-300 ' : '')} name="attemptField" type='text' onChange={onChange} value={attempt} autoComplete="off" disabled={showAnswer}></input></div></form>
+            <form onKeyDown={onKeyDown}><div className={'rounded-lg'}><input id='answerfield' className={'textField ' + (showAnswer ? ' bg-amber-300 ' : '') + (showingCorrect ? ' bg-green-300 ' : '')} name='attemptField' type='text' onChange={onChange} value={attempt} autoComplete='off' disabled={showAnswer}></input></div></form>
             <p><button className='btn w-[200px]' type='button' onClick={onTry}>Try</button></p>
           </>}
           {mode === ConjugateMode.Flashcard && getFlashcardPart()}
-          <p><button className='btn w-[200px]' type='button' onClick={onClickSkip}>{showAnswer ? "Next" : "Show"}</button></p>
+          <button className='btn w-[200px]' type='button' onClick={onClickSkip}>{showAnswer ? 'Next' : 'Show'}</button>
             <div id='correctanswers' style={{display: 'none'}}>{correctAnswers}</div>
         </div>
       </div>
@@ -189,7 +189,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   };
 
   return (
-    <FullModal content={getContent(settings.mode)} closeButtonText="Stop practice" closeModal={() => stop()} />
+    <FullModal content={getContent(settings.mode)} closeButtonText='Stop practice' closeModal={() => stop()} />
   );
 
 

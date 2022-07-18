@@ -1,6 +1,6 @@
-import { User } from "./models/User";
+import { User } from './models/User';
 
-import { Request } from "express";
+import { Request } from 'express';
 
 export interface WordList {
   _id: string,
@@ -26,17 +26,12 @@ export interface FrontendWordlist {
 }
 
 
-// An ugly hack until I figure out how to keep these types in just one place and also write a typeguard for them...
-export type Tense = 'Present' | 'Imperfect' | 'Preterite' | 'Present Perfect'
-  | 'Past Perfect' | 'Future Perfect' | 'Conditional Perfect'
-  | 'Future' | 'Preterite (Archaic)' | 'Conditional';
 
 export const tenseList = ['Present', 'Imperfect', 'Preterite', 'Present Perfect', 'Past Perfect', 'Future Perfect', 'Conditional Perfect', 'Future', 'Preterite (Archaic)', 'Conditional'];
-
-export type Mood = 'Indicative' | 'Subjunctive' | 'Imperative Affirmative'
-  | 'Imperative Negative';
-
 export const moodList = ['Indicative', 'Subjunctive', 'Imperative Affirmative', 'Imperative Negative'];
+export type Tense = typeof tenseList[number];
+export type Mood =  typeof moodList[number]; 
+
 
 export interface Word {
   infinitive: string;

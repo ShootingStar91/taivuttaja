@@ -11,10 +11,10 @@ import { ConjugateIndex } from './components/ConjugatePage';
 import { Notification } from './components/Notification';
 import userService from './services/user';
 import { InfoBar } from './components/InfoBar';
-import spain_city_flag from './resources/spain-city-flag-cropped-2.jpeg';
-import { showToast, successToast } from './reducers/notification';
 import { VerbsPage } from './components/VerbsPage';
 import { VerbView } from './components/VerbsPage/VerbView';
+import { SpanishFlag } from './components/Flags';
+import { successToast } from './reducers/toastApi';
 
 const App = () => {
 
@@ -26,50 +26,56 @@ const App = () => {
   const logout = () => {
     dispatch(removeUser());
     window.localStorage.clear();
-    void dispatch(showToast(successToast("You are now logged out!")));
+    successToast('You are now logged out!');
   };
 
   useEffect(() => {
     const loadedUser = userService.checkLogin();
     if (loadedUser) {
       dispatch(setUser(loadedUser));
+    } else {
+      dispatch(removeUser());
     }
 
   }, []);
 
-  useEffect(() => {
-    document.getElementsByTagName("body")[0].className = "bg-customamber";
-  }, []);
-
-  const navBarLinkStyle = "float-left hover:text-yellow-100";
+  const navBarLinkStyle = 'float-left hover:text-white';
 
   return (
-    <div id='mainContainer' className="bg-amber-200 container sm mx-auto mb-6 max-w-[1024px] min-w-[728px] rounded-b-lg shadow-lg">
+    <div id='mainContainer' className='mt-4 container mx-auto max-w-[1024px]'>
       <BrowserRouter>
-        <img src={spain_city_flag}></img>
         <Notification />
-
-        <div id="navbar" className="container flex flex-wrap justify-center items-center sm:gap-4 md:gap-12 mx-auto h-12 
-                        rounded-t-md font-sans sm:text-lg md:text-xl lg:text-xl">
-          <Link className={navBarLinkStyle} to="/">Home</Link>
-          <Link className={navBarLinkStyle} to="/conjugatestart">Conjugate</Link>
-          <Link className={navBarLinkStyle} to="/vocab">Vocab</Link>
-          <Link className={navBarLinkStyle} to="/verbs">Search</Link>
-          {user && <Link className={navBarLinkStyle} to="/userpage">User page</Link>}
-          {!user ? <Link className={navBarLinkStyle} to="/login">Login</Link> :
-            <Link className={navBarLinkStyle} to="/" onClick={logout}>Logout</Link>}
+        <div className='bg-blue-400 flex flex-wrap justify-center'>
+          <div className='flex auto-flex gap-x-4'>
+            <div className='mt-1 -mx-2'><SpanishFlag /></div> <h2>Conjugation app</h2>
+          </div>
         </div>
-        <InfoBar />
-        <div id="contentdiv" className="bg-amber-50 pl-4 md:pl-12 pt-12 md:pr-20 pb-6 flex flex-col space-y-4 rounded-b-lg shadow-2xl min-h-[500px]">
+        <div className='bg-slate-300'>
+          <InfoBar />
+        </div>
+        <div className='bg-slate-200'>
+          <div id='navbar' className='container flex flex-wrap justify-center 
+        items-center gap-2 md:gap-4 lg:gap-8 mx-auto font-sans md:text-lg lg:text-lg min-w-[728px]'>
+            <Link className={navBarLinkStyle} to='/'>Home</Link>
+            <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
+            <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
+            <Link className={navBarLinkStyle} to='/verbs'>Verbs</Link>
+            {user && <Link className={navBarLinkStyle} to='/userpage'>User page</Link>}
+            {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
+              <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}
+          </div>
+        </div>
+        <div id='contentdiv' className='h-full bg-slate-100 pl-4 md:pl-12 pt-12 md:pr-20 
+              pb-6 flex flex-col space-y-4 min-h-[500px] max-w-[1024px] min-w-[728px]'>
           <Routes>
-            <Route path="conjugatestart" element={<ConjugateIndex />} />
-            <Route path="vocab" element={<VocabPage />} />
-            <Route path="login" element={<LoginForm />} />
-            <Route path="verbs" element={<VerbsPage />} />
-            <Route path="userpage" element={<UserPage />} />
-            <Route path="wordlist/:id" element={<WordListView />} />
-            <Route path="verb/:verb" element={<VerbView />} />
-            <Route path="*" element={<IndexPage />} />
+            <Route path='conjugatestart' element={<ConjugateIndex />} />
+            <Route path='vocab' element={<VocabPage />} />
+            <Route path='login' element={<LoginForm />} />
+            <Route path='verbs' element={<VerbsPage />} />
+            <Route path='userpage' element={<UserPage />} />
+            <Route path='wordlist/:id' element={<WordListView />} />
+            <Route path='verb/:verb' element={<VerbView />} />
+            <Route path='*' element={<IndexPage />} />
           </Routes>
         </div>
       </BrowserRouter>

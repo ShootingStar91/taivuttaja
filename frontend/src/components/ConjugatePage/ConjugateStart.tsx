@@ -1,15 +1,11 @@
 import React, { ChangeEvent, useEffect, useState, } from 'react';
-import Select, { SingleValue } from 'react-select';
-import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
-import { errorToast, showToast } from '../../reducers/notification';
+import { useAppSelector } from '../../reducers/hooks';
+import { errorToast } from '../../reducers/toastApi';
 import { selectUser } from '../../reducers/user';
 import { wordListService } from '../../services/wordlists';
 import { ConjugateMode, ConjugateSettings, Mood, moodList, MoodSelections, Tense, tenseList, TenseSelections, validCombinations, WordList } from '../../types';
+import { AmountOption, MoodTenseSelection, WordListOption } from './ConjugateOptions';
 
-type WordlistOption = {
-  label: string | null,
-  value?: string // id
-};
 
 export const ConjugateStart = ({ startConjugating }: { startConjugating: (settings: ConjugateSettings) => void }) => {
 
@@ -23,7 +19,6 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   const [allWordlists, setAllWordlists] = useState<WordList[] | null>(null);
   const [amount, setAmount] = useState<number>(10);
   const user = useAppSelector(selectUser);
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
 
@@ -34,7 +29,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
       const [error, result] = await wordListService.getWordLists(user.token);
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       setAllWordlists(result);
@@ -101,7 +96,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
   const onStart = async (mode: ConjugateMode) => {
 
     if (!tenseSelections.find(s => s.selected) || !moodSelections.find(s => s.selected)) {
-      void dispatch(showToast(errorToast("Select at least one mood and tense")));
+      errorToast('Select at least one mood and tense');
       return;
     }
 
@@ -111,7 +106,7 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
       const [error, result] = await wordListService.getWordList(wordlistId, user.token);
 
       if (!result) {
-        void dispatch(showToast(errorToast(error)));
+        errorToast(error);
         return;
       }
       wordlist = result;
@@ -131,13 +126,6 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
   };
 
-  const onWordlistChange = (newValue: SingleValue<WordlistOption>) => {
-    
-    if (newValue?.value !== undefined) {
-      setWordlist(newValue.value);
-    }
-  };
-
   const onChangeAmount = (e: ChangeEvent<HTMLSelectElement>) => {
     const val = parseInt(e.currentTarget?.value);
     if (val) {
@@ -147,102 +135,33 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
 
   };
 
-  const getOptions = (): {value: string, label: string}[] => {
-    if (!allWordlists) return [];
-    const list = allWordlists
-      .filter(list => list.words.length > 0)
-      .map(list => { return { label: list.title, value: list._id ? list._id : '' }; });
-    list.push({ label: 'All words', value: ''});
-    return list;
-  };
 
-  const getValue = () => {
-    if (!allWordlists || !wordlistId) {
-      return { label: 'All words', value: ''};
-    }
-    const wl = allWordlists.find(wl => wl._id === wordlistId);
-    if (wl && wl._id) {
-      return { label: wl.title, value: wl._id };
-    }
-    return { label: 'All words', value: ''};
-  };
-
-  const amountOptions = [5, 10, 15, 20, 30, 40, 50, 75, 100];
 
   return (
     <div>
       <form>
         <div>
-          <div className="flex flex-row justify-center gap-x-24">
-            <div>
-              <h2>Moods</h2>
-              <div className='mt-4 select-none'>
-                {moodList.map(mood =>
-                  <div key={mood}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={moodSelections.find(m => m.mood === mood)?.selected}
-                        onChange={() => switchMoodSelection(mood)}
-                      />
-                      <span className="pl-1">
-                        {mood}
-                      </span>
-
-                    </label>
-                  </div>)}
-              </div>
-            </div>
-            <div className='min-w-[25%] min-h-[360px]'>
-              <h2>Tenses</h2>
-              <div className='mt-4 select-none'>
-                {availableTenses.map(tense =>
-                  <div key={tense}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={tenseSelections.find(t => t.tense === tense)?.selected}
-                        onChange={() => switchTenseSelection(tense)}
-                      />
-                      <span className="pl-1">
-                        {tense}
-                      </span>
-                    </label>
-                  </div>)}
-              </div>
-            </div>
-          </div>
+          <MoodTenseSelection {...{ availableTenses, switchMoodSelection, switchTenseSelection, moodSelections, tenseSelections }} />
         </div>
-        {user && <div className='pt-6'>
-          <h2 className='flex justify-center mb-6'>Select wordlist or include all words</h2>
-          <div className=''>
-            {allWordlists !== null && allWordlists.length > 0 ?
-              <Select
-                className="basic-single"
-                classNamePrefix="select"
-                name="wordField"
-                options={getOptions()}
-                onChange={onWordlistChange}
-                value={getValue()}
-              /> :
-              user && <p className='flex justify-center'>No wordlists found. Create wordlists on user page.</p>
+        {user &&
+          <>
+            {allWordlists && allWordlists.length > 0 ? 
+              <WordListOption {...{ allWordlists, setWordlist: (title: string) => setWordlist(title), wordlistId }} /> : 
+              <p className='flex justify-center'>No wordlists found. Create wordlists on user page.</p>
             }
-          </div>
-        </div>}
+          </>
+        }
         <div className='flex justify-center mb-6 pt-4'>
-          <h2 className='pr-4'>How many verbs to practice?</h2>
-          <select className='bg-white font-bold text-xl' name='amount' onChange={onChangeAmount} value={amount}>
-            {amountOptions.map(amt => <option key={amt} value={amt.toString()}>{amt}</option>)}
-          </select>
+          <AmountOption {...{ onChangeAmount, amount }} />
         </div>
-        <div className=''>
+        <div>
           <h2 className='flex justify-center'>Begin by choosing mode!</h2>
-          <div className="container flex flex-wrap justify-center items-center gap-12 mx-auto p-1 ">
-            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          <div className='container flex flex-wrap justify-center items-center gap-12 mx-auto p-1'>
+            <p><button type='button' className='btn'
               onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
-            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            <p><button type='button' className='btn'
               onClick={() => onStart(ConjugateMode.Single)}>Single</button></p>
-            <p><button type="button" className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            <p><button type='button' className='btn'
               onClick={() => onStart(ConjugateMode.Flashcard)}>Flashcard</button></p>
           </div>
         </div>

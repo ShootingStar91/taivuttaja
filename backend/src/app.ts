@@ -12,15 +12,24 @@ require('express-async-errors');
 
 const app = express();
 
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:80'];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+  credentials: true
+};
+
+app.use(cors(options));
+
 app.use(express.json());
 app.use(express.static('build'));
 app.use(middleware.logger);
 app.use(middleware.tokenExtractor);
 
 if (TEST_MODE) { 
-  console.log("Running in TEST_MODE");
+  console.log('Running in TEST_MODE');
 } else {
-  console.log("Running in normal mode");
+  console.log('Running in normal mode');
 }
 
 const mongo_url = TEST_MODE ? TEST_MONGODB_URI as string : MONGODB_URI as string;
@@ -33,14 +42,6 @@ mongoose.connect(
   });
 
 
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:80'];
-
-const options: cors.CorsOptions = {
-  origin: allowedOrigins
-};
-
-app.use(cors(options));
-
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/wordlists', wordlistsRouter);
@@ -52,11 +53,11 @@ app.get('/api/version', (_req, res) => {
 });
 app.get('/api/test/deleteall', async (_req, res) => {
   if (!TEST_MODE) {
-    res.send("Not in test mode!");
+    res.send('Not in test mode!');
   }
   await userModel.deleteMany({});
-  console.log("users deleted");
-  res.send("ok");
+  console.log('users deleted');
+  res.send('ok');
 });
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

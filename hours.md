@@ -53,4 +53,9 @@
 | 4.7.  | 3   | CI/CD |
 | 6.7.  | 3   | Added verb search page, fixed UX issues |
 | 9.7.  | 2   | Added individual verb conjugation table page, code quality fixes | 
-| Total hours | 147     | 
+| 11.7. | 1   | Fixed flag icons not working on windows, code quality |
+| 12.7. | 2   | Changed UI styles |
+| 14.7. | 1   | Refactoring into smaller components |
+| 15.7. | 4   | Fixed login related bugs, error handling, broken tests |
+| 16.7. | 3   | Code quality: toast API created, unified quotes |
+| Total hours | 158     | 

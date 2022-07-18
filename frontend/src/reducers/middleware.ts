@@ -1,5 +1,5 @@
-import { AnyAction, Middleware } from "redux";
-import { RootState } from "./store";
+import { AnyAction, Middleware } from 'redux';
+import { RootState } from './store';
 
 
 export const savingState: Middleware<undefined, RootState> = storeApi => next => (action: AnyAction) => {
@@ -8,5 +8,7 @@ export const savingState: Middleware<undefined, RootState> = storeApi => next =>
     return;
   }
   const state = storeApi.getState().user;
-  window.localStorage.setItem('loggedUser', JSON.stringify(state.user));
+  if (state.user) {
+    window.localStorage.setItem('loggedUser', JSON.stringify(state.user));
+  }
 };

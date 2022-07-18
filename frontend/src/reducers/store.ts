@@ -6,11 +6,9 @@ import { ThunkMiddleware } from 'redux-thunk';
   
 const reducers = combineReducers({user: userReducer, notification: notificationReducer});
 
-const store = configureStore(({ reducer: reducers, middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(savingState as ThunkMiddleware) } ));
+export const store = configureStore(({ reducer: reducers, middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(savingState as ThunkMiddleware) } ));
 
-//const store = configureStore(({ reducer: reducers } ));
 export type RootState = ReturnType<typeof reducers>;
 
 export type AppDispatch = typeof store.dispatch;
 
-export default store;

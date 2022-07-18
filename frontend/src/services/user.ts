@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from "axios";
-import { baseUrl } from "../config";
-import { DoneWord, User } from "../types";
-import { getHeader, success, error, customError } from "./util";
+import axios from './index';
+import { baseUrl } from '../config';
+import { DoneWord, User } from '../types';
+import { getHeader, success, error, customError } from './util';
 const url = baseUrl + 'user';
 
 const createUser = async (username: string, password: string) => {
@@ -16,7 +16,7 @@ const createUser = async (username: string, password: string) => {
 
 const getReadyUser = async (user: User) => {
   if (!user.token) {
-    return customError("Invalid token");
+    return customError('Invalid token');
   }
     const [err, result] = await getDoneWords(user.token);    
     if (!result) {
@@ -37,10 +37,10 @@ const tryLogin = async (username: string, password: string) => {
   try {
     const result = await axios.post<User>(`${url}/login/`, { username, password });
     
-    if (result.data) {
+    if (result && result.data) {
       return getReadyUser(result.data);
     } else {
-      return customError("Unknown error when trying to log in");
+      return customError('Unknown error when trying to log in');
     }
   } catch (e: any) {
     return error(e);
@@ -58,7 +58,7 @@ const deleteUser = async (token: string) => {
 
 const checkLogin = () => {
   const user = window.localStorage.getItem('loggedUser');
-  if (user) {
+  if (user && user !== 'undefined') {
     return JSON.parse(user) as User;
   }
 };

@@ -1,6 +1,5 @@
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../reducers/hooks';
-import { errorToast, showToast, successToast } from '../../reducers/notification';
 import { wordService } from '../../services/words';
 import { ConjugateSettings, Word } from '../../types';
 import { getWordForm, getForm, getFormDescription, forms, getRandomForm, deAccentify } from '../../utils';
@@ -10,6 +9,7 @@ import { addDoneWord, selectUser } from '../../reducers/user';
 import { delay } from '../../services/util';
 import { COLORS } from '../../config';
 import { FullModal } from '../Modal';
+import { errorToast, successToast } from '../../reducers/toastApi';
 
 export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSettings, next: (max: number) => void, stop: () => void }) => {
 
@@ -33,7 +33,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
     if (!word) return;
     const newEmptyForms: string[] = [];
     forms.forEach(form => {
-      if (getWordForm(word, form) === "") {
+      if (getWordForm(word, form) === '') {
         document.getElementsByName(form)[0].style.backgroundColor = COLORS.BLOCKED;
         newEmptyForms.push(form);
       }
@@ -53,10 +53,16 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
     const wordParam = randomWord ? randomWord.infinitive_english : null;
     const [error, result] = await wordService.getWord(wordParam, 'en', mood, tense);
     if (!result) {
-      void dispatch(showToast(errorToast(error)));
+      errorToast(error);
       return;
     }
-
+    console.log("Correct answers: ");
+    console.log(result.form_1s);
+    console.log(result.form_2s);
+    console.log(result.form_3s);
+    console.log(result.form_1p);
+    console.log(result.form_2p);
+    console.log(result.form_3p);
     setWord(result);
 
   };
@@ -101,7 +107,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
         return;
       }
       if (attempt === correct) {
-        const color = attempt === "" ? COLORS.BLANK : COLORS.CORRECT;
+        const color = attempt === '' ? COLORS.BLANK : COLORS.CORRECT;
         document.getElementsByName(form)[0].style.backgroundColor = color;
 
       } else {
@@ -111,7 +117,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
           accentMistakes = true;
         } else {
           // Wrong answer
-          const color = formState[form] === "" ? COLORS.BLANK : COLORS.WRONG;
+          const color = formState[form] === '' ? COLORS.BLANK : COLORS.WRONG;
           all_correct = false;
           document.getElementsByName(form)[0].style.backgroundColor = color;
         }
@@ -119,20 +125,20 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
     });
 
     if (all_correct) {
-      const message = accentMistakes ? "All correct, but remember the accents!" : "¡Todo correcto!";
-      void dispatch(showToast(successToast(message)));
+      const message = accentMistakes ? 'All correct, but remember the accents!' : '¡Todo correcto!';
+      successToast(message);
       await delay(3000);
       if (user?.token) {
         const [error, result] = await userService.addDoneWord(word._id, user.token);
         if (!result) {
-          void dispatch(showToast(errorToast(error)));
+          errorToast(error);
         }
         dispatch(addDoneWord());
       }
       setFormState({ ...initialState });
       await getWord();
       resetFormColors();
-      const nextField = document.getElementById("0");
+      const nextField = document.getElementById('0');
       nextField?.focus();
       next(settings.amount);
     }
@@ -140,9 +146,9 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
 
   const onKeyDown = async (e: KeyboardEvent<HTMLFormElement>) => {
 
-    if (e.key === "Tab") {
+    if (e.key === 'Tab') {
       const activeField = document.activeElement?.getAttribute('id');
-      if (activeField !== null && activeField !== undefined && activeField === "5" && !e.shiftKey) {
+      if (activeField !== null && activeField !== undefined && activeField === '5' && !e.shiftKey) {
         e.preventDefault();
       }
       await onTry(false);
@@ -151,7 +157,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
 
   const onSkip = async () => {
     if (!word) {
-      void dispatch(showToast(errorToast("Unexpected error happened!")));
+      errorToast('Unexpected error!');
       return;
     }
     if (!showingAnswers) {
@@ -159,7 +165,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
       const newFormState = { ...initialState };
       forms.forEach(f => {
         const answer = getWordForm(word, f);
-        newFormState[f] = answer !== undefined ? answer : "";
+        newFormState[f] = answer !== undefined ? answer : '';
         setFormState({ ...newFormState });
         document.getElementsByName(f).forEach(element => element.setAttribute('disabled', 'true'));
         document.getElementsByName(f)[0].style.backgroundColor = COLORS.SHOWANSWER;
@@ -179,6 +185,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
   if (word === null) {
     return <div>Loading...</div>;
   }
+
   const getContent = () => {
     return (
       <div className='md:pl-12'>
@@ -200,7 +207,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
                   <React.Fragment key={form}>
                     <tr key={form}>
                       <td><input className='textField' type='text' id={index.toString()} name={form} onChange={emptyForms.includes(form) ? undefined : handleChange} value={formState[form]} disabled={emptyForms.includes(form) ? true : undefined} /></td>
-                      <td><div className="ml-8 min-h-[80px]"><h3>{getForm(form)}</h3><div className="description">{getFormDescription(form)}</div></div></td>
+                      <td><div className='ml-8 min-h-[80px]'><h3>{getForm(form)}</h3><div className='description'>{getFormDescription(form)}</div></div></td>
                     </tr>
                     <tr></tr>
                     <tr></tr>
@@ -211,7 +218,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
             </table>
             <div className='flex gap-x-8 mt-8'>
               <button className='btn w-[220px]' type='submit' disabled={showingAnswers}>Try</button>
-              <button className={'w-[220px]' + (showingAnswers ? ' btn-orange ' : ' btn ')} type='button' onClick={onSkip}>{showingAnswers ? "Next" : "Show answers"}</button>
+              <button className={'w-[220px]' + (showingAnswers ? ' btn-orange ' : ' btn ')} type='button' onClick={onSkip}>{showingAnswers ? 'Next' : 'Show answers'}</button>
             </div>
           </form>
         </div>
@@ -220,7 +227,7 @@ export const ConjugateFull = ({ settings, next, stop }: { settings: ConjugateSet
     );
   };
   return (
-    <FullModal content={getContent()} closeButtonText="Stop practice" closeModal={() => stop()} />
+    <FullModal content={getContent()} closeButtonText='Stop practice' closeModal={() => stop()} />
   );
 
 };

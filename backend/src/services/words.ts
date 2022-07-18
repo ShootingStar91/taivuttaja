@@ -1,6 +1,6 @@
-import { wordModel } from "../models/Word";
-import { Language, Mood, StrippedWord, Tense, Word } from "../types";
-import { isString } from "../utils/validators";
+import { wordModel } from '../models/Word';
+import { Language, Mood, StrippedWord, Tense, Word } from '../types';
+import { isString } from '../utils/validators';
 
 
 const getWord = async (word: string, language: Language, tense: Tense, mood: Mood) => {
@@ -20,7 +20,7 @@ const getWord = async (word: string, language: Language, tense: Tense, mood: Moo
 const getRandomWord = async (tense: Tense, mood: Mood) => {
   const wordArray = await wordModel.aggregate<Word>([{ $match: { tense_english: tense, mood_english: mood } }, { $sample: { size: 1 } }]);
   if (!wordArray || wordArray.length !== 1) {
-    throw new Error("Error randoming word");
+    throw new Error('Error randoming word');
   }
 
   return wordArray[0];
@@ -35,7 +35,6 @@ const getVerbDetails = async (verb: unknown) => {
   if (!isString(verb)) {
     throw new Error('Invalid verb');
   }
-  console.log({verb});
   
   const result: Word[] = await wordModel.find({ infinitive: verb });
   return result;

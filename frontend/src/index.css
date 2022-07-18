@@ -5,7 +5,7 @@
 @layer base {
 
   h1 {
-    @apply text-4xl font-bold;
+    @apply text-3xl font-bold;
   }
 
   h2 {
@@ -17,11 +17,11 @@
   }
 
   .optioncard {
-    @apply bg-white rounded shadow-lg w-[260px] p-4;
+    @apply bg-white rounded shadow-md w-[260px] p-4;
   }
 
   .fullcard {
-    @apply bg-white rounded shadow-xl min-w-full p-2 pl-6;
+    @apply bg-white rounded shadow-sm min-w-full p-2 pl-6;
   }
 
   .tablecard {
@@ -40,16 +40,20 @@
     @apply mt-4 mb-4
   }
 
+  p, li, body {
+    @apply text-sm
+  }
+
   .btn {
-    @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
+    @apply bg-blue-700 text-white font-bold py-2 px-4;
   }
   
   .btn:hover {
-    @apply hover:bg-blue-700;
+    @apply hover:bg-slate-400;
   }
 
   .btn-orange {
-    @apply bg-amber-400 text-white font-bold py-2 px-4 rounded;
+    @apply bg-amber-400 text-white font-bold py-2 px-4;
   }
 
   .btn-orange:hover {
@@ -57,7 +61,7 @@
   }
 
   .textField {
-    @apply shadow appearance-none border rounded w-full py-2 px-3 text-gray-600 leading-tight;
+    @apply appearance-none border w-full py-2 px-3 text-gray-600 leading-tight text-lg;
   }
 
   input:focus {
