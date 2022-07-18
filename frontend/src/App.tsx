@@ -59,7 +59,7 @@ const App = () => {
             <Link className={navBarLinkStyle} to='/'>Home</Link>
             <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
             <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
-            <Link className={navBarLinkStyle} to='/verbs'>Search</Link>
+            <Link className={navBarLinkStyle} to='/verbs'>Verbs</Link>
             {user && <Link className={navBarLinkStyle} to='/userpage'>User page</Link>}
             {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
               <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}

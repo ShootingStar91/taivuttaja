@@ -3,8 +3,8 @@ import React from 'react';
 export const IndexPage = () => {
   return (
     <div>
-      <h1>Welcome</h1>
-      <p>Welcome to the conjugation app! Learn Spanish verbs and their conjugations here! Try the different learning modes:</p>
+      <h1>Conjugation app</h1>
+      <p>Welcome! Learn Spanish verbs and their conjugations here! Try the different learning modes:</p>
       <h2>Vocabulary</h2>
       <p>Get a random verb in English and type it in Spanish.</p>
       <h2>Conjugate</h2>
@@ -15,8 +15,11 @@ export const IndexPage = () => {
         <li><span className='font-bold'>Flashcard</span>: No typing, just guess the verb form and click to show it</li>
       </ul>
       <p></p>
+      <h2>Conjugation tables</h2>
+      <p>Click on Verbs-link to search for verbs and see all their conjugation forms.</p>
       <h2>About</h2>
-      <p>Verb database consists of over 600 verbs from <a className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600' href='https://github.com/ghidinelli/fred-jehle-spanish-verbs'>this database</a>. Most of it is correct but <span className='font-bold'>imperative forms have errors</span>: 3rd singular and 2nd plural forms are swapped, and 1st plural form is missing.</p>
+      <p>This app is a work in progress, but most of it should work. <a className='link' href='https://github.com/ShootingStar91/taivuttaja'>Click here for the project repository</a></p>
+      <p>Verb database consists of over 600 verbs from <a className='link' href='https://github.com/ghidinelli/fred-jehle-spanish-verbs'>this database</a>. Most of it is correct but <span className='font-bold'>imperative forms have errors</span>: 3rd singular and 2nd plural forms are swapped, and 1st plural form is missing. Some of this will be fixed.</p>
       <p></p>
     </div>
   );
