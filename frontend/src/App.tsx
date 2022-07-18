@@ -51,11 +51,9 @@ const App = () => {
           </div>
         </div>
         <div className='bg-slate-300'>
-
-        <InfoBar />
+          <InfoBar />
         </div>
-                <div className='bg-slate-200'>
-
+        <div className='bg-slate-200'>
           <div id='navbar' className='container flex flex-wrap justify-center 
         items-center gap-2 md:gap-4 lg:gap-8 mx-auto font-sans md:text-lg lg:text-lg min-w-[728px]'>
             <Link className={navBarLinkStyle} to='/'>Home</Link>
