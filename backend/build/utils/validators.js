@@ -7,7 +7,7 @@ const isString = (text) => {
 };
 exports.isString = isString;
 const isBoolean = (variable) => {
-    return typeof variable == "boolean";
+    return typeof variable == 'boolean';
 };
 exports.isBoolean = isBoolean;
 const isTense = (text) => {

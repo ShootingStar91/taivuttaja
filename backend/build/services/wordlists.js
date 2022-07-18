@@ -19,7 +19,7 @@ const isWordArray = (words) => {
     if (!Array.isArray(words)) {
         return false;
     }
-    if (words.length === 0 || typeof words[0] !== "string") {
+    if (words.length === 0 || typeof words[0] !== 'string') {
         return false;
     }
     return true;
@@ -27,7 +27,7 @@ const isWordArray = (words) => {
 exports.isWordArray = isWordArray;
 const addWord = (word, wordlistId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(0, validators_1.isString)(word) || !(0, validators_1.isString)(wordlistId)) {
-        throw new Error("Invalid parameters");
+        throw new Error('Invalid parameters');
     }
     const result = yield Wordlist_1.wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: userId }, { $push: { words: word } });
     if (!result) {
@@ -37,7 +37,7 @@ const addWord = (word, wordlistId, userId) => __awaiter(void 0, void 0, void 0, 
 });
 const deleteWord = (word, wordlistId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(0, validators_1.isString)(word) || !(0, validators_1.isString)(wordlistId)) {
-        throw new Error("Invalid parameters");
+        throw new Error('Invalid parameters');
     }
     const result = yield Wordlist_1.wordlistModel.findOneAndUpdate({ _id: wordlistId, owner: userId }, { $pull: { words: word } });
     if (!result) {
@@ -46,7 +46,7 @@ const deleteWord = (word, wordlistId, userId) => __awaiter(void 0, void 0, void 
 });
 const deleteWordlist = (wordlistId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(0, validators_1.isString)(wordlistId)) {
-        throw new Error("Invalid parameters");
+        throw new Error('Invalid parameters');
     }
     const result = yield Wordlist_1.wordlistModel.findOneAndRemove({ _id: wordlistId, owner: userId });
     if (!result) {
@@ -59,14 +59,13 @@ const create = (title, userId) => __awaiter(void 0, void 0, void 0, function* ()
     }
     const words = [];
     const nameExists = yield Wordlist_1.wordlistModel.findOne({ title, owner: userId });
-    console.log(nameExists);
     if (nameExists) {
         throw new Error('Wordlist with that name already exists. Select a different name');
     }
     const newWordlist = new Wordlist_1.wordlistModel({ title, words, owner: userId });
     const savedWordlist = yield newWordlist.save();
     if (!savedWordlist) {
-        throw new Error("Creating wordlist failed on database");
+        throw new Error('Creating wordlist failed on database');
     }
     return savedWordlist;
 });
@@ -75,11 +74,11 @@ const getUsersLists = (userId) => __awaiter(void 0, void 0, void 0, function* ()
 });
 const getList = (wordlistId, userId) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(0, validators_1.isString)(wordlistId)) {
-        throw new Error("Invalid parameters");
+        throw new Error('Invalid parameters');
     }
     const wordlist = yield Wordlist_1.wordlistModel.findOne({ _id: wordlistId, owner: userId }).exec();
     if (!wordlist) {
-        throw new Error("No such wordlist id found from this user");
+        throw new Error('No such wordlist id found from this user');
     }
     const getStrippedWords = () => __awaiter(void 0, void 0, void 0, function* () {
         // Fill wordlist's word array with strippedwords so that they include spanish word too
@@ -93,8 +92,6 @@ const getList = (wordlistId, userId) => __awaiter(void 0, void 0, void 0, functi
         return strippedWords;
     });
     const frontendWordlist = { title: wordlist.title, owner: wordlist.owner, _id: wordlist._id, words: yield getStrippedWords() };
-    console.log("frontendwordlist:");
-    console.log(frontendWordlist);
     return frontendWordlist;
 });
 exports.default = {

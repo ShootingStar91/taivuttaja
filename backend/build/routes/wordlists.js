@@ -25,7 +25,7 @@ router.post('/deleteword/', middleware_1.default.userExtractor, (req, res) => __
 router.post('/addword/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield wordlists_1.default.addWord(req.body.word, req.body.wordlistId, req.user._id);
     if (!result) {
-        throw new Error("Error adding word to wordlist");
+        throw new Error('Error adding word to wordlist');
     }
     res.send(result);
 }));

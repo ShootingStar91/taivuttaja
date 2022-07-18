@@ -27,7 +27,7 @@ const createPasswordHash = (password) => __awaiter(void 0, void 0, void 0, funct
 });
 const parsePassword = (password) => {
     if (!password || !(0, validators_1.isString)(password)) {
-        throw new types_1.ValidationError("Password is not a valid string");
+        throw new types_1.ValidationError('Password is not a valid string');
     }
     if (password.length < config_1.PASSWORD_MIN_LENGTH ||
         password.length > config_1.PASSWORD_MAX_LENGTH) {
@@ -63,14 +63,14 @@ const tryLogin = (rawUsername, rawPassword) => __awaiter(void 0, void 0, void 0,
     const password = parsePassword(rawPassword);
     const user = yield User_1.userModel.findOne({ username });
     if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
     }
     if (!user.password) {
-        throw new Error("User did not have password in database");
+        throw new Error('User did not have password in database');
     }
     const result = yield bcrypt_1.default.compare(password, user.password);
     if (!result) {
-        throw new Error("Invalid password");
+        throw new Error('Invalid password');
     }
     const userForToken = { username: user.username, id: user._id };
     const token = jsonwebtoken_1.default.sign(userForToken, config_1.SECRET, { expiresIn: config_1.loginValidSeconds });
@@ -87,29 +87,29 @@ const deleteUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     yield Wordlist_1.wordlistModel.deleteMany({ owner: user._id });
     const result = yield User_1.userModel.deleteOne({ owner: user._id });
     if (!result) {
-        throw new Error("Could not find such user");
+        throw new Error('Could not find such user');
     }
 });
 const addDoneWord = (wordId, user) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(0, validators_1.isString)(wordId)) {
-        throw new types_1.ValidationError("Invalid wordId");
+        throw new types_1.ValidationError('Invalid wordId');
     }
     const newDoneWord = new DoneWord_1.doneWordModel({ word: wordId, date: new Date(), user: user._id });
     const result = yield newDoneWord.save();
     if (!result) {
-        throw new Error("Could not add done word");
+        throw new Error('Could not add done word');
     }
 });
 const getDoneWords = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield DoneWord_1.doneWordModel.find({ user: user._id }).populate({ path: 'word', model: 'Word' });
     if (!result) {
-        throw new Error("Could not get done words");
+        throw new Error('Could not get done words');
     }
     return result;
 });
 const setGoal = (goal, user) => __awaiter(void 0, void 0, void 0, function* () {
     if (!Number.isInteger(goal)) {
-        throw new types_1.ValidationError("Invalid goal parameter");
+        throw new types_1.ValidationError('Invalid goal parameter');
     }
     const result = yield User_1.userModel.updateOne({ _id: user._id }, { goal });
     return result;
@@ -123,7 +123,7 @@ const changePassword = (rawOldPassword, rawNewPassword, user) => __awaiter(void 
     }
     const passwordCorrect = yield bcrypt_1.default.compare(oldPassword, dbUser.password);
     if (!passwordCorrect) {
-        throw new Error("Invalid password");
+        throw new Error('Invalid password');
     }
     const result = yield User_1.userModel.updateOne({ _id: user._id }, { password: newPassword });
     if (result) {
@@ -133,7 +133,7 @@ const changePassword = (rawOldPassword, rawNewPassword, user) => __awaiter(void 
 });
 const setStrictAccents = (strictAccents, user) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(0, validators_1.isBoolean)(strictAccents)) {
-        throw new types_1.ValidationError("Strict accents parameter was not boolean");
+        throw new types_1.ValidationError('Strict accents parameter was not boolean');
     }
     const result = yield User_1.userModel.updateOne({ _id: user._id }, { strictAccents });
     return result;
