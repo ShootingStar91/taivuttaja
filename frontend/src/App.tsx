@@ -39,13 +39,17 @@ const App = () => {
 
   }, []);
 
-  const navBarLinkStyle = 'float-left hover:text-white';
+  useEffect(() => {
+    document.getElementsByTagName('body')[0].className = 'bg-stone-500';
+  }, []);
+
+  const navBarLinkStyle = 'float-left hover:text-amber-500';
 
   return (
-    <div id='mainContainer' className='mt-4 container mx-auto max-w-[1024px]'>
+    <div id='mainContainer' className='mt-4 container mx-auto max-w-[960px]'>
       <BrowserRouter>
         <Notification />
-        <div className='bg-blue-400 flex flex-wrap justify-center'>
+        <div className='bg-amber-500 rounded-t-md flex flex-wrap justify-center'>
           <div className='flex auto-flex gap-x-4'>
             <div className='mt-1 -mx-2'><SpanishFlag /></div> <h2>Conjugation app</h2>
           </div>
@@ -54,29 +58,31 @@ const App = () => {
           <InfoBar />
         </div>
         <div className='bg-slate-200'>
-          <div id='navbar' className='container flex flex-wrap justify-center 
+          <div className='divide-y-2'>
+            <div id='navbar' className='container flex flex-wrap justify-center 
         items-center gap-2 md:gap-4 lg:gap-8 mx-auto font-sans md:text-lg lg:text-lg min-w-[728px]'>
-            <Link className={navBarLinkStyle} to='/'>Home</Link>
-            <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
-            <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
-            <Link className={navBarLinkStyle} to='/verbs'>Verbs</Link>
-            {user && <Link className={navBarLinkStyle} to='/userpage'>User page</Link>}
-            {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
-              <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}
+              <Link className={navBarLinkStyle} to='/'>Home</Link>
+              <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
+              <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
+              <Link className={navBarLinkStyle} to='/verbs'>Verbs</Link>
+              {user && <Link className={navBarLinkStyle} to='/userpage'>User page</Link>}
+              {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
+                <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}
+            </div>
           </div>
-        </div>
-        <div id='contentdiv' className='h-full bg-slate-100 pl-4 md:pl-12 pt-12 md:pr-20 
-              pb-6 flex flex-col space-y-4 min-h-[500px] max-w-[1024px] min-w-[728px]'>
-          <Routes>
-            <Route path='conjugatestart' element={<ConjugateIndex />} />
-            <Route path='vocab' element={<VocabPage />} />
-            <Route path='login' element={<LoginForm />} />
-            <Route path='verbs' element={<VerbsPage />} />
-            <Route path='userpage' element={<UserPage />} />
-            <Route path='wordlist/:id' element={<WordListView />} />
-            <Route path='verb/:verb' element={<VerbView />} />
-            <Route path='*' element={<IndexPage />} />
-          </Routes>
+          <div id='contentdiv' className='overflow-auto h-full bg-slate-200 pl-4 md:pl-8 pt-4 md:pr-4 
+              pb-6 flex flex-col'>
+            <Routes>
+              <Route path='conjugatestart' element={<ConjugateIndex />} />
+              <Route path='vocab' element={<VocabPage />} />
+              <Route path='login' element={<LoginForm />} />
+              <Route path='verbs' element={<VerbsPage />} />
+              <Route path='userpage' element={<UserPage />} />
+              <Route path='wordlist/:id' element={<WordListView />} />
+              <Route path='verb/:verb' element={<VerbView />} />
+              <Route path='*' element={<IndexPage />} />
+            </Routes>
+          </div>
         </div>
       </BrowserRouter>
     </div>
