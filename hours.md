@@ -58,4 +58,5 @@
 | 14.7. | 1   | Refactoring into smaller components |
 | 15.7. | 4   | Fixed login related bugs, error handling, broken tests |
 | 16.7. | 3   | Code quality: toast API created, unified quotes |
-| Total hours | 158     | 
+| 18.7. | 1   | Added printing of correct answers to console, deployed new version |
+| Total hours | 159     | 
