@@ -60,7 +60,7 @@ const App = () => {
         <div className='bg-slate-200'>
           <div className='divide-y-2'>
             <div id='navbar' className='container flex flex-wrap justify-center 
-        items-center gap-2 md:gap-4 lg:gap-8 mx-auto font-sans md:text-lg lg:text-lg min-w-[728px]'>
+        items-center gap-2 md:gap-4 lg:gap-8 mx-auto md:text-lg lg:text-lg min-w-[728px]'>
               <Link className={navBarLinkStyle} to='/'>Home</Link>
               <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
               <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
