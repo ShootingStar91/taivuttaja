@@ -121,7 +121,7 @@ export const VocabPage = () => {
 
 
   return (
-    <div className='fullcard p-8' onKeyDown={onKeyDown}>
+    <div className='p-8' onKeyDown={onKeyDown}>
       <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px]'>
         <EnglishFlag /> <h2>{word ? word.infinitive_english : ''}</h2>
       </div>

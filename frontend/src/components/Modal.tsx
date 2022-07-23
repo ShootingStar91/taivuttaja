@@ -22,10 +22,10 @@ export const FullModal = ({ content, closeButtonText, closeModal }: { content: J
 
 
   return (
-    <div className='bg-white fixed top-4 left-0 w-screen h-screen z-30'>
+    <div className='bg-bg-color fixed sm:top-12 left-0 w-screen h-screen z-30'>
       <div className='mx-auto min-w-[512px] lg:max-w-[972px] px-8'>
 
-        <div className='bg-gray-50'>
+        <div className='bg-content-color'>
           <div className='flex flex-auto justify-end pt-6 pr-6'>
             {closeModal && <button className='btn' onClick={() => closeModal()}>{closeButtonText}</button>}
           </div>

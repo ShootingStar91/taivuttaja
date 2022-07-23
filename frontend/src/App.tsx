@@ -10,11 +10,10 @@ import { WordListView } from './components/UserPage/wordlist';
 import { ConjugateIndex } from './components/ConjugatePage';
 import { Notification } from './components/Notification';
 import userService from './services/user';
-import { InfoBar } from './components/InfoBar';
 import { VerbsPage } from './components/VerbsPage';
 import { VerbView } from './components/VerbsPage/VerbView';
-import { SpanishFlag } from './components/Flags';
 import { successToast } from './reducers/toastApi';
+import { InfoBar } from './components/InfoBar';
 
 const App = () => {
 
@@ -39,39 +38,31 @@ const App = () => {
 
   }, []);
 
+  const navBarLinkClass = "bg-menu-color w-[200px] h-[40px] text-center active:bg-menu-color-active";
+
   useEffect(() => {
-    document.getElementsByTagName('body')[0].className = 'bg-stone-500';
+    document.getElementsByTagName('body')[0].className = 'bg-bg-color';
   }, []);
 
-  const navBarLinkStyle = 'float-left hover:text-amber-500';
-
   return (
-    <div id='mainContainer' className='mt-4 container mx-auto max-w-[960px]'>
+    <div id='mainContainer' className='mx-auto grid grid-cols-24 grid-rows-24 mt-4 w-[1190px]'>
       <BrowserRouter>
         <Notification />
-        <div className='bg-amber-500 rounded-t-md flex flex-wrap justify-center'>
-          <div className='flex auto-flex gap-x-4'>
-            <div className='mt-1 -mx-2'><SpanishFlag /></div> <h2>Conjugation app</h2>
-          </div>
-        </div>
-        <div className='bg-slate-300'>
+        <div id='infobar' className='col-start-0 col-end-24 row-start-0 row-end-1 bg-header-color'>
           <InfoBar />
         </div>
-        <div className='bg-slate-200'>
-          <div className='divide-y-2'>
-            <div id='navbar' className='container flex flex-wrap justify-center 
-        items-center gap-2 md:gap-4 lg:gap-8 mx-auto md:text-lg lg:text-lg min-w-[728px]'>
-              <Link className={navBarLinkStyle} to='/'>Home</Link>
-              <Link className={navBarLinkStyle} to='/conjugatestart'>Conjugate</Link>
-              <Link className={navBarLinkStyle} to='/vocab'>Vocab</Link>
-              <Link className={navBarLinkStyle} to='/verbs'>Verbs</Link>
-              {user && <Link className={navBarLinkStyle} to='/userpage'>User page</Link>}
-              {!user ? <Link className={navBarLinkStyle} to='/login'>Login</Link> :
-                <Link className={navBarLinkStyle} to='/' onClick={logout}>Logout</Link>}
-            </div>
-          </div>
-          <div id='contentdiv' className='overflow-auto h-full bg-slate-200 pl-4 md:pl-8 pt-4 md:pr-4 
-              pb-6 flex flex-col'>
+        <div id='navbar' className='col-start-1 col-end-7 row-start-2 row-end-24 flex flex-col
+        md:text-lg lg:text-lg gap-[2px]'>
+          <Link style={{userSelect: 'none'}} className={navBarLinkClass} to='/'>Home</Link>
+          <Link className={navBarLinkClass} to='/conjugatestart'>Conjugate</Link>
+          <Link className={navBarLinkClass} to='/vocab'>Vocab</Link>
+          <Link className={navBarLinkClass} to='/verbs'>Verbs</Link>
+          {user && <Link className={navBarLinkClass} to='/userpage'>User page</Link>}
+          {!user ? <Link className={navBarLinkClass} to='/login'>Login</Link> :
+            <Link className={navBarLinkClass} to='/' onClick={logout}>Logout</Link>}
+        </div>
+        <div id='contentdiv' className='col-start-11 col-end-24 row-start-2 row-end-24 flex flex-col w-[990px]'>
+          <div className='bg-content-color p-2 sm:p-6'>
             <Routes>
               <Route path='conjugatestart' element={<ConjugateIndex />} />
               <Route path='vocab' element={<VocabPage />} />

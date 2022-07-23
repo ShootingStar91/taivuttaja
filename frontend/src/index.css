@@ -41,7 +41,7 @@
   }
 
   p, li, body {
-    @apply text-sm font-mono
+    @apply text-sm
   }
 
   .btn {
