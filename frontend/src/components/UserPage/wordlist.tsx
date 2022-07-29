@@ -125,7 +125,7 @@ export const WordListView = () => {
   if (!wordlist || !allWords) {
     return (<div>Wordlist not loaded or found.</div>);
   }
-
+  
   return (
     <div><h3>Add words to wordlist: {wordlist.title}</h3>
       <Select
@@ -133,7 +133,7 @@ export const WordListView = () => {
         className='basic-single'
         classNamePrefix='select'
         name='wordField'
-        options={allWords.map(w => { return { label: w.infinitive + ' | ' + w.infinitive_english, value: w.infinitive_english }; })}
+        options={allWords.filter(w => !wordlist.words.find(word => word.infinitive === w.infinitive)).map(w => { return { label: w.infinitive + ' | ' + w.infinitive_english, value: w.infinitive_english }; })}
         onChange={onChange}
       />
 
