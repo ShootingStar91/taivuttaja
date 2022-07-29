@@ -80,7 +80,7 @@ export const VerbView = () => {
       {moodList.map((mood) =>
         <div key={mood} className='mb-1'>
           <h2>{mood}</h2>
-          <div className='fullcard'>
+          <div className='bg-amber-50 pl-6 pt-2 pb-2'>
             {getTable(data.filter(d => d.mood_english === mood))}
           </div>
           <p></p>
