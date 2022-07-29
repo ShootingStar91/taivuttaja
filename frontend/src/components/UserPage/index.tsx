@@ -5,7 +5,7 @@ import { removeUser, selectUser, setGoal, setUser } from '../../reducers/user';
 import { wordListService } from '../../services/wordlists';
 import { moodList, tenseList, WordList } from '../../types';
 import userService from '../../services/user';
-import { Modal } from '../Modal';
+import { FullModal } from '../Modal';
 import { ERRORS } from '../../config';
 import { PasswordModal } from './passwordModal';
 import { errorToast, successToast } from '../../reducers/toastApi';
@@ -235,7 +235,7 @@ export const UserPage = () => {
 
   if (showHistoryModal) {
     return <>
-      <Modal content={getPracticeHistory()} closeButtonText='Close' closeModal={() => setShowHistoryModal(false)} />
+      <FullModal content={getPracticeHistory()} closeButtonText='Close' closeModal={() => setShowHistoryModal(false)} />
       <div className=''>
       </div>
     </>;
@@ -244,7 +244,7 @@ export const UserPage = () => {
 
   if (showPasswordModal) {
     return <>
-      <Modal content={<PasswordModal />} closeButtonText='Close' closeModal={() => setShowPasswordModal(false)} />
+      <FullModal content={<PasswordModal />} closeButtonText='Close' closeModal={() => setShowPasswordModal(false)} />
       <div className=''>
       </div>
     </>;

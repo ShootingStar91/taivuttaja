@@ -77,7 +77,7 @@
   }
 
   .correct-color {
-    @apply bg-green-50;
+    @apply bg-blue-50;
   }
 
 }

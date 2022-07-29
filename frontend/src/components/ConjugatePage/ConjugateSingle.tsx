@@ -133,11 +133,16 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   };
 
   const onClickSkip = () => {
+
     if (!word || !answer) { return; }
+    const field = document.getElementsByName('attemptField')[0];
+
     if (!showAnswer) {
       setShowAnswer(true);
       setAttempt(answer);
+      field.style.backgroundColor = COLORS.SHOWANSWER;
     } else {
+      field.style.backgroundColor = COLORS.BLANK;
       setShowAnswer(false);
       void newWord();
       setAttempt('');
@@ -176,7 +181,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
         <span className='description'>{getFormDescription(form)}</span>
         <div className='mt-8'>
           {mode === ConjugateMode.Single && <>
-            <form onKeyDown={onKeyDown}><div className={'rounded-lg'}><input id='answerfield' className={'textField w-[300px]' + (showAnswer ? ' showing-answer-color font-bold ' : '') + (showingCorrect ? ' correct-color ' : '')}
+            <form onKeyDown={onKeyDown}><div className={'rounded-lg'}><input id='answerfield' className={'textField w-[300px]'}
               name='attemptField' type='text' onChange={onChange} value={attempt} autoComplete='off' disabled={showAnswer}></input></div></form>
             <p><button className='btn w-[300px]' type='button' onClick={onTry}>Try</button></p>
           </>}
