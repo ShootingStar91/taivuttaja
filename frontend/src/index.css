@@ -61,7 +61,7 @@
   }
 
   .textField {
-    @apply bg-amber-100 appearance-none border w-full py-2 px-3 text-gray-600 leading-tight text-lg;
+    @apply bg-white appearance-none w-full py-2 px-3 text-gray-600 leading-tight text-lg;
   }
 
   input:focus {
@@ -70,6 +70,14 @@
 
   li {
     @apply list-disc;
+  }
+
+  .showing-answer-color {
+    @apply bg-amber-200;
+  }
+
+  .correct-color {
+    @apply bg-green-50;
   }
 
 }
