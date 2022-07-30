@@ -59,4 +59,6 @@
 | 15.7. | 4   | Fixed login related bugs, error handling, broken tests |
 | 16.7. | 3   | Code quality: toast API created, unified quotes |
 | 18.7. | 1   | Added printing of correct answers to console, deployed new version |
-| Total hours | 159     | 
+| 23.7. | 2   | Built a new, better version of layout |
+| 29.7. | 3   | Fixed wordlist bug and improved new layout |
+| Total hours | 164     | 
