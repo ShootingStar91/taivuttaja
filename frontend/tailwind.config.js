@@ -4,6 +4,7 @@ module.exports = {
     './build/**/*.html'
   ],
   theme: {
+
     extend: {
       colors: {
         'customamber': '#fffdf1',
@@ -22,7 +23,9 @@ module.exports = {
       gridTemplateRows: {
         '24': 'repeat(24, 40px)'
       },
-      
+      screens: {
+        'sm': '1190px'
+      }
     },
 
   },
