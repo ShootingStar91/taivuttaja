@@ -135,6 +135,17 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   const onClickSkip = () => {
 
     if (!word || !answer) { return; }
+
+    if (settings.mode === ConjugateMode.Flashcard) {
+      if (!showAnswer) {
+        setShowAnswer(true);
+      } else {
+        setShowAnswer(false);
+        void newWord();
+      }
+      return;
+    }
+
     const field = document.getElementsByName('attemptField')[0];
 
     if (!showAnswer) {
