@@ -6,7 +6,7 @@ export const ERRORS = {
 
 export const COLORS = {
   WRONG: '#ffebeb',
-  CORRECT: '#45bd13',
+  CORRECT: '#9fc99f',
   BLANK: '#ffffff',
   ALMOST_CORRECT: '#e2ff8a',
   BLOCKED: '#878787',

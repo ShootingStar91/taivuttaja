@@ -71,7 +71,7 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
-    
+
     if (event.key === 'Tab' || event.key === 'Enter') {
       event.preventDefault();
       if (!showingCorrect) {
@@ -133,11 +133,16 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
   };
 
   const onClickSkip = () => {
+
     if (!word || !answer) { return; }
+    const field = document.getElementsByName('attemptField')[0];
+
     if (!showAnswer) {
       setShowAnswer(true);
       setAttempt(answer);
+      field.style.backgroundColor = COLORS.SHOWANSWER;
     } else {
+      field.style.backgroundColor = COLORS.BLANK;
       setShowAnswer(false);
       void newWord();
       setAttempt('');
@@ -155,13 +160,13 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
 
     const getFlashcardPart = () => {
       if (showAnswer) {
-        return <h1>{answer}</h1>;
+        return <h1 className='text-center mb-8'>{answer}</h1>;
       }
-      return <h1>?</h1>;
+      return <h1 className='text-center mb-8'>_____</h1>;
     };
 
     return (
-      <div>
+      <div className='grid justify-items-center'>
         <div className='flex auto-flex gap-x-4'>
           <SpanishFlag /> <h2 id='spanishword'>{word.infinitive}</h2>
         </div>
@@ -172,16 +177,20 @@ export const ConjugateSingle = ({ settings, next, stop }: { settings: ConjugateS
           <h2 id='tense' className='text-amber-600'>{tense}</h2>
           <h2 id='mood' className='text-sky-400'>{mood}</h2>
         </div>
-        <h2 id='personform' className='mt-4 text-yellow-400'>{getForm(form)}</h2>
-        <span className='description pl-4'>{getFormDescription(form)}</span>
+        <h2 id='personform' className='mt-4 text-orange-500'>{getForm(form)}</h2>
+        <span className='description'>{getFormDescription(form)}</span>
         <div className='mt-8'>
           {mode === ConjugateMode.Single && <>
-            <form onKeyDown={onKeyDown}><div className={'rounded-lg'}><input id='answerfield' className={'textField ' + (showAnswer ? ' bg-amber-300 ' : '') + (showingCorrect ? ' bg-green-300 ' : '')} name='attemptField' type='text' onChange={onChange} value={attempt} autoComplete='off' disabled={showAnswer}></input></div></form>
-            <p><button className='btn w-[200px]' type='button' onClick={onTry}>Try</button></p>
+            <form onKeyDown={onKeyDown}><div className={'rounded-lg'}><input id='answerfield' className={'textField w-[300px]'}
+              name='attemptField' type='text' onChange={onChange} value={attempt} autoComplete='off' disabled={showAnswer}></input></div></form>
+            <p><button className='btn w-[300px]' type='button' onClick={onTry}>Try</button></p>
           </>}
           {mode === ConjugateMode.Flashcard && getFlashcardPart()}
-          <button className='btn w-[200px]' type='button' onClick={onClickSkip}>{showAnswer ? 'Next' : 'Show'}</button>
-            <div id='correctanswers' style={{display: 'none'}}>{correctAnswers}</div>
+          <button className='btn w-[300px]' type='button' onClick={onClickSkip}>{showAnswer ? 'Next' : 'Show'}</button>
+
+
+          <div id='correctanswers' style={{ display: 'none' }}>{correctAnswers}</div>
+
         </div>
       </div>
     );
