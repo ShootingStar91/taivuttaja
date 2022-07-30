@@ -13,7 +13,7 @@
   }
 
   h3 {
-    @apply text-lg font-bold;
+    @apply font-bold;
   }
 
   .optioncard {
@@ -78,6 +78,10 @@
 
   .correct-color {
     @apply bg-blue-50;
+  }
+
+  .userpagebtn {
+    @apply bg-menu-color text-black py-2 px-2;
   }
 
 }

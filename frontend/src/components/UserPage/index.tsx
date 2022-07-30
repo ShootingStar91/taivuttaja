@@ -252,66 +252,62 @@ export const UserPage = () => {
 
   if (user) return (
     <>
-      <div>
-        <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center'>
+      <div className='divide-y-2 divide-slate-400'>
 
-          <div className='optioncard'>
-            <h3>Daily goal</h3>
-            <p>Set daily goal:</p>
+        <div className='mt-2'>
+          <h3>Daily goal</h3>
+          <div className='flex gap-2'>
             <p><input id='dailygoalslider' type='range' min='5' max='100' step='5' onChange={changeDailyGoal} style={{ width: '200px' }}></input> <span className='font-bold'>{dailyGoal}</span></p>
-            <p><button id='setdailygoal' className='btn' type='button' onClick={onSetDailyGoal}>Save</button></p>
-          </div>
-
-          <div className='optioncard'>
-            <h3 className='mb-4'>Strict accents mode</h3>
-            <label htmlFor='strictaccentmode' className='relative inline-flex items-center mb-4 cursor-pointer'>
-              <input id='strictaccentmode' type='checkbox' value='' className='sr-only peer' onChange={changeStrictAccents} checked={strictAccents} />
-              <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-              <span id='strictaccentonoff' className='ml-3 text-sm font-medium text-gray-900 dark:text-gray-300'>{strictAccents ? 'On' : 'Off'}</span>
-            </label>
-            <div className='description'>{'If this is on, the app will require 100% correct accents. For example, \'correis\' will not be accepted for the word \'corréis\'.'}</div>
+            <p><button id='setdailygoal' className='userpagebtn' type='button' onClick={onSetDailyGoal}>Save</button></p>
           </div>
         </div>
-        <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center mt-12'>
+        <div className='py-4'>
+          <h3 className='mb-4'>Strict accents mode</h3>
+          <label htmlFor='strictaccentmode' className='relative inline-flex items-center mb-4 cursor-pointer'>
+            <input id='strictaccentmode' type='checkbox' value='' className='sr-only peer' onChange={changeStrictAccents} checked={strictAccents} />
+            <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <span id='strictaccentonoff' className='ml-3 text-sm font-medium text-gray-900 dark:text-gray-300'>{strictAccents ? 'On' : 'Off'}</span>
+          </label>
+          <div className='description'>{'If this is on, the app will require 100% correct accents. For example, \'correis\' will not be accepted for the word \'corréis\'.'}</div>
+        </div>
 
-          <div className='optioncard'>
-            <p><button className='btn' type='button' onClick={() => { setShowHistoryModal(!showHistoryModal); window.scroll({ top: 0, left: 0, behavior: 'smooth' }); }}>View practice history</button></p>
-            <p className='description'>View how many verbs you have conjugated, and which tenses and moods you have practiced the most.</p>
+        <div className='py-4'>
+          <p><button className='userpagebtn' type='button' onClick={() => { setShowHistoryModal(!showHistoryModal); window.scroll({ top: 0, left: 0, behavior: 'smooth' }); }}>View practice history</button></p>
+          <p className='description'>View how many verbs you have conjugated, and which tenses and moods you have practiced the most.</p>
+        </div>
+
+        <div className='py-4'>
+          <h2>Wordlists</h2>
+          <div id='wordlists' className='max-h-[40%] overflow-auto'>
+            {wordLists.length > 0 ?
+              wordLists.map((list) => <div key={list.title}>
+                {list._id ? <a className='link' href={'wordlist/' + list._id}>{list.title}</a> :
+                  list.title}
+              </div>)
+              : <p>No wordlists found</p>}
           </div>
+          <h3 className=''>Create new wordlist</h3>
 
-          <div className='optioncard max-h-[500px]'>
-            <h3>Your wordlists</h3>
-            <div id='wordlists' className='max-h-[40%] overflow-auto'>
-              {wordLists.length > 0 ?
-                wordLists.map((list) => <div key={list.title}>
-                  {list._id ? <a className='link' href={'wordlist/' + list._id}>{list.title}</a> :
-                    list.title}
-                </div>)
-                : <p>No wordlists found</p>}
-            </div>
-            <h3 className='mt-2'>New wordlist</h3>
-            <p>Name:</p>
+          <div className='flex gap-2'>
             <p><input id='wordlistnamefield' className='textField' type='text' onChange={onNameChange}></input></p>
-            <p><button className='btn' type='button' onClick={newWordList}>Create</button></p>
+            <p><button className='userpagebtn' type='button' onClick={newWordList}>Create</button></p>
           </div>
-
         </div>
-        <div className='flex flex-auto gap-x-8 md:gap-x-20 justify-center mt-8'>
 
-          <div className='optioncard'>
-            <p>
-              <button className='btn' type='button' onClick={() => setShowPasswordModal(true)}>Change password</button>
-            </p>
-            <p>
-              <button className='btn' type='button' onClick={deleteUserButton}>Delete all user data</button>
-            </p>
-          </div>
 
+        <div className='py-4'>
+          <p>
+            <button className='userpagebtn' type='button' onClick={() => setShowPasswordModal(true)}>Change password</button>
+          </p>
+          <p>
+            <button className='userpagebtn' type='button' onClick={deleteUserButton}>Delete all user data</button>
+          </p>
         </div>
+
       </div>
     </>
   );
 
-return <div>User not found!</div>;
+  return <div>User not found!</div>;
 
 };
