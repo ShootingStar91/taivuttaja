@@ -6,7 +6,7 @@ export const FullModal = ({ content, closeButtonText, closeModal }: { content: J
 
 
   return (
-    <div className='bg-bg-color fixed sm:top-12 left-0 w-screen h-screen z-30'>
+    <div className='bg-bg-color fixed top-12 left-0 w-screen h-screen z-30 overflow-auto'>
       <div className='mx-auto min-w-[512px] lg:max-w-[972px] px-8'>
 
         <div className='bg-content-color'>
