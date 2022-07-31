@@ -38,14 +38,14 @@ const App = () => {
   }, []);
 
   return (
-    <div id='mainContainer' className='mx-auto grid grid-cols-24 grid-rows-24 mt-12 w-[990px] sm:w-[1190px]'>
+    <div id='mainContainer' className='mx-auto grid grid-cols-24 grid-rows-12 sm:grid-rows-24 mt-12 w-[990px] sm:w-[1190px]'>
       <BrowserRouter>
         <Notification />
         <div id='infobar' className='col-start-0 col-end-24 row-start-0 row-end-1 bg-header-color w-[990px] sm:w-[1190px] mb-[2px]'>
           <InfoBar />
         </div>
         <Menu user={user} />
-        <div id='contentdiv' className='col-start-0 sm:col-start-11 col-end-24 row-start-2 sm:row-start-1 row-end-24  flex flex-col w-[990px]'>
+        <div id='contentdiv' className='col-start-0 sm:col-start-11 col-end-24 row-start-2 sm:row-start-1 row-end-22 flex flex-col w-[990px] pb-16 bg-bg-color'>
           <div className='bg-content-color p-4 sm:p-6 sm:ml-[2px]'>
             <Routes>
               <Route path='conjugatestart' element={<ConjugateIndex />} />
@@ -79,7 +79,7 @@ const Menu = ({user}: {user: User | undefined}) => {
   };
 
   return (
-    <div id='navbar' className='sm:w-auto col-start-0 col-end-24 row-start-1 row-end-2 sm:col-start-1 sm:col-end-7 sm:row-start-1 sm:row-end-24 flex flex-row sm:flex-col
+    <div id='navbar' className='sm:w-auto col-start-0 col-end-24 row-start-1 row-end-2 sm:col-start-1 sm:col-end-7 sm:row-start-1 sm:row-end-22 flex flex-row sm:flex-col
         text-lg gap-[2px] select-none pointer-events-auto min-w-[990px] sm:min-w-fit'>
           <Link draggable={false} className={route.pathname === '/' ? navBarLinkCurrent : navBarLinkClass} to='/'>HOME</Link>
           <Link draggable={false} className={route.pathname === '/conjugatestart' ? navBarLinkCurrent : navBarLinkClass} to='/conjugatestart'>CONJUGATE</Link>

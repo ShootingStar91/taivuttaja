@@ -41,7 +41,7 @@ export const VerbsPage = () => {
         <h2>Click on verb to see details</h2>
         <div className='bg-amber-50 p-2'>
 
-          {results.map(word => <div key={word.infinitive}><a href={'verb/' + word.infinitive}> <span className='text-menu-color'>{word.infinitive}</span>  {word.infinitive_english} </a></div>)}
+          {results.map(word => <div key={word.infinitive}><a href={'verb/' + word.infinitive}> <span className='font-bold text-amber-500 hover:text-amber-600'>{word.infinitive}</span>  {word.infinitive_english} </a></div>)}
         </div>
       </>
     );

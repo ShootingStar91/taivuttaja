@@ -21,7 +21,8 @@ module.exports = {
         '24': 'repeat(24, 20px)'
       },
       gridTemplateRows: {
-        '24': 'repeat(24, 40px)'
+        '24': 'repeat(24, 40px)',
+        '12': 'repeat(12, 40px)'
       },
       screens: {
         'sm': '1190px'
