@@ -295,7 +295,7 @@ export const UserPage = () => {
 
           <div className='flex gap-2'>
             <p><input id='wordlistnamefield' className='textField' type='text' onChange={onNameChange}></input></p>
-            <p><button className='userpagebtn' type='button' onClick={newWordList}>Create</button></p>
+            <p><button id='createwordlistbutton' className='userpagebtn' type='button' onClick={newWordList}>Create</button></p>
           </div>
         </div>
 

@@ -215,7 +215,7 @@ const getRightAnswer = (word: string, tense: string, mood: string, personform: s
 };
 
 const openPage = (page: string) => {
-  cy.get('#navbar').contains(page).click({force: true});
+  cy.get('#navbar').contains(page.toUpperCase()).click({force: true});
   wait();
 };
 const login = () => {
@@ -337,7 +337,7 @@ describe('taivuttaja-app', () => {
 
     it('Wordlist adding works', () => {
       cy.get('#wordlistnamefield').type('wordlist1');
-      cy.contains('Create').click();
+      cy.get('#createwordlistbutton').click();
       wait();
       cy.contains('Add words to wordlist: wordlist1');
       openPage('User page');
@@ -455,6 +455,11 @@ describe('taivuttaja-app', () => {
         cy.contains('Try').click();
         wait();
         cy.get('#correctanswers').contains('1');
+        wait();
+        wait();
+        wait();
+        wait();
+        wait();
         cy.get('#answerfield').type('wronganswer');
         cy.contains('Try').click();
         wait();
