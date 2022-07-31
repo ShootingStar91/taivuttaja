@@ -84,18 +84,18 @@ export const WordListOption = ({ allWordlists, setWordlist, wordlistId }: { allW
   };
 
   return (
-    <div className='pt-6'>
-      <h2 className='flex justify-center mb-6'>Select wordlist or include all words</h2>
-      <div className=''>
-        {allWordlists !== null && allWordlists.length > 0 &&
-          <Select
-            className='basic-single'
-            classNamePrefix='select'
-            name='wordField'
-            options={getOptions()}
-            onChange={onWordlistChange}
-            value={getValue()}
-          />}
+    <div className='pt-2 grid justify-items-center'>
+      <h2 className='mb-6'>Select wordlist or include all words</h2>
+      <div className='w-[400px]'>
+          {allWordlists !== null && allWordlists.length > 0 &&
+            <Select
+              className='basic-single'
+              classNamePrefix='select'
+              name='wordField'
+              options={getOptions()}
+              onChange={onWordlistChange}
+              value={getValue()}
+            />}
       </div>
     </div>
   );

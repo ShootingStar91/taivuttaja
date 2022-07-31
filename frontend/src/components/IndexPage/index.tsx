@@ -3,22 +3,13 @@ import React from 'react';
 export const IndexPage = () => {
   return (
     <div>
-      <h3>Welcome!</h3>
-      <p>Learn Spanish verbs and their conjugations here! Try the different learning modes:</p>
-      <h3>Vocabulary</h3>
-      <p>Get a random verb in English and type it in Spanish.</p>
-      <h3>Conjugate</h3>
-      <p>Practice conjugations by getting random verb to conjugate and then write out all the different forms. You can choose different moods or tenses to include in the randomed words! Different modes for conjugating:</p>
-      <ul className='pl-4'>
-        <li><span className='font-bold'>Full mode</span>: Write all 6 forms of 1st-3rd person singular & plural</li>
-        <li><span className='font-bold'>Single mode</span>: Write one random form, for example 1st person plural</li>
-        <li><span className='font-bold'>Flashcard</span>: No typing, just guess the verb form and click to show it</li>
-      </ul>
-      <p></p>
-      <h3>Conjugation tables</h3>
-      <p>Click on Verbs-link to search for verbs and see all their conjugation forms.</p>
-      <h3>About</h3>
-      <p><span className='text-orange-500 font-bold'>Want to test the functionality without knowing Spanish?</span> Open your browsers console, correct answers are printed there.</p>
+      <h1>Conjugation app</h1>
+      <p>Welcome! Learn Spanish verbs and their conjugations here!</p>
+      <p>Click Vocab to practice <b>verb vocabulary</b>, or click Conjugate to practice <b>conjugating verbs</b> in different tenses and moods. You can also view <b>conjugation tables</b> of any verb by clicking Verbs.</p>
+      <p>Create a user to set a daily goal, create wordlists, change settings and view what forms you have practiced most.</p>
+      <p>Want to <b>test the functionality</b> without knowing Spanish? Open your browsers console, correct answers are printed there.</p>
+
+      <h2>About</h2>
       <p>This app is a work in progress, but most of it should work. <a className='link' href='https://github.com/ShootingStar91/taivuttaja'>Click here for the project repository</a></p>
       <p>Verb database consists of over 600 verbs from <a className='link' href='https://github.com/ghidinelli/fred-jehle-spanish-verbs'>this database</a>. Most of it is correct but <span className='font-bold'>imperative forms have errors</span>: 3rd singular and 2nd plural forms are swapped, and 1st plural form is missing. Some of this will be fixed.</p>
       <p></p>

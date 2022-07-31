@@ -30,7 +30,7 @@ export const VerbView = () => {
     return (
       <table className='-ml-4'>
         <thead>
-          <tr>
+          <tr className='text-justify'>
             <th></th>
             <th>Yo</th>
             <th>Tu</th>
@@ -48,12 +48,12 @@ export const VerbView = () => {
               </tr>
               <tr key={d._id} className='border-b last:border-hidden'>
                 <td></td>
-                <td className='min-w-[120px]'>{d.form_1s || '---'}</td>
-                <td className='pl-2 min-w-[120px]'>{d.form_2s || '---'}</td>
-                <td className='pl-2 min-w-[120px]'>{d.form_3s || '---'}</td>
-                <td className='pl-2 min-w-[120px]'>{d.form_1p || '---'}</td>
-                <td className='pl-2 min-w-[120px]'>{d.form_2p || '---'}</td>
-                <td className='pl-2 min-w-[120px]'>{d.form_3p || '---'}</td>
+                <td className='min-w-[120px]'>{d.form_1s || '-'}</td>
+                <td className='pl-1 min-w-[120px]'>{d.form_2s || '-'}</td>
+                <td className='pl-1 min-w-[120px]'>{d.form_3s || '-'}</td>
+                <td className='pl-1 min-w-[120px]'>{d.form_1p || '-'}</td>
+                <td className='pl-1 min-w-[120px]'>{d.form_2p || '-'}</td>
+                <td className='pl-1 min-w-[120px]'>{d.form_3p || '-'}</td>
               </tr>
             </React.Fragment>
           )
@@ -69,18 +69,18 @@ export const VerbView = () => {
   }
 
   return (
-    <div className='text-xs -mx-8 -mt-8'>
-      <div className='flex auto-flex gap-x-4 -mb-2'>
+    <div className='text-xs -ml-2 sm:-ml-4'>
+      <div className='flex auto-flex gap-x-2'>
         <SpanishFlag /> <h2 id='spanishword'>{data[0].infinitive}</h2>
       </div>
-      <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px] -mb-4'>
+      <div className='flex auto-flex gap-x-2 pt-2 min-h-[100px]'>
         <EnglishFlag /> <h2>{data[0].infinitive_english}</h2>
       </div>
 
       {moodList.map((mood) =>
-        <div key={mood} className='mb-8'>
+        <div key={mood} className='mb-1'>
           <h2>{mood}</h2>
-          <div className='fullcard -ml-2'>
+          <div className='bg-amber-50 pl-6 pt-2 pb-2'>
             {getTable(data.filter(d => d.mood_english === mood))}
           </div>
           <p></p>

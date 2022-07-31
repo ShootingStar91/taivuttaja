@@ -151,11 +151,11 @@ export const ConjugateStart = ({ startConjugating }: { startConjugating: (settin
             }
           </>
         }
-        <div className='flex justify-center mb-6 pt-4'>
+        <div className='flex justify-center mb-6 pt-12'>
           <AmountOption {...{ onChangeAmount, amount }} />
         </div>
         <div>
-          <h2 className='flex justify-center'>Begin by choosing mode!</h2>
+          <h2 className='flex justify-center pt-6'>Begin by choosing mode!</h2>
           <div className='container flex flex-wrap justify-center items-center gap-12 mx-auto p-1'>
             <p><button type='button' className='btn'
               onClick={() => onStart(ConjugateMode.Full)}>All forms</button></p>
