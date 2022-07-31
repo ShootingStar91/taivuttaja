@@ -84,7 +84,7 @@ export const WordListOption = ({ allWordlists, setWordlist, wordlistId }: { allW
   };
 
   return (
-    <div className='pt-6 grid justify-items-center'>
+    <div className='pt-2 grid justify-items-center'>
       <h2 className='mb-6'>Select wordlist or include all words</h2>
       <div className='w-[400px]'>
           {allWordlists !== null && allWordlists.length > 0 &&
