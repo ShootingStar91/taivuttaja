@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.33% </span>
+                <span class="strong">71.87% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>22/30</span>
+                <span class='fraction'>23/32</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">20% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/4</span>
+                <span class='fraction'>1/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.33% </span>
+                <span class="strong">71.87% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>22/30</span>
+                <span class='fraction'>23/32</span>
             </div>
         
             
@@ -126,7 +126,9 @@
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,6 +139,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -163,17 +173,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -201,8 +205,16 @@ import cors from 'cors';
 import { userModel } from './models/User';
 require('express-async-errors');
 &nbsp;
-//import { wordModel } from './models/Word';
 const app = express();
+&nbsp;
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:80'];
+&nbsp;
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+  credentials: true
+};
+&nbsp;
+app.use(cors(options));
 &nbsp;
 app.use(express.json());
 app.use(express.static('build'));
@@ -210,9 +222,9 @@ app.use(middleware.logger);
 app.use(middleware.tokenExtractor);
 &nbsp;
 if (TEST_MODE) { 
-  console.log("Running in TEST_MODE");
+  console.log('Running in TEST_MODE');
 } else <span class="missing-if-branch" title="else path not taken" >E</span>{
-<span class="cstat-no" title="statement not covered" >  console.log("Running in normal mode");</span>
+<span class="cstat-no" title="statement not covered" >  console.log('Running in normal mode');</span>
 }
 &nbsp;
 const mongo_url = TEST_MODE ? TEST_MONGODB_URI as string : <span class="branch-1 cbranch-no" title="branch not covered" >MONGODB_URI as string;</span>
@@ -225,28 +237,22 @@ mongoose.connect(
   });
 &nbsp;
 &nbsp;
-const allowedOrigins = ['http://localhost:3000'];
-&nbsp;
-const options: cors.CorsOptions = {
-  origin: allowedOrigins
-};
-&nbsp;
-app.use(cors(options));
-&nbsp;
-// These have to be AFTER cors!
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/wordlists', wordlistsRouter);
-app.get('/health', <span class="fstat-no" title="function not covered" >(_</span>req, res) =&gt; {
+app.get('/api/health', <span class="fstat-no" title="function not covered" >(_</span>req, res) =&gt; {
 <span class="cstat-no" title="statement not covered" >  res.send('ok');</span>
+});
+app.get('/api/version', <span class="fstat-no" title="function not covered" >(_</span>req, res) =&gt; {
+<span class="cstat-no" title="statement not covered" >  res.send('1.0.2');</span>
 });
 app.get('/api/test/deleteall', <span class="fstat-no" title="function not covered" >as</span>ync (_req, res) =&gt; {
 <span class="cstat-no" title="statement not covered" >  if (!TEST_MODE) {</span>
-<span class="cstat-no" title="statement not covered" >    res.send("Not in test mode!");</span>
+<span class="cstat-no" title="statement not covered" >    res.send('Not in test mode!');</span>
   }
 <span class="cstat-no" title="statement not covered" >  await userModel.deleteMany({});</span>
-<span class="cstat-no" title="statement not covered" >  console.log("users deleted");</span>
-<span class="cstat-no" title="statement not covered" >  res.send("ok");</span>
+<span class="cstat-no" title="statement not covered" >  console.log('users deleted');</span>
+<span class="cstat-no" title="statement not covered" >  res.send('ok');</span>
 });
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
@@ -259,7 +265,7 @@ export default app;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue Jun 28 2022 16:48:51 GMT+0300 (Eastern European Summer Time)
+                at Sun Jul 31 2022 21:17:47 GMT+0300 (Eastern European Summer Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

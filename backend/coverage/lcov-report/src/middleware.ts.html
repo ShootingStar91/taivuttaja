@@ -300,12 +300,12 @@ const tokenExtractor = (request: express.Request, _response: express.Response, n
 const userExtractor = <span class="fstat-no" title="function not covered" >(r</span>equest: express.Request, response: express.Response, next: Next) =&gt; {
   
 <span class="cstat-no" title="statement not covered" >  if (request.token === undefined || request.token === null) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new JsonWebTokenError("Invalid token");</span>
+<span class="cstat-no" title="statement not covered" >    throw new JsonWebTokenError('Invalid token');</span>
   }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  jwt.verify(request.token, SECRET as Secret, <span class="fstat-no" title="function not covered" >(_</span>err, decoded) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    if (!decoded) {</span>
-<span class="cstat-no" title="statement not covered" >      throw new JsonWebTokenError("Token has expired");</span>
+<span class="cstat-no" title="statement not covered" >      throw new JsonWebTokenError('Token has expired');</span>
     }
     const id = <span class="cstat-no" title="statement not covered" >(decoded as TokenInterface).id;</span>
     
@@ -314,31 +314,31 @@ const userExtractor = <span class="fstat-no" title="function not covered" >(r</s
 <span class="cstat-no" title="statement not covered" >        request.user = user;</span>
 <span class="cstat-no" title="statement not covered" >        return next();</span>
       } else {
-<span class="cstat-no" title="statement not covered" >        throw new JsonWebTokenError("Invalid token");</span>
+<span class="cstat-no" title="statement not covered" >        throw new JsonWebTokenError('Invalid token');</span>
       }
-    }).catch(<span class="fstat-no" title="function not covered" >_e</span> =&gt; <span class="cstat-no" title="statement not covered" >response.status(500).json({ error: 'Internal server error at user extraction' }))</span>;
+    }).catch(<span class="fstat-no" title="function not covered" >_e</span> =&gt; <span class="cstat-no" title="statement not covered" >response.status(401).json({ message: 'User does not exist anymore' }))</span>;
 <span class="cstat-no" title="statement not covered" >    return;</span>
   });
 <span class="cstat-no" title="statement not covered" >  return;</span>
 };
 &nbsp;
 const errorHandler = <span class="fstat-no" title="function not covered" >(e</span>rr: Error, _req: express.Request, res: express.Response, _next: Next) =&gt; {
-<span class="cstat-no" title="statement not covered" >  console.log("Error: ", err.message);</span>
+<span class="cstat-no" title="statement not covered" >  console.log('Error: ', err.message);</span>
   
 <span class="cstat-no" title="statement not covered" >  if (err.name === 'CastError') {</span>
-<span class="cstat-no" title="statement not covered" >    return res.status(400).send({ message: "Invalid id" });</span>
+<span class="cstat-no" title="statement not covered" >    return res.status(400).send({ message: 'Invalid id' });</span>
   } else <span class="cstat-no" title="statement not covered" >if (err.name === 'ValidationError') {</span>
 <span class="cstat-no" title="statement not covered" >    return res.status(400).json({ message: err.message });</span>
   } else <span class="cstat-no" title="statement not covered" >if (err.name === 'JsonWebTokenError') {</span>
-<span class="cstat-no" title="statement not covered" >    return res.status(401).send({ message: "Login invalid or expired. Please try to login again" });</span>
+<span class="cstat-no" title="statement not covered" >    return res.status(401).send({ message: 'Login invalid or expired. Please try to login again' });</span>
   } else <span class="cstat-no" title="statement not covered" >if (err.name === 'TokenExpiredError') {</span>
 <span class="cstat-no" title="statement not covered" >    return res.status(401).send({ message: 'Login expired' });</span>
   } else <span class="cstat-no" title="statement not covered" >if (err.name === 'MongoServerError') {</span>
     const mongoError = <span class="cstat-no" title="statement not covered" >err as MongoServerError;</span>
 <span class="cstat-no" title="statement not covered" >    if (mongoError.code === 11000) {</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(400).send({ message: "Username already exists" });</span>
+<span class="cstat-no" title="statement not covered" >      return res.status(400).send({ message: 'Username already exists' });</span>
     }
-<span class="cstat-no" title="statement not covered" >    return res.status(400).send({ message: "Error in database" });</span>
+<span class="cstat-no" title="statement not covered" >    return res.status(400).send({ message: 'Error in database' });</span>
   }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return res.status(400).send({ message: err.message });</span>
@@ -358,7 +358,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue Jun 28 2022 16:48:51 GMT+0300 (Eastern European Summer Time)
+                at Sun Jul 31 2022 21:17:47 GMT+0300 (Eastern European Summer Time)
             </div>
         <script src="../prettify.js"></script>
         <script>

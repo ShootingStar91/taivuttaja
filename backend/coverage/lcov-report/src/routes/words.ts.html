@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.28% </span>
+                <span class="strong">59.37% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/28</span>
+                <span class='fraction'>19/32</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">25% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/3</span>
+                <span class='fraction'>1/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">64.28% </span>
+                <span class="strong">59.37% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/28</span>
+                <span class='fraction'>19/32</span>
             </div>
         
             
@@ -133,7 +133,12 @@
 <a name='L68'></a><a href='#L68'>68</a>
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -188,16 +193,21 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -232,18 +242,18 @@ router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) =&gt; 
   const lang = req.params.lang;
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!isLanguage(lang)) {
-<span class="cstat-no" title="statement not covered" >    throw new Error("Invalid language parameter. Give either 'en' or 'es'");</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error('Invalid language parameter. Give either \'en\' or \'es\'');</span>
   }
-  
+&nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!rawMood || !rawTense) {
-<span class="cstat-no" title="statement not covered" >    throw new Error("Mood or tense missing");</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error('Mood or tense missing');</span>
   }
 &nbsp;
   const mood = rawMood.charAt(0).toUpperCase() + rawMood.slice(1);
   const tense = rawTense.charAt(0).toUpperCase() + rawTense.slice(1);
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!isMood(mood) || !isTense(tense)) {
-<span class="cstat-no" title="statement not covered" >    throw new Error("Mood or tense invalid");</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error('Mood or tense invalid');</span>
   }
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (isString(word) &amp;&amp; word !== '-') {
@@ -255,8 +265,7 @@ router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) =&gt; 
     return res.send(word);
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  throw new Error("Word invalid. Either give valid string word, or a dash (-) for random.");</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" >  throw new Error('Word invalid. Either give valid string word, or a dash (-) for random.');</span>
 });
 &nbsp;
 router.get('/random', <span class="fstat-no" title="function not covered" >as</span>ync (_req, res, _next) =&gt; {
@@ -264,10 +273,16 @@ router.get('/random', <span class="fstat-no" title="function not covered" >as</s
 <span class="cstat-no" title="statement not covered" >  res.send(word);</span>
 });
 &nbsp;
+router.get('/verbdetails/:verb', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+  const verb = <span class="cstat-no" title="statement not covered" >req.params.verb;</span>
+  
+  const result = <span class="cstat-no" title="statement not covered" >await wordService.getVerbDetails(verb);</span>
+  
+<span class="cstat-no" title="statement not covered" >  res.send(result);</span>
+});
 &nbsp;
 router.get('/allwordsstripped', <span class="fstat-no" title="function not covered" >as</span>ync (_req, res, _next) =&gt; {
   const result = <span class="cstat-no" title="statement not covered" >await wordService.getStrippedWords();</span>
-&nbsp;
 <span class="cstat-no" title="statement not covered" >  res.send(result);</span>
 });
 &nbsp;
@@ -280,7 +295,7 @@ export default router;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Tue Jun 28 2022 16:48:51 GMT+0300 (Eastern European Summer Time)
+                at Sun Jul 31 2022 21:17:47 GMT+0300 (Eastern European Summer Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>

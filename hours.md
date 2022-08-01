@@ -61,5 +61,6 @@
 | 18.7. | 1   | Added printing of correct answers to console, deployed new version |
 | 23.7. | 2   | Built a new, better version of layout |
 | 29.7. | 3   | Fixed wordlist bug and improved new layout |
-| 30.7. | 2   | Style & layout fixes, flashcard bugfix, responsive layout on smaller screen |
-| Total hours | 166     | 
+| 30.7. | 3   | Style & layout fixes, flashcard bugfix, responsive layout on smaller screen |
+| 31.7. | 2   | Fixed broken tests, styles |
+| Total hours | 169     | 
