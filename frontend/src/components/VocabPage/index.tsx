@@ -1,19 +1,17 @@
-import React, { FormEvent, useEffect, useState, KeyboardEvent } from 'react';
-import { COLORS } from '../../config';
-import { errorToast } from '../../reducers/toastApi';
-import { wordService } from '../../services/words';
-import { Word } from '../../types';
-import { deAccentify } from '../../utils';
-import { EnglishFlag, SpanishFlag } from '../Flags';
+import React, { FormEvent, useEffect, useState, KeyboardEvent } from "react";
+import { COLORS } from "../../config";
+import { errorToast } from "../../reducers/toastApi";
+import { wordService } from "../../services/words";
+import { Word } from "../../types";
+import { deAccentify } from "../../utils";
+import { EnglishFlag, SpanishFlag } from "../Flags";
 
 export const VocabPage = () => {
-
-  const [currentTry, setCurrentTry] = useState<string>('');
+  const [currentTry, setCurrentTry] = useState<string>("");
   const [word, setWord] = useState<Word | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showingCorrect, setShowingCorrect] = useState<boolean>(false);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
-
 
   useEffect(() => {
     if (!word) {
@@ -22,12 +20,12 @@ export const VocabPage = () => {
   }, []);
 
   const getWord = async () => {
-    const [error, result] = await wordService.getWord(null, 'en', null, null);
+    const [error, result] = await wordService.getWord(null, "en", null, null);
     if (!result) {
       errorToast(error);
       return;
     }
-    if (result) { 
+    if (result) {
       console.log(result.infinitive);
     }
     setWord(result);
@@ -42,8 +40,12 @@ export const VocabPage = () => {
     if (word && currentTry.toLowerCase() === word.infinitive.toLowerCase()) {
       void correctAnswer();
     } else {
-      const field = document.getElementsByName('attemptField')[0];
-      if (word && deAccentify(currentTry.toLowerCase()) === deAccentify(word.infinitive.toLowerCase())) {
+      const field = document.getElementsByName("attemptField")[0];
+      if (
+        word &&
+        deAccentify(currentTry.toLowerCase()) ===
+          deAccentify(word.infinitive.toLowerCase())
+      ) {
         field.style.backgroundColor = COLORS.ALMOST_CORRECT;
       } else {
         field.style.backgroundColor = COLORS.WRONG;
@@ -55,16 +57,14 @@ export const VocabPage = () => {
   };
 
   const correctAnswer = () => {
-
     setShowingCorrect(true);
-    const field = document.getElementsByName('attemptField')[0];
+    const field = document.getElementsByName("attemptField")[0];
     field.style.backgroundColor = COLORS.CORRECT;
     const newTimeoutId = window.setTimeout(() => {
       goNext();
     }, 2000);
 
     setTimeoutId(newTimeoutId);
-
   };
 
   const goNext = () => {
@@ -73,9 +73,9 @@ export const VocabPage = () => {
       setTimeoutId(null);
     }
     setShowingCorrect(false);
-    const field = document.getElementsByName('attemptField')[0];
+    const field = document.getElementsByName("attemptField")[0];
     void getWord();
-    setCurrentTry('');
+    setCurrentTry("");
     field.style.backgroundColor = COLORS.BLANK;
   };
 
@@ -87,51 +87,58 @@ export const VocabPage = () => {
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-
-    if (event.key === 'Tab' || event.key === 'Enter') {
+    if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();
       if (!showingCorrect) {
         check();
       } else {
         goNext();
       }
-
     }
   };
 
   const onClickSkip = () => {
-    if (!word || showingCorrect) { return; }
+    if (!word || showingCorrect) {
+      return;
+    }
     if (!showAnswer) {
       setShowAnswer(true);
       setCurrentTry(word.infinitive);
-      const field = document.getElementsByName('attemptField')[0];
+      const field = document.getElementsByName("attemptField")[0];
       field.style.backgroundColor = COLORS.SHOWANSWER;
-
     } else {
       setShowAnswer(false);
       void getWord();
-      setCurrentTry('');
-      const field = document.getElementsByName('attemptField')[0];
+      setCurrentTry("");
+      const field = document.getElementsByName("attemptField")[0];
       field.style.backgroundColor = COLORS.BLANK;
-
     }
-
   };
 
-
-
   return (
-    <div className='p-8' onKeyDown={onKeyDown}>
-      <div className='flex auto-flex gap-x-4 pt-4 min-h-[100px]'>
-        <EnglishFlag /> <h2>{word ? word.infinitive_english : ''}</h2>
+    <div className="p-8" onKeyDown={onKeyDown}>
+      <div className="flex auto-flex gap-x-4 pt-4 min-h-[100px]">
+        <EnglishFlag /> <h2>{word ? word.infinitive_english : ""}</h2>
       </div>
       <div>
-        <div className='flex auto-flex gap-x-4'>
-          <SpanishFlag /><input name='attemptField' className='textField' type='text' onChange={handleChange} value={currentTry} disabled={showAnswer} />
+        <div className="flex auto-flex gap-x-4">
+          <SpanishFlag />
+          <input
+            name="attemptField"
+            className="textField"
+            type="text"
+            onChange={handleChange}
+            value={currentTry}
+            disabled={showAnswer}
+          />
         </div>
-        <div className='flex auto-flex gap-x-4 pt-8'>
-          <button className='btn w-[145px]' type='button' onClick={onTry}>Try</button>
-          <button className='btn w-[145px]' type='button' onClick={onClickSkip}>{showAnswer ? 'Skip' : 'Show'}</button>
+        <div className="flex auto-flex gap-x-4 pt-8">
+          <button className="btn w-[145px]" type="button" onClick={onTry}>
+            Try
+          </button>
+          <button className="btn w-[145px]" type="button" onClick={onClickSkip}>
+            {showAnswer ? "Skip" : "Show"}
+          </button>
         </div>
       </div>
     </div>

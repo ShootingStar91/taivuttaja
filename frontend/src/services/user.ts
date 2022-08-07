@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from './index';
-import { baseUrl } from '../config';
-import { DoneWord, User } from '../types';
-import { getHeader, success, error, customError } from './util';
-const url = baseUrl + 'user';
+import axios from "./index";
+import { baseUrl } from "../config";
+import { DoneWord, User } from "../types";
+import { getHeader, success, error, customError } from "./util";
+const url = baseUrl + "user";
 
 const createUser = async (username: string, password: string) => {
   try {
-    const result = await axios.post<boolean>(`${url}/create`, { username, password });
+    const result = await axios.post<boolean>(`${url}/create`, {
+      username,
+      password,
+    });
     return success<boolean>(result.data);
   } catch (e: any) {
     return error(e);
@@ -16,31 +19,36 @@ const createUser = async (username: string, password: string) => {
 
 const getReadyUser = async (user: User) => {
   if (!user.token) {
-    return customError('Invalid token');
+    return customError("Invalid token");
   }
-    const [err, result] = await getDoneWords(user.token);    
-    if (!result) {
-      return error(err);
-    }
-    const doneWords = result;
-    const doneWordsToday = result.filter(dw => new Date(dw.date).getDate() === new Date().getDate()).length;
-    const fullUser: User = {
-      ...user,
-      doneWords,
-      doneWordsToday,
-    };
-    
-    return success<User>(fullUser);
+  const [err, result] = await getDoneWords(user.token);
+  if (!result) {
+    return error(err);
+  }
+  const doneWords = result;
+  const doneWordsToday = result.filter(
+    (dw) => new Date(dw.date).getDate() === new Date().getDate()
+  ).length;
+  const fullUser: User = {
+    ...user,
+    doneWords,
+    doneWordsToday,
+  };
+
+  return success<User>(fullUser);
 };
 
 const tryLogin = async (username: string, password: string) => {
   try {
-    const result = await axios.post<User>(`${url}/login/`, { username, password });
-    
+    const result = await axios.post<User>(`${url}/login/`, {
+      username,
+      password,
+    });
+
     if (result && result.data) {
       return getReadyUser(result.data);
     } else {
-      return customError('Unknown error when trying to log in');
+      return customError("Unknown error when trying to log in");
     }
   } catch (e: any) {
     return error(e);
@@ -49,7 +57,11 @@ const tryLogin = async (username: string, password: string) => {
 
 const deleteUser = async (token: string) => {
   try {
-    const result = await axios.post<User>(`${url}/deleteuser/`, {}, getHeader(token));
+    const result = await axios.post<User>(
+      `${url}/deleteuser/`,
+      {},
+      getHeader(token)
+    );
     return success<User>(result.data);
   } catch (e) {
     return error(e);
@@ -57,15 +69,23 @@ const deleteUser = async (token: string) => {
 };
 
 const checkLogin = () => {
-  const user = window.localStorage.getItem('loggedUser');
-  if (user && user !== 'undefined') {
+  const user = window.localStorage.getItem("loggedUser");
+  if (user && user !== "undefined") {
     return JSON.parse(user) as User;
   }
 };
 
-const changePassword = async (currentPassword: string, newPassword: string, token: string): Promise<[string, undefined | boolean]> => {
+const changePassword = async (
+  currentPassword: string,
+  newPassword: string,
+  token: string
+): Promise<[string, undefined | boolean]> => {
   try {
-    const result = await axios.post<boolean>(`${url}/changepassword/`, { currentPassword, newPassword }, getHeader(token));
+    const result = await axios.post<boolean>(
+      `${url}/changepassword/`,
+      { currentPassword, newPassword },
+      getHeader(token)
+    );
     return success<boolean>(result.data);
   } catch (e) {
     return error(e);
@@ -74,7 +94,11 @@ const changePassword = async (currentPassword: string, newPassword: string, toke
 
 const setGoal = async (goal: number, token: string) => {
   try {
-    const result = await axios.post<User>(`${url}/goal/`, { goal }, getHeader(token));
+    const result = await axios.post<User>(
+      `${url}/goal/`,
+      { goal },
+      getHeader(token)
+    );
     return success<User>(result.data);
   } catch (e: any) {
     return error(e);
@@ -92,7 +116,10 @@ const addDoneWord = async (wordId: string, token: string) => {
 
 const getDoneWords = async (token: string) => {
   try {
-    const result = await axios.get<DoneWord[]>(`${url}/donewords/`, getHeader(token));
+    const result = await axios.get<DoneWord[]>(
+      `${url}/donewords/`,
+      getHeader(token)
+    );
     return success<DoneWord[]>(result.data);
   } catch (e: any) {
     return error(e);
@@ -101,7 +128,11 @@ const getDoneWords = async (token: string) => {
 
 const setStrictAccents = async (strictAccents: boolean, token: string) => {
   try {
-    const result = await axios.post<User>(`${url}/setstrictaccents/`, { strictAccents }, getHeader(token));
+    const result = await axios.post<User>(
+      `${url}/setstrictaccents/`,
+      { strictAccents },
+      getHeader(token)
+    );
     return success<User>(result.data);
   } catch (e: any) {
     return error(e);
@@ -117,5 +148,5 @@ export default {
   addDoneWord,
   getDoneWords,
   changePassword,
-  setStrictAccents
+  setStrictAccents,
 };

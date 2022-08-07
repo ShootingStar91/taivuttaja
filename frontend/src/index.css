@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-
   h1 {
     @apply text-2xl font-bold;
   }
@@ -16,7 +15,7 @@
     @apply font-bold;
   }
 
-  input[type='checkbox'] {
+  input[type="checkbox"] {
     @apply accent-menu-color;
   }
 
@@ -41,17 +40,19 @@
   }
 
   p {
-    @apply mt-4 mb-4
+    @apply mt-4 mb-4;
   }
 
-  p, li, body {
-    @apply text-sm text-custom-text-color
+  p,
+  li,
+  body {
+    @apply text-sm text-custom-text-color;
   }
 
   .btn {
     @apply bg-menu-color text-lg text-black py-2 px-4;
   }
-  
+
   .btn:hover {
     @apply hover:bg-slate-400;
   }
@@ -87,5 +88,4 @@
   .userpagebtn {
     @apply bg-menu-color text-slate-700 py-2 px-2;
   }
-
 }
