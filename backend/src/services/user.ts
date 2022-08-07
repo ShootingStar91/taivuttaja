@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { User, userModel } from '../models/User';
 import bcrypt from 'bcrypt';
-import { loginValidSeconds, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, SECRET } from '../config';
+import { LOGIN_VALID_SECONDS, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH, SECRET } from '../config';
 import jwt, { Secret } from 'jsonwebtoken';
 import { ValidationError } from '../types';
 import { isBoolean, isString } from '../utils/validators';
@@ -72,7 +72,7 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Use
   }
 
   const userForToken = { username: user.username, id: user._id };
-  const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: loginValidSeconds });
+  const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: LOGIN_VALID_SECONDS });
   const foundUser: User = {username: user.username, _id: user._id, goal: user.goal, token, strictAccents: user.strictAccents };
   return foundUser;
 
