@@ -13,7 +13,6 @@ import {
 import { EnglishFlag, SpanishFlag } from "../Flags";
 import userService from "../../services/user";
 import { addDoneWord, selectUser } from "../../reducers/user";
-import { delay } from "../../services/util";
 import { COLORS } from "../../config";
 import { FullModal } from "../Modal";
 import { errorToast, successToast } from "../../reducers/toastApi";
@@ -108,11 +107,6 @@ export const ConjugateFull = ({
     }
   };
 
-  const onEnter = async (event: FormEvent) => {
-    event.preventDefault();
-    await onTry(true);
-  };
-
   const onTry = async (nextField: boolean) => {
     const activeField = document.activeElement?.getAttribute("id");
     if (activeField !== undefined && activeField !== null && nextField) {
@@ -160,8 +154,8 @@ export const ConjugateFull = ({
       const message = accentMistakes
         ? "All correct, but remember the accents!"
         : "¡Todo correcto!";
+      setShowingAnswers(true);
       successToast(message);
-      await delay(3000);
       if (user?.token) {
         const [error, result] = await userService.addDoneWord(
           word._id,
@@ -172,25 +166,41 @@ export const ConjugateFull = ({
         }
         dispatch(addDoneWord());
       }
-      setFormState({ ...initialState });
-      await getWord();
-      resetFormColors();
-      const nextField = document.getElementById("0");
-      nextField?.focus();
-      next(settings.amount);
     }
   };
 
+  const goNext = () => {
+    setFormState({ ...initialState });
+    void getWord();
+    resetFormColors();
+    const nextField = document.getElementById("0");
+    nextField?.focus();
+    next(settings.amount);
+  };
+
   const onKeyDown = async (e: KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === "Tab") {
+    if (e.key === "Tab" || e.key === "Enter") {
       const activeField = document.activeElement?.getAttribute("id");
+      if (activeField === null || activeField === undefined) {
+        return;
+      }
+      if (e.key === "Enter" && activeField !== "5") {
+        const nextField = parseInt(activeField) + 1;
+        document.getElementById(nextField.toString())?.focus();
+      }
+
       if (
-        activeField !== null &&
-        activeField !== undefined &&
         activeField === "5" &&
         !e.shiftKey
       ) {
         e.preventDefault();
+        if (showingAnswers) {
+          setShowingAnswers(false);
+          e.preventDefault();
+          goNext();
+          return;
+        }
+  
       }
       await onTry(false);
     }
@@ -247,7 +257,7 @@ export const ConjugateFull = ({
           <h2 className="text-sky-400">{word.tense_english.toLowerCase()}</h2>
         </div>
         <div className="mt-8">
-          <form onSubmit={onEnter} autoComplete="off" onKeyDown={onKeyDown}>
+          <form autoComplete="off" onKeyDown={onKeyDown}>
             <table>
               <tbody>
                 {forms.map((form, index) => (
@@ -287,18 +297,12 @@ export const ConjugateFull = ({
             <div className="flex gap-x-8 mt-8">
               <button
                 className="btn w-[220px]"
-                type="submit"
+                type="button"
                 disabled={showingAnswers}
               >
                 Try
               </button>
-              <button
-                className={
-                  "w-[220px] btn "
-                }
-                type="button"
-                onClick={onSkip}
-              >
+              <button className="w-[220px] btn" type="button" onClick={onSkip}>
                 {showingAnswers ? "Next" : "Show answers"}
               </button>
             </div>

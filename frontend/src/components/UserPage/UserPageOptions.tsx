@@ -45,7 +45,7 @@ export const DailyGoalSetting = () => {
             max="100"
             step="5"
             onChange={changeDailyGoal}
-          ></input>
+          ></input>{" "}
           <span className="font-bold">{dailyGoal}</span>
         </p>
         <p>

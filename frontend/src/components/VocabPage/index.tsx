@@ -10,7 +10,6 @@ export const VocabPage = () => {
   const [currentTry, setCurrentTry] = useState<string>("");
   const [word, setWord] = useState<Word | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
-  const [showingCorrect, setShowingCorrect] = useState<boolean>(false);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -25,15 +24,20 @@ export const VocabPage = () => {
       errorToast(error);
       return;
     }
-    if (result) {
-      console.log(result.infinitive);
-    }
+    console.log(result.infinitive);
     setWord(result);
   };
 
-  const onTry = (event: FormEvent) => {
-    event.preventDefault();
-    check();
+  const onTry = () => {
+    if (showAnswer && timeoutId !== null) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+      goNext();
+      return;
+    }
+    if (!showAnswer) {
+      check();
+    }
   };
 
   const check = () => {
@@ -57,10 +61,11 @@ export const VocabPage = () => {
   };
 
   const correctAnswer = () => {
-    setShowingCorrect(true);
+    setShowAnswer(true);
     const field = document.getElementsByName("attemptField")[0];
     field.style.backgroundColor = COLORS.CORRECT;
     const newTimeoutId = window.setTimeout(() => {
+      setTimeoutId(null);
       goNext();
     }, 2000);
 
@@ -72,7 +77,7 @@ export const VocabPage = () => {
       window.clearTimeout(timeoutId);
       setTimeoutId(null);
     }
-    setShowingCorrect(false);
+    setShowAnswer(false);
     const field = document.getElementsByName("attemptField")[0];
     void getWord();
     setCurrentTry("");
@@ -89,16 +94,12 @@ export const VocabPage = () => {
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();
-      if (!showingCorrect) {
-        check();
-      } else {
-        goNext();
-      }
+      onTry();
     }
   };
 
   const onClickSkip = () => {
-    if (!word || showingCorrect) {
+    if (!word) {
       return;
     }
     if (!showAnswer) {
@@ -127,13 +128,16 @@ export const VocabPage = () => {
             name="attemptField"
             className="textField"
             type="text"
-            onChange={handleChange}
+            onChange={showAnswer ? undefined : handleChange}
             value={currentTry}
-            disabled={showAnswer}
           />
         </div>
         <div className="flex auto-flex gap-x-4 pt-8">
-          <button className="btn w-[145px]" type="button" onClick={onTry}>
+          <button
+            className="btn w-[145px]"
+            type="button"
+            onClick={() => onTry()}
+          >
             Try
           </button>
           <button className="btn w-[145px]" type="button" onClick={onClickSkip}>
