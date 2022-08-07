@@ -63,4 +63,7 @@
 | 29.7. | 3   | Fixed wordlist bug and improved new layout |
 | 30.7. | 3   | Style & layout fixes, flashcard bugfix, responsive layout on smaller screen |
 | 31.7. | 2   | Fixed broken tests, styles |
-| Total hours | 169     | 
+| 1.8.  | 1   | Small fixes |
+| 3.8.  | 2   | Code quality improvements, fixes |
+| 7.8.  | 3   | Fixes to UX, refactorings, improvements |
+| Total hours | 175     | 

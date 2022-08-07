@@ -16,7 +16,7 @@ export const InfoBar = () => {
             Daily progress: {user.doneWordsToday} /{" "}
             <span id="dailygoalmax">{user.goal}</span>{" "}
           </label>
-          <div className="w-full bg-gray-100 rounded-full dark:bg-gray-700">
+          <div className="w-full bg-gray-100 rounded-full">
             <div
               className="bg-menu-color text-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
               style={{ width: percentage }}
