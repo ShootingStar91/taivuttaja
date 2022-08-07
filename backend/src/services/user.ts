@@ -78,13 +78,6 @@ const tryLogin = async (rawUsername: unknown, rawPassword: unknown): Promise<Use
 
 };
 
-const relog = (user: User) => {
-  const userForToken = { username: user.username, id: user._id };
-  const token = jwt.sign(userForToken, SECRET as Secret, { expiresIn: loginValidSeconds });
-  user.token = token;
-  return user;
-};
-
 const deleteUser = async (user: User) => {
 
   await wordlistModel.deleteMany({ owner: user._id });
@@ -166,7 +159,6 @@ export default {
   getDoneWords,
   setGoal,
   changePassword,
-  relog,
   setStrictAccents
 };
 
