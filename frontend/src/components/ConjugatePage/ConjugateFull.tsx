@@ -294,7 +294,7 @@ export const ConjugateFull = ({
               </button>
               <button
                 className={
-                  "w-[220px]" + (showingAnswers ? " btn-orange " : " btn ")
+                  "w-[220px] btn "
                 }
                 type="button"
                 onClick={onSkip}

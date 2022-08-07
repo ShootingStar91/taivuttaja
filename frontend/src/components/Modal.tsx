@@ -20,7 +20,6 @@ export const FullModal = ({
               </button>
             )}
           </div>
-
           <div className="p-8">{content}</div>
         </div>
       </div>

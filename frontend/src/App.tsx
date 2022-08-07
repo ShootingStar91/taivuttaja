@@ -118,7 +118,7 @@ const Menu = ({ user }: { user: User | undefined }) => {
         (page) =>
           ((!user && !page.requiresLogin) || (user && !page.hideOnLogin)) && (
             <Link
-              key={page.url}
+              key={page.title}
               draggable={false}
               className={
                 route.pathname === page.url

@@ -19,18 +19,6 @@
     @apply accent-menu-color;
   }
 
-  .optioncard {
-    @apply bg-white rounded shadow-md w-[260px] p-4;
-  }
-
-  .fullcard {
-    @apply bg-white rounded shadow-sm min-w-full p-2 pl-6;
-  }
-
-  .tablecard {
-    @apply rounded shadow-lg p-4;
-  }
-
   .link {
     @apply text-orange-500 underline;
   }
@@ -53,16 +41,8 @@
     @apply bg-menu-color text-lg text-black py-2 px-4;
   }
 
-  .btn:hover {
-    @apply hover:bg-slate-400;
-  }
-
-  .btn-orange {
-    @apply bg-amber-400 text-white font-bold py-2 px-4;
-  }
-
-  .btn-orange:hover {
-    @apply hover:bg-amber-600;
+  .btn:active {
+    @apply hover:bg-menu-color-active;
   }
 
   .textField {
