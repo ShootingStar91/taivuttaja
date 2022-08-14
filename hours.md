@@ -66,4 +66,5 @@
 | 1.8.  | 1   | Small fixes |
 | 3.8.  | 2   | Code quality improvements, fixes |
 | 7.8.  | 3   | Fixes to UX, refactorings, improvements |
-| Total hours | 175     | 
+| 14.8. | 2   | Error handling moved completely to axios interceptor |
+| Total hours | 177     | 
