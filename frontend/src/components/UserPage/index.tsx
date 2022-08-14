@@ -25,10 +25,9 @@ export const UserPage = () => {
   useEffect(() => {
     const getWordLists = async () => {
       if (user && user.token) {
-        const [error, result] = await wordListService.getWordLists(user.token);
+        const result = await wordListService.getWordLists(user.token);
 
         if (!result) {
-          errorToast(error);
           return;
         }
 
@@ -38,9 +37,8 @@ export const UserPage = () => {
 
     const updateDoneWords = async () => {
       if (user && user.token) {
-        const [error, result] = await userService.getDoneWords(user.token);
-        if (!result) {
-          errorToast(error);
+        const result = await userService.getDoneWords(user.token);
+        if (result) {
           return;
         }
         dispatch(setUser({ ...user, doneWords: result }));
@@ -69,9 +67,9 @@ export const UserPage = () => {
       "Are you sure you want to delete all your user data? This includes your username, saved progress and all wordlists. This cannot be undone."
     );
     if (answer) {
-      const [error, result] = await userService.deleteUser(user.token);
+      const result = await userService.deleteUser(user.token);
       if (!result) {
-        errorToast(error);
+        return;
       }
       dispatch(removeUser());
       alert("All user data deleted.");
@@ -83,12 +81,11 @@ export const UserPage = () => {
     event.preventDefault();
     if (user && user.token) {
       const newWordList: WordList = { title: name, words: [], owner: user };
-      const [error, data] = await wordListService.createWordlist(
+      const data = await wordListService.createWordlist(
         newWordList,
         user.token
       );
       if (!data) {
-        errorToast(error);
         return;
       }
       const id = data._id as string;

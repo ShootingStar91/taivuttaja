@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { errorToast } from "../../reducers/toastApi";
 import { wordService } from "../../services/words";
 import { Word, moodList } from "../../types";
 import { EnglishFlag, SpanishFlag } from "../Flags";
@@ -14,9 +13,8 @@ export const VerbView = () => {
       if (!verb) {
         return;
       }
-      const [error, result] = await wordService.getVerbDetails(verb);
+      const result = await wordService.getVerbDetails(verb);
       if (!result) {
-        errorToast(error);
         return;
       }
       setData(result);

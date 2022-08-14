@@ -2,7 +2,6 @@
 import axios from "./index";
 import { Mood, StrippedWord, Tense, Word } from "../types";
 import { baseUrl } from "../config";
-import { error, success } from "./util";
 
 const url = baseUrl + "words"; // /api/words/
 
@@ -16,36 +15,24 @@ const getWord = async (
   moodParam: Mood | null,
   tenseParam: Tense | null
 ) => {
-  try {
-    const mood: Mood = moodParam !== null ? moodParam : "Indicative";
-    const tense: Tense = tenseParam !== null ? tenseParam : "Present";
-    const word: string = wordParam !== null ? wordParam : "-";
-    const lang = langParam;
-    const response = await axios.get<Word>(
-      `${url}/word/${lang}/${word}/tense/${tense}/mood/${mood}`
-    );
-    return success<Word>(response.data);
-  } catch (e: any) {
-    return error(e);
-  }
+  const mood: Mood = moodParam !== null ? moodParam : "Indicative";
+  const tense: Tense = tenseParam !== null ? tenseParam : "Present";
+  const word: string = wordParam !== null ? wordParam : "-";
+  const lang = langParam;
+  const response = await axios.get<Word>(
+    `${url}/word/${lang}/${word}/tense/${tense}/mood/${mood}`
+  );
+  return response.data;
 };
 
 const getStrippedWords = async () => {
-  try {
-    const response = await axios.get<StrippedWord[]>(`${url}/allwordsstripped`);
-    return success<StrippedWord[]>(response.data);
-  } catch (e: any) {
-    return error(e);
-  }
+  const response = await axios.get<StrippedWord[]>(`${url}/allwordsstripped`);
+  return response.data;
 };
 
 const getVerbDetails = async (verb: string) => {
-  try {
-    const response = await axios.get<Word[]>(`${url}/verbdetails/${verb}`);
-    return success<Word[]>(response.data);
-  } catch (e: any) {
-    return error(e);
-  }
+  const response = await axios.get<Word[]>(`${url}/verbdetails/${verb}`);
+  return response.data;
 };
 
 export const wordService = {

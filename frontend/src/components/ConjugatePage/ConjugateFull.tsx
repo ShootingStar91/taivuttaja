@@ -72,14 +72,13 @@ export const ConjugateFull = ({
             Math.floor(Math.random() * settings.wordlist.words.length)
           ];
     const wordParam = randomWord ? randomWord.infinitive_english : null;
-    const [error, result] = await wordService.getWord(
+    const result = await wordService.getWord(
       wordParam,
       "en",
       mood,
       tense
     );
     if (!result) {
-      errorToast(error);
       return;
     }
     console.log("Correct answers: ");
@@ -157,14 +156,14 @@ export const ConjugateFull = ({
       setShowingAnswers(true);
       successToast(message);
       if (user?.token) {
-        const [error, result] = await userService.addDoneWord(
+        const result = await userService.addDoneWord(
           word._id,
           user.token
         );
-        if (!result) {
-          errorToast(error);
+        if (result) {
+          dispatch(addDoneWord());
         }
-        dispatch(addDoneWord());
+        
       }
     }
   };

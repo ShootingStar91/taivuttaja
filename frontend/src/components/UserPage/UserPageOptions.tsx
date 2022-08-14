@@ -18,10 +18,11 @@ export const DailyGoalSetting = () => {
       return;
     }
     const result = await userService.setGoal(parseInt(dailyGoal), user.token);
-    dispatch(setGoal(parseInt(dailyGoal)));
-    if (result) {
-      successToast("Daily goal set!");
+    if (!result) {
+      return;
     }
+    dispatch(setGoal(parseInt(dailyGoal)));
+    successToast("Daily goal set!");
   };
 
   const changeDailyGoal = (event: FormEvent<HTMLInputElement>) => {
@@ -76,12 +77,12 @@ export const StrictAccentSetting = () => {
     }
     const newStrictAccents = !strictAccents;
     setStrictAccents(!strictAccents);
-    const [error, result] = await userService.setStrictAccents(
+    const result = await userService.setStrictAccents(
       newStrictAccents,
       user.token
     );
     if (!result) {
-      errorToast(error);
+      return;
     }
     dispatch(setUser({ ...user, strictAccents: newStrictAccents }));
   };
@@ -106,7 +107,7 @@ export const StrictAccentSetting = () => {
         <div className="w-11 h-6 bg-gray-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-menu-color"></div>
         <span
           id="strictaccentonoff"
-          className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+          className="ml-3 text-sm font-medium text-gray-900"
         >
           {strictAccents ? "On" : "Off"}
         </span>

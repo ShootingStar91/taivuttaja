@@ -12,11 +12,11 @@ export const Notification = () => {
 
   const getColor = (type: ToastType | undefined) => {
     if (type === ToastType.SUCCESS) {
-      return "bg-green-50";
+      return "bg-emerald-50";
     } else if (type === ToastType.ERROR) {
       return "bg-rose-200";
     }
-    return "bg-grey-50";
+    return "bg-blue-100";
   };
 
   return (

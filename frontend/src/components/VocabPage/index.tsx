@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect, useState, KeyboardEvent } from "react";
 import { COLORS } from "../../config";
-import { errorToast } from "../../reducers/toastApi";
 import { wordService } from "../../services/words";
 import { Word } from "../../types";
 import { deAccentify } from "../../utils";
@@ -19,9 +18,8 @@ export const VocabPage = () => {
   }, []);
 
   const getWord = async () => {
-    const [error, result] = await wordService.getWord(null, "en", null, null);
+    const result = await wordService.getWord(null, "en", null, null);
     if (!result) {
-      errorToast(error);
       return;
     }
     console.log(result.infinitive);

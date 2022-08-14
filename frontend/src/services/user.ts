@@ -2,28 +2,24 @@
 import axios from "./index";
 import { baseUrl } from "../config";
 import { DoneWord, User } from "../types";
-import { getHeader, success, error, customError } from "./util";
+import { getHeader } from "./util";
 const url = baseUrl + "user";
 
 const createUser = async (username: string, password: string) => {
-  try {
-    const result = await axios.post<boolean>(`${url}/create`, {
-      username,
-      password,
-    });
-    return success<boolean>(result.data);
-  } catch (e: any) {
-    return error(e);
-  }
+  const result = await axios.post<boolean>(`${url}/create`, {
+    username,
+    password,
+  });
+  return result && result.data;
 };
 
 const getReadyUser = async (user: User) => {
-  if (!user.token) {
-    return customError("Invalid token");
-  }
-  const [err, result] = await getDoneWords(user.token);
+  /* If user.token missing here, will result in no error toast.
+     Should not happen, this would be servers fault. Just throw an error */
+  if (!user.token) throw new Error('Fatal error: server returned invalid user.token on login.');
+  const result = await getDoneWords(user.token);
   if (!result) {
-    return error(err);
+    return;
   }
   const doneWords = result;
   const doneWordsToday = result.filter(
@@ -35,37 +31,26 @@ const getReadyUser = async (user: User) => {
     doneWordsToday,
   };
 
-  return success<User>(fullUser);
+  return fullUser;
 };
 
 const tryLogin = async (username: string, password: string) => {
-  try {
-    const result = await axios.post<User>(`${url}/login/`, {
-      username,
-      password,
-    });
-
-    if (result && result.data) {
-      return getReadyUser(result.data);
-    } else {
-      return customError("Unknown error when trying to log in");
-    }
-  } catch (e: any) {
-    return error(e);
+  const result = await axios.post<User>(`${url}/login/`, {
+    username,
+    password,
+  });
+  if (result && result.data) {
+    return getReadyUser(result.data);
   }
 };
 
 const deleteUser = async (token: string) => {
-  try {
-    const result = await axios.post<User>(
-      `${url}/deleteuser/`,
-      {},
-      getHeader(token)
-    );
-    return success<User>(result.data);
-  } catch (e) {
-    return error(e);
-  }
+  const result = await axios.post<boolean>(
+    `${url}/deleteuser/`,
+    {},
+    getHeader(token)
+  );
+  return result.data;
 };
 
 const checkLogin = () => {
@@ -79,64 +64,44 @@ const changePassword = async (
   currentPassword: string,
   newPassword: string,
   token: string
-): Promise<[string, undefined | boolean]> => {
-  try {
-    const result = await axios.post<boolean>(
-      `${url}/changepassword/`,
-      { currentPassword, newPassword },
-      getHeader(token)
-    );
-    return success<boolean>(result.data);
-  } catch (e) {
-    return error(e);
-  }
+) => {
+  const result = await axios.post<boolean>(
+    `${url}/changepassword/`,
+    { currentPassword, newPassword },
+    getHeader(token)
+  );
+  return result.data;
 };
 
 const setGoal = async (goal: number, token: string) => {
-  try {
-    const result = await axios.post<User>(
-      `${url}/goal/`,
-      { goal },
-      getHeader(token)
-    );
-    return success<User>(result.data);
-  } catch (e: any) {
-    return error(e);
-  }
+  const result = await axios.post<boolean>(
+    `${url}/goal/`,
+    { goal },
+    getHeader(token)
+  );
+  return result.data;
 };
 
 const addDoneWord = async (wordId: string, token: string) => {
-  try {
-    await axios.post(`${url}/doneword/`, { wordId }, getHeader(token));
-    return success<boolean>(true);
-  } catch (e: any) {
-    return error(e);
-  }
+  const result = await axios.post<boolean>(`${url}/doneword/`, { wordId }, getHeader(token));
+  return result.data;
 };
 
 const getDoneWords = async (token: string) => {
-  try {
-    const result = await axios.get<DoneWord[]>(
-      `${url}/donewords/`,
-      getHeader(token)
-    );
-    return success<DoneWord[]>(result.data);
-  } catch (e: any) {
-    return error(e);
-  }
+  const result = await axios.get<DoneWord[]>(
+    `${url}/donewords/`,
+    getHeader(token)
+  );
+  return result && result.data;
 };
 
 const setStrictAccents = async (strictAccents: boolean, token: string) => {
-  try {
-    const result = await axios.post<User>(
-      `${url}/setstrictaccents/`,
-      { strictAccents },
-      getHeader(token)
-    );
-    return success<User>(result.data);
-  } catch (e: any) {
-    return error(e);
-  }
+  const result = await axios.post<boolean>(
+    `${url}/setstrictaccents/`,
+    { strictAccents },
+    getHeader(token)
+  );
+  return result.data;
 };
 
 export default {

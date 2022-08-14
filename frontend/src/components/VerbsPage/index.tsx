@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { errorToast } from "../../reducers/toastApi";
 import { wordService } from "../../services/words";
 import { StrippedWord } from "../../types";
 
@@ -9,9 +8,8 @@ export const VerbsPage = () => {
 
   useEffect(() => {
     const getStrippedWords = async () => {
-      const [error, result] = await wordService.getStrippedWords();
+      const result = await wordService.getStrippedWords();
       if (!result) {
-        errorToast(error);
         return;
       }
       setAllWords(result);

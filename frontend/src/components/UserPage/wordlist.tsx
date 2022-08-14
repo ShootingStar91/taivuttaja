@@ -32,9 +32,8 @@ export const WordListView = () => {
         errorToast(ERRORS.INVALID_LOGIN);
         return;
       }
-      const [error, result] = await wordListService.getWordList(id, user.token);
+      const result = await wordListService.getWordList(id, user.token);
       if (!result) {
-        errorToast(error);
         return;
       }
       setWordlist(result);
@@ -45,9 +44,8 @@ export const WordListView = () => {
 
   useEffect(() => {
     const getStrippedWords = async () => {
-      const [error, result] = await wordService.getStrippedWords();
+      const result = await wordService.getStrippedWords();
       if (!result) {
-        errorToast(error);
         return;
       }
       setAllWords(result);
@@ -73,13 +71,12 @@ export const WordListView = () => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [error, _] = await wordListService.deleteWordlist(
+    const result = await wordListService.deleteWordlist(
       wordlist._id,
       user.token
     );
 
-    if (error) {
-      errorToast(error);
+    if (!result) {
       return;
     }
     successToast("Wordlist deleted successfully");
@@ -104,13 +101,12 @@ export const WordListView = () => {
         return;
       }
       setWordlist({ ...wordlist, words: [...wordlist.words, wordToAdd] });
-      const [error, result] = await wordListService.addWord(
+      const result = await wordListService.addWord(
         word.value,
         wordlist._id,
         user.token
       );
       if (!result) {
-        errorToast(error);
         return;
       }
       const newAllWords = allWords.filter(
@@ -124,13 +120,13 @@ export const WordListView = () => {
     if (!wordlist?._id || !user?.token) {
       return;
     }
-    const [error, result] = await wordListService.deleteWord(
+    const result = await wordListService.deleteWord(
       wordToDelete,
       wordlist?._id,
       user.token
     );
     if (!result) {
-      errorToast(error);
+      return;
     }
     setWordlist({
       ...wordlist,

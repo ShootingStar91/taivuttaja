@@ -3,7 +3,7 @@ import userService from "../../services/user";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../reducers/user";
 import { useAppDispatch } from "../../reducers/hooks";
-import { errorToast, successToast } from "../../reducers/toastApi";
+import { successToast } from "../../reducers/toastApi";
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -13,32 +13,30 @@ export const LoginForm = () => {
 
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
-    const [error, user] = await userService.tryLogin(username, password);
-
+    const user = await userService.tryLogin(username, password);
     if (!user) {
-      errorToast(error);
       return;
     }
     successToast("Login successful!");
     window.localStorage.setItem("loggedUser", JSON.stringify(user));
+    
     dispatch(setUser({ ...user }));
     navigate("/userpage");
   };
 
-  const tryNewUser = async () => {
-    const [userError, result] = await userService.createUser(
+  const tryNewUser = async () => {    
+    const result = await userService.createUser(
       username,
       password
     );
+    console.log(result);
     if (!result) {
-      errorToast(userError);
       return;
     }
 
-    const [error, user] = await userService.tryLogin(username, password);
+    const user = await userService.tryLogin(username, password);
 
     if (!user) {
-      errorToast(error);
       return;
     }
 

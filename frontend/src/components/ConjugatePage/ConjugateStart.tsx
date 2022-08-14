@@ -51,9 +51,8 @@ export const ConjugateStart = ({
         return;
       }
 
-      const [error, result] = await wordListService.getWordLists(user.token);
+      const result = await wordListService.getWordLists(user.token);
       if (!result) {
-        errorToast(error);
         return;
       }
       setAllWordlists(result);
@@ -148,15 +147,15 @@ export const ConjugateStart = ({
     let wordlist = null;
 
     if (user?.token && wordlistId) {
-      const [error, result] = await wordListService.getWordList(
+      const result = await wordListService.getWordList(
         wordlistId,
         user.token
       );
 
       if (!result) {
-        errorToast(error);
         return;
       }
+
       wordlist = result;
     }
 

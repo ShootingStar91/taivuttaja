@@ -17,13 +17,12 @@ export const PasswordModal = () => {
       return;
     }
     if (newPass === newPassVerify) {
-      const [error, result] = await userService.changePassword(
+      const result = await userService.changePassword(
         currentPass,
         newPass,
         user.token
       );
       if (!result) {
-        errorToast(error);
         return;
       }
       successToast("Password changed!");

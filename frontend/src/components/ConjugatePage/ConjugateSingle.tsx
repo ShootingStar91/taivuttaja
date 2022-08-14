@@ -66,7 +66,7 @@ export const ConjugateSingle = ({
             Math.floor(Math.random() * settings.wordlist.words.length)
           ];
     const wordParam = word ? word.infinitive_english : null;
-    const [error, result] = await wordService.getWord(
+    const result = await wordService.getWord(
       wordParam,
       "en",
       randomedMood,
@@ -74,7 +74,6 @@ export const ConjugateSingle = ({
     );
 
     if (!result) {
-      errorToast(error);
       return;
     }
 
