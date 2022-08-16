@@ -1,8 +1,8 @@
-import { AppDispatch, RootState } from './store';
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NOTIFICATION_DELAY } from '../config';
-import { delay } from '../services/util';
-import { ToastType } from '../types';
+import { AppDispatch, RootState } from "./store";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { NOTIFICATION_DELAY } from "../config";
+import { delay } from "../services/util";
+import { ToastType } from "../types";
 
 export interface NotificationState {
   data: ToastData;
@@ -11,7 +11,7 @@ export interface NotificationState {
 
 const initialState: NotificationState = {
   data: {
-    message: '',
+    message: "",
     type: ToastType.NORMAL,
   },
   id: 0,
@@ -23,32 +23,31 @@ type ToastData = {
 };
 
 export const showToast = createAsyncThunk<
-  void, ToastData, {
-    dispatch: AppDispatch,
-    state: RootState,
-  }>
-  (
-    'notification/add',
-    async (data: ToastData, thunkAPI) => {
-      thunkAPI.dispatch(setNotification(data));
-      const state = thunkAPI.getState();
-      const id = state.notification.id;
-      await delay(NOTIFICATION_DELAY);
-      const currentState = thunkAPI.getState();
-      if (currentState.notification.id === id) {
-        thunkAPI.dispatch(setNotification({ message: '', type: ToastType.NORMAL }));
-      }
-    }
-  );
+  void,
+  ToastData,
+  {
+    dispatch: AppDispatch;
+    state: RootState;
+  }
+>("notification/add", async (data: ToastData, thunkAPI) => {
+  thunkAPI.dispatch(setNotification(data));
+  const state = thunkAPI.getState();
+  const id = state.notification.id;
+  await delay(NOTIFICATION_DELAY);
+  const currentState = thunkAPI.getState();
+  if (currentState.notification.id === id) {
+    thunkAPI.dispatch(setNotification({ message: "", type: ToastType.NORMAL }));
+  }
+});
 
 export const notificationSlice = createSlice({
-  name: 'notification',
+  name: "notification",
   initialState,
   reducers: {
     setNotification: (state, action: PayloadAction<ToastData>) => {
       return { id: state.id + 1, data: action.payload };
-    }
-  }
+    },
+  },
 });
 
 export const { setNotification } = notificationSlice.actions;

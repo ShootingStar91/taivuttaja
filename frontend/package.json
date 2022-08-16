@@ -17,6 +17,7 @@
     "country-flag-icons": "^1.4.25",
     "flag-icons": "^6.2.0",
     "flowbite-react": "^0.0.18",
+    "postcss": "^8.4.13",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
@@ -25,11 +26,9 @@
     "react-select": "^5.2.2",
     "redux": "^4.1.2",
     "redux-localstorage-simple": "^2.5.1",
-    "typescript": "^4.5.5",
-    "web-vitals": "^2.1.4",
     "tailwindcss": "^3.0.24",
-    "postcss": "^8.4.13"
-
+    "typescript": "^4.5.5",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "REACT_APP_LOCAL=true react-scripts start",
@@ -64,7 +63,8 @@
     "@typescript-eslint/parser": "^5.12.0",
     "autoprefixer": "^10.4.5",
     "cypress": "^10.1.0",
-    "eslint": "^8.9.0"
+    "eslint": "^8.9.0",
+    "prettier": "^2.7.1"
   },
   "jest": {
     "testEnvironment": "node"

@@ -1,12 +1,10 @@
-import React, { useState, } from 'react';
-import { ConjugateMode, ConjugateSettings } from '../../types';
-import { ConjugateFull } from './ConjugateFull';
-import { ConjugateSingle } from './ConjugateSingle';
-import { ConjugateStart } from './ConjugateStart';
-
+import React, { useState } from "react";
+import { ConjugateMode, ConjugateSettings } from "../../types";
+import { ConjugateFull } from "./ConjugateFull";
+import { ConjugateSingle } from "./ConjugateSingle";
+import { ConjugateStart } from "./ConjugateStart";
 
 export const ConjugateIndex = () => {
-  
   // stage = 0 if setting up session, or to indicate how many words are conjugated
   const [stage, setStage] = useState<number>(0);
   const [settings, setSettings] = useState<ConjugateSettings | null>(null);
@@ -16,7 +14,7 @@ export const ConjugateIndex = () => {
     setStage(1);
   };
 
-  const next = (max: number) => {    
+  const next = (max: number) => {
     if (stage >= max) {
       setStage(0);
     } else {
@@ -35,8 +33,6 @@ export const ConjugateIndex = () => {
   if (settings.mode === ConjugateMode.Full) {
     return <ConjugateFull settings={settings} next={next} stop={stop} />;
   }
-  
-  return <ConjugateSingle settings={settings}  next={next} stop={stop} />;
-  
-  
+
+  return <ConjugateSingle settings={settings} next={next} stop={stop} />;
 };

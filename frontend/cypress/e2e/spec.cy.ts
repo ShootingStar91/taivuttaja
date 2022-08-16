@@ -455,11 +455,11 @@ describe('taivuttaja-app', () => {
         cy.contains('Try').click();
         wait();
         cy.get('#correctanswers').contains('1');
+        cy.get('#answerfield').clear();
         wait();
+        cy.contains('Try').click();
         wait();
-        wait();
-        wait();
-        wait();
+        cy.get('#answerfield').clear();
         cy.get('#answerfield').type('wronganswer');
         cy.contains('Try').click();
         wait();

@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../types';
-import { RootState } from './store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "../types";
+import { RootState } from "./store";
 
 interface UserState {
-  user: User | undefined,
+  user: User | undefined;
 }
 
 const initialState: UserState = {
@@ -11,13 +11,13 @@ const initialState: UserState = {
 };
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<User>) => {
       return { ...state, user: action.payload };
     },
-    removeUser: state => {
+    removeUser: (state) => {
       state.user = undefined;
     },
     setGoal: (state, action: PayloadAction<number>) => {
@@ -28,10 +28,15 @@ export const userSlice = createSlice({
       return { ...state, user: newUser };
     },
     addDoneWord: (state) => {
-      if (!state.user) { return; }
-      return { ...state, user: {...state.user, doneWordsToday: state.user.doneWordsToday + 1}};
-    }
-  }
+      if (!state.user) {
+        return;
+      }
+      return {
+        ...state,
+        user: { ...state.user, doneWordsToday: state.user.doneWordsToday + 1 },
+      };
+    },
+  },
 });
 
 export const { setUser, removeUser, setGoal, addDoneWord } = userSlice.actions;

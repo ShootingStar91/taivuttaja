@@ -27,7 +27,7 @@ const createPasswordHash = (password) => __awaiter(void 0, void 0, void 0, funct
 });
 const parsePassword = (password) => {
     if (!password || !(0, validators_1.isString)(password)) {
-        throw new types_1.ValidationError('Password is not a valid string');
+        throw new types_1.ValidationError("Password is not a valid string");
     }
     if (password.length < config_1.PASSWORD_MIN_LENGTH ||
         password.length > config_1.PASSWORD_MAX_LENGTH) {
@@ -37,7 +37,7 @@ const parsePassword = (password) => {
 };
 const parseUsername = (username) => {
     if (!username || !(0, validators_1.isString)(username)) {
-        throw new types_1.ValidationError('Username is not a valid string');
+        throw new types_1.ValidationError("Username is not a valid string");
     }
     if (username.length < config_1.USERNAME_MIN_LENGTH ||
         username.length > config_1.USERNAME_MAX_LENGTH) {
@@ -56,87 +56,107 @@ const toNewUser = (username, password) => __awaiter(void 0, void 0, void 0, func
 const createUser = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
     const rawUser = yield toNewUser(username, password);
     const newUser = new User_1.userModel(rawUser);
-    yield newUser.save();
+    const result = yield newUser.save();
+    if (!result) {
+        throw new Error("Error when creating user in backend");
+    }
+    return true;
 });
 const tryLogin = (rawUsername, rawPassword) => __awaiter(void 0, void 0, void 0, function* () {
     const username = parseUsername(rawUsername);
     const password = parsePassword(rawPassword);
     const user = yield User_1.userModel.findOne({ username });
     if (!user) {
-        throw new Error('User not found');
+        throw new Error("User not found");
     }
     if (!user.password) {
-        throw new Error('User did not have password in database');
+        throw new Error("User did not have password in database");
     }
     const result = yield bcrypt_1.default.compare(password, user.password);
     if (!result) {
-        throw new Error('Invalid password');
+        throw new Error("Invalid password");
     }
     const userForToken = { username: user.username, id: user._id };
-    const token = jsonwebtoken_1.default.sign(userForToken, config_1.SECRET, { expiresIn: config_1.loginValidSeconds });
-    const foundUser = { username: user.username, _id: user._id, goal: user.goal, token, strictAccents: user.strictAccents };
+    const token = jsonwebtoken_1.default.sign(userForToken, config_1.SECRET, {
+        expiresIn: config_1.LOGIN_VALID_SECONDS,
+    });
+    const foundUser = {
+        username: user.username,
+        _id: user._id,
+        goal: user.goal,
+        token,
+        strictAccents: user.strictAccents,
+    };
     return foundUser;
 });
-const relog = (user) => {
-    const userForToken = { username: user.username, id: user._id };
-    const token = jsonwebtoken_1.default.sign(userForToken, config_1.SECRET, { expiresIn: config_1.loginValidSeconds });
-    user.token = token;
-    return user;
-};
 const deleteUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     yield Wordlist_1.wordlistModel.deleteMany({ owner: user._id });
     const result = yield User_1.userModel.deleteOne({ owner: user._id });
     if (!result) {
-        throw new Error('Could not find such user');
+        throw new Error("Could not find such user");
     }
+    return true;
 });
 const addDoneWord = (wordId, user) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(0, validators_1.isString)(wordId)) {
-        throw new types_1.ValidationError('Invalid wordId');
+        throw new types_1.ValidationError("Invalid wordId");
     }
-    const newDoneWord = new DoneWord_1.doneWordModel({ word: wordId, date: new Date(), user: user._id });
+    const newDoneWord = new DoneWord_1.doneWordModel({
+        word: wordId,
+        date: new Date(),
+        user: user._id,
+    });
     const result = yield newDoneWord.save();
     if (!result) {
-        throw new Error('Could not add done word');
+        throw new Error("Could not add done word");
     }
+    return result;
 });
 const getDoneWords = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield DoneWord_1.doneWordModel.find({ user: user._id }).populate({ path: 'word', model: 'Word' });
+    const result = yield DoneWord_1.doneWordModel
+        .find({ user: user._id })
+        .populate({ path: "word", model: "Word" });
     if (!result) {
-        throw new Error('Could not get done words');
+        throw new Error("Could not get done words");
     }
     return result;
 });
 const setGoal = (goal, user) => __awaiter(void 0, void 0, void 0, function* () {
     if (!Number.isInteger(goal)) {
-        throw new types_1.ValidationError('Invalid goal parameter');
+        throw new types_1.ValidationError("Invalid goal parameter");
     }
     const result = yield User_1.userModel.updateOne({ _id: user._id }, { goal });
-    return result;
+    if (!result) {
+        throw new Error("Error updating user for setting daily goal");
+    }
+    return true;
 });
 const changePassword = (rawOldPassword, rawNewPassword, user) => __awaiter(void 0, void 0, void 0, function* () {
     const newPassword = yield createPasswordHash(parsePassword(rawNewPassword));
     const oldPassword = parsePassword(rawOldPassword);
     const dbUser = yield User_1.userModel.findOne({ _id: user._id });
     if (!dbUser || !dbUser.password) {
-        throw new Error('User not found');
+        throw new Error("User not found");
     }
     const passwordCorrect = yield bcrypt_1.default.compare(oldPassword, dbUser.password);
     if (!passwordCorrect) {
-        throw new Error('Invalid password');
+        throw new Error("Invalid password");
     }
     const result = yield User_1.userModel.updateOne({ _id: user._id }, { password: newPassword });
-    if (result) {
-        return true;
+    if (!result) {
+        throw new Error("Error updating user to database");
     }
-    return false;
+    return true;
 });
 const setStrictAccents = (strictAccents, user) => __awaiter(void 0, void 0, void 0, function* () {
     if (!(0, validators_1.isBoolean)(strictAccents)) {
-        throw new types_1.ValidationError('Strict accents parameter was not boolean');
+        throw new types_1.ValidationError("Strict accents parameter was not boolean");
     }
     const result = yield User_1.userModel.updateOne({ _id: user._id }, { strictAccents });
-    return result;
+    if (!result) {
+        throw new Error("Could not update strict accents");
+    }
+    return true;
 });
 exports.default = {
     createUser,
@@ -146,12 +166,11 @@ exports.default = {
     getDoneWords,
     setGoal,
     changePassword,
-    relog,
-    setStrictAccents
+    setStrictAccents,
 };
 const testExports = {
     parsePassword,
     parseUsername,
-    toNewUser
+    toNewUser,
 };
 exports.testExports = testExports;

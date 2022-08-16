@@ -19,7 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WORDLIST_TITLE_MAX = exports.WORDLIST_TITLE_MIN = exports.USERNAME_MAX_LENGTH = exports.USERNAME_MIN_LENGTH = exports.PASSWORD_MAX_LENGTH = exports.PASSWORD_MIN_LENGTH = exports.loginValidSeconds = exports.SECRET = exports.TEST_MONGODB_URI = exports.MONGODB_URI = exports.PORT = exports.TEST_MODE = void 0;
+exports.WORDLIST_TITLE_MAX = exports.WORDLIST_TITLE_MIN = exports.USERNAME_MAX_LENGTH = exports.USERNAME_MIN_LENGTH = exports.PASSWORD_MAX_LENGTH = exports.PASSWORD_MIN_LENGTH = exports.LOGIN_VALID_SECONDS = exports.SECRET = exports.TEST_MONGODB_URI = exports.MONGODB_URI = exports.PORT = exports.TEST_MODE = void 0;
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 exports.TEST_MODE = process.env.TEST_MODE;
@@ -27,7 +27,7 @@ exports.PORT = process.env.PORT || 3001;
 exports.MONGODB_URI = process.env.MONGODB_URI;
 exports.TEST_MONGODB_URI = process.env.TEST_MONGODB_URI;
 exports.SECRET = process.env.SECRET;
-exports.loginValidSeconds = 60 * 60 * 12;
+exports.LOGIN_VALID_SECONDS = 48 * 60 * 60;
 exports.PASSWORD_MIN_LENGTH = 5;
 exports.PASSWORD_MAX_LENGTH = 18;
 exports.USERNAME_MIN_LENGTH = 5;

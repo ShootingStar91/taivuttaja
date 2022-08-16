@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-require('express-async-errors');
+require("express-async-errors");
 
-import express from 'express';
-import wordService from '../services/words';
-import { isMood, isString, isTense, isLanguage } from '../utils/validators';
-
+import express from "express";
+import wordService from "../services/words";
+import { isMood, isString, isTense, isLanguage } from "../utils/validators";
 
 const router = express.Router();
 
@@ -19,58 +18,55 @@ const router = express.Router();
   after /word/ comes language of the given word param: 'en' or 'es'
 */
 
-router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) => {
-
+router.get("/word/:lang/:word/tense/:tense/mood/:mood/", async (req, res) => {
   const word = req.params.word;
   const rawMood = req.params.mood;
   const rawTense = req.params.tense;
   const lang = req.params.lang;
 
   if (!isLanguage(lang)) {
-    throw new Error('Invalid language parameter. Give either \'en\' or \'es\'');
+    throw new Error("Invalid language parameter. Give either 'en' or 'es'");
   }
 
   if (!rawMood || !rawTense) {
-    throw new Error('Mood or tense missing');
+    throw new Error("Mood or tense missing");
   }
 
   const mood = rawMood.charAt(0).toUpperCase() + rawMood.slice(1);
   const tense = rawTense.charAt(0).toUpperCase() + rawTense.slice(1);
 
   if (!isMood(mood) || !isTense(tense)) {
-    throw new Error('Mood or tense invalid');
+    throw new Error("Mood or tense invalid");
   }
 
-  if (isString(word) && word !== '-') {
+  if (isString(word) && word !== "-") {
     // Get specific word
     const result = await wordService.getWord(word, lang, tense, mood);
     return res.send(result);
-  } else if (isString(word) && word === '-') {
+  } else if (isString(word) && word === "-") {
     const word = await wordService.getRandomWord(tense, mood);
     return res.send(word);
   }
 
-  throw new Error('Word invalid. Either give valid string word, or a dash (-) for random.');
+  throw new Error(
+    "Word invalid. Either give valid string word, or a dash (-) for random."
+  );
 });
 
-router.get('/random', async (_req, res, _next) => {
-  const word = await wordService.getRandomWord('Present', 'Indicative');
+router.get("/random", async (_req, res, _next) => {
+  const word = await wordService.getRandomWord("Present", "Indicative");
   res.send(word);
 });
 
-router.get('/verbdetails/:verb', async (req, res) => {
+router.get("/verbdetails/:verb", async (req, res) => {
   const verb = req.params.verb;
-  
   const result = await wordService.getVerbDetails(verb);
-  
   res.send(result);
 });
 
-router.get('/allwordsstripped', async (_req, res, _next) => {
+router.get("/allwordsstripped", async (_req, res, _next) => {
   const result = await wordService.getStrippedWords();
   res.send(result);
 });
-
-
 
 export default router;

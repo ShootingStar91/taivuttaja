@@ -12,8 +12,8 @@ const router = express.Router();
 
 
 router.post(`/create/`, async (req, res) => {
-  await userService.createUser(req.body.username, req.body.password);
-  res.status(200).send(true);
+  const result = await userService.createUser(req.body.username, req.body.password);
+  res.status(200).send(result);
 });
 
 router.post(`/login/`, async (req, res) => {
@@ -22,13 +22,13 @@ router.post(`/login/`, async (req, res) => {
 });
 
 router.post('/deleteuser/', middleware.userExtractor, async (req, res) => {
-  await userService.deleteUser(req.user);
-  res.status(200).send();
+  const result = await userService.deleteUser(req.user);
+  res.status(200).send(result);
 });
 
 router.post('/doneword/', middleware.userExtractor, async (req, res) => {
-  await userService.addDoneWord(req.body.wordId, req.user);
-  res.status(200).send();
+  const result = await userService.addDoneWord(req.body.wordId, req.user);
+  res.status(200).send(result);
 });
 
 router.get('/donewords/', middleware.userExtractor, async (req, res) => {

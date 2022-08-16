@@ -8,6 +8,22 @@ A web-app for practicing conjugating Spanish verbs. Work in progress. Practice p
 
 It uses the database of conjugated Spanish verbs created by Fred Jehle and compiled by @ghidinelli: https://github.com/ghidinelli/fred-jehle-spanish-verbs
 
+Css for toggle-item is borrowed form Flowbite: https://flowbite.com/docs/forms/toggle/
+
+# Technologies
+
++ Frontend written in Typescript & React 17
+  + Redux toolkit
+  + axios
+  + Tailwind CSS
++ Backend in Typescript, NodeJS Express
+  + Mongoose & MongoDB
++ Tests
+  + Jest, supertest, cypress
++ CI
+  + GitHub Actions
++ Deployed in docker containers running in an AWS Lightsail instance
+
 # Features
 
 Here is a list of current feature. All verb practice only works from English to Spanish: user is given a word in English and has to type it in Spanish.
@@ -22,16 +38,3 @@ Here is a list of current feature. All verb practice only works from English to 
   + Create custom wordlists allowing to practice specific verbs
   + Set daily goal
   + Delete user permanently
-
-# Technologies
-
-+ Frontend written in Typescript & React 17
-  + Redux toolkit
-  + axios
-  + Tailwind CSS
-+ Backend in Typescript, NodeJS Express
-  + Mongoose & MongoDB
-+ Tests
-  + Jest, supertest, cypress
-+ CI
-  + GitHub Actions

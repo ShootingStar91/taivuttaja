@@ -16,34 +16,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const middleware_1 = __importDefault(require("../middleware"));
 const wordlists_1 = __importDefault(require("../services/wordlists"));
-require('express-async-errors');
+require("express-async-errors");
 const router = express_1.default.Router();
-router.post('/deleteword/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield wordlists_1.default.deleteWord(req.body.word, req.body.wordlistId, req.user._id);
-    res.status(200).send();
+router.post("/deleteword/", middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield wordlists_1.default.deleteWord(req.body.word, req.body.wordlistId, req.user._id);
+    res.status(200).send(result);
 }));
-router.post('/addword/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/addword/", middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield wordlists_1.default.addWord(req.body.word, req.body.wordlistId, req.user._id);
     if (!result) {
-        throw new Error('Error adding word to wordlist');
+        throw new Error("Error adding word to wordlist");
     }
     res.send(result);
 }));
-router.get('/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/", middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Returns all owners wordlists
     const result = yield wordlists_1.default.getUsersLists(req.user._id);
     res.json(result);
 }));
-router.get('/:id', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.get("/:id", middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield wordlists_1.default.getList(req.params.id, req.user._id);
     res.json(result);
 }));
-router.post('/create/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/create/", middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const savedWordlist = yield wordlists_1.default.create(req.body.wordlist.title, req.user._id);
     res.status(200).send(savedWordlist);
 }));
-router.post('/delete/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield wordlists_1.default.deleteWordlist(req.body.wordlistId, req.user._id);
-    res.status(200).send();
+router.post("/delete/", middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield wordlists_1.default.deleteWordlist(req.body.wordlistId, req.user._id);
+    res.status(200).send(result);
 }));
 exports.default = router;
