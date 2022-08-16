@@ -147,10 +147,7 @@ export const ConjugateStart = ({
     let wordlist = null;
 
     if (user?.token && wordlistId) {
-      const result = await wordListService.getWordList(
-        wordlistId,
-        user.token
-      );
+      const result = await wordListService.getWordList(wordlistId, user.token);
 
       if (!result) {
         return;

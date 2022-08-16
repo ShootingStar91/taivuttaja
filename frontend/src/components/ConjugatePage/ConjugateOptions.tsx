@@ -80,7 +80,6 @@ export const WordListOption = ({
   setWordlist: (title: string) => void;
   wordlistId: string | null;
 }) => {
-  
   const onWordlistChange = (newValue: SingleValue<WordlistOption>) => {
     if (newValue?.value !== undefined) {
       setWordlist(newValue.value);

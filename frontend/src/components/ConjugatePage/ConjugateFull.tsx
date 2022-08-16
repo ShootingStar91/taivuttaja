@@ -72,12 +72,7 @@ export const ConjugateFull = ({
             Math.floor(Math.random() * settings.wordlist.words.length)
           ];
     const wordParam = randomWord ? randomWord.infinitive_english : null;
-    const result = await wordService.getWord(
-      wordParam,
-      "en",
-      mood,
-      tense
-    );
+    const result = await wordService.getWord(wordParam, "en", mood, tense);
     if (!result) {
       return;
     }
@@ -156,14 +151,10 @@ export const ConjugateFull = ({
       setShowingAnswers(true);
       successToast(message);
       if (user?.token) {
-        const result = await userService.addDoneWord(
-          word._id,
-          user.token
-        );
+        const result = await userService.addDoneWord(word._id, user.token);
         if (result) {
           dispatch(addDoneWord());
         }
-        
       }
     }
   };
@@ -188,10 +179,7 @@ export const ConjugateFull = ({
         document.getElementById(nextField.toString())?.focus();
       }
 
-      if (
-        activeField === "5" &&
-        !e.shiftKey
-      ) {
+      if (activeField === "5" && !e.shiftKey) {
         e.preventDefault();
         if (showingAnswers) {
           setShowingAnswers(false);
@@ -199,7 +187,6 @@ export const ConjugateFull = ({
           goNext();
           return;
         }
-  
       }
       await onTry(false);
     }

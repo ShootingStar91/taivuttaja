@@ -55,7 +55,7 @@ export const getPracticeHistory = (user: User) => {
   const uniqueVerbs = new Set(
     user.doneWords.map((dw) => dw.word.infinitive_english)
   ).size;
-  
+
   return (
     <div className="container mx-auto">
       <h2>You have ...</h2>

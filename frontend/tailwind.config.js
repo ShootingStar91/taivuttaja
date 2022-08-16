@@ -15,8 +15,8 @@ module.exports = {
       },
       gridTemplateColumns: {
         24: "repeat(24, 50px)",
-        "normal": "1fr auto minmax(auto, 990px) 1fr",
-        "small": "minmax(854px, auto)"
+        normal: "1fr auto minmax(auto, 990px) 1fr",
+        small: "minmax(854px, auto)",
       },
       gridTemplateRows: {
         normal: "40px 40px auto 40px",

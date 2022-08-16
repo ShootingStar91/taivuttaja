@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { WordList } from "../types";
 import axios from "./index";
 import { baseUrl } from "../config";

@@ -19,16 +19,13 @@ export const LoginForm = () => {
     }
     successToast("Login successful!");
     window.localStorage.setItem("loggedUser", JSON.stringify(user));
-    
+
     dispatch(setUser({ ...user }));
     navigate("/userpage");
   };
 
-  const tryNewUser = async () => {    
-    const result = await userService.createUser(
-      username,
-      password
-    );
+  const tryNewUser = async () => {
+    const result = await userService.createUser(username, password);
     console.log(result);
     if (!result) {
       return;

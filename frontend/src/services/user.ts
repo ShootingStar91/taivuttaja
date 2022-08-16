@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "./index";
 import { baseUrl } from "../config";
 import { DoneWord, User } from "../types";
@@ -16,7 +15,10 @@ const createUser = async (username: string, password: string) => {
 const getReadyUser = async (user: User) => {
   /* If user.token missing here, will result in no error toast.
      Should not happen, this would be servers fault. Just throw an error */
-  if (!user.token) throw new Error('Fatal error: server returned invalid user.token on login.');
+  if (!user.token)
+    throw new Error(
+      "Fatal error: server returned invalid user.token on login."
+    );
   const result = await getDoneWords(user.token);
   if (!result) {
     return;
@@ -83,7 +85,11 @@ const setGoal = async (goal: number, token: string) => {
 };
 
 const addDoneWord = async (wordId: string, token: string) => {
-  const result = await axios.post<boolean>(`${url}/doneword/`, { wordId }, getHeader(token));
+  const result = await axios.post<boolean>(
+    `${url}/doneword/`,
+    { wordId },
+    getHeader(token)
+  );
   return result.data;
 };
 
