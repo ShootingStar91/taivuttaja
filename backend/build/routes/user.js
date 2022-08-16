@@ -21,20 +21,20 @@ const middleware_1 = __importDefault(require("../middleware"));
 const router = express_1.default.Router();
 // /api/user/...
 router.post(`/create/`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield user_1.default.createUser(req.body.username, req.body.password);
-    res.status(200).send(true);
+    const result = yield user_1.default.createUser(req.body.username, req.body.password);
+    res.status(200).send(result);
 }));
 router.post(`/login/`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_1.default.tryLogin(req.body.username, req.body.password);
     res.status(200).send(user);
 }));
 router.post('/deleteuser/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield user_1.default.deleteUser(req.user);
-    res.status(200).send();
+    const result = yield user_1.default.deleteUser(req.user);
+    res.status(200).send(result);
 }));
 router.post('/doneword/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    yield user_1.default.addDoneWord(req.body.wordId, req.user);
-    res.status(200).send();
+    const result = yield user_1.default.addDoneWord(req.body.wordId, req.user);
+    res.status(200).send(result);
 }));
 router.get('/donewords/', middleware_1.default.userExtractor, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_1.default.getDoneWords(req.user);

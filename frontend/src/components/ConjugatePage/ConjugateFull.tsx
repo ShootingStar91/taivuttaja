@@ -87,11 +87,12 @@ export const ConjugateFull = ({
   };
 
   const resetFormColors = () => {
-    forms.forEach(
-      (form) =>
-        (document.getElementsByName(form)[0].style.backgroundColor =
-          COLORS.BLANK)
-    );
+    forms.forEach((form) => {
+      const field = document.getElementsByName(form)[0];
+      if (field) {
+        field.style.backgroundColor = COLORS.BLANK;
+      }
+    });
   };
 
   const handleChange = (event: FormEvent<HTMLInputElement>) => {

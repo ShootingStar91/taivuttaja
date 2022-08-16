@@ -19,6 +19,7 @@ const renderTable = (tableData: TableData[] | null) => {
 };
 
 export const getPracticeHistory = (user: User) => {
+  
   const getMoodTableData = () => {
     if (!user) {
       return null;

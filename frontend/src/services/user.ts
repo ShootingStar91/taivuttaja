@@ -98,6 +98,7 @@ const getDoneWords = async (token: string) => {
     `${url}/donewords/`,
     getHeader(token)
   );
+  
   return result && result.data;
 };
 

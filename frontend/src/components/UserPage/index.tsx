@@ -38,7 +38,7 @@ export const UserPage = () => {
     const updateDoneWords = async () => {
       if (user && user.token) {
         const result = await userService.getDoneWords(user.token);
-        if (result) {
+        if (!result) {
           return;
         }
         dispatch(setUser({ ...user, doneWords: result }));

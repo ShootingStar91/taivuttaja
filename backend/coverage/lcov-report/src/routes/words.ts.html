@@ -135,12 +135,8 @@
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
-<a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -160,7 +156,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -193,33 +188,31 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable @typescript-eslint/no-misused-promises */
-require('express-async-errors');
+require("express-async-errors");
 &nbsp;
-import express from 'express';
-import wordService from '../services/words';
-import { isMood, isString, isTense, isLanguage } from '../utils/validators';
-&nbsp;
+import express from "express";
+import wordService from "../services/words";
+import { isMood, isString, isTense, isLanguage } from "../utils/validators";
 &nbsp;
 const router = express.Router();
 &nbsp;
@@ -234,68 +227,66 @@ const router = express.Router();
   after /word/ comes language of the given word param: 'en' or 'es'
 */
 &nbsp;
-router.get('/word/:lang/:word/tense/:tense/mood/:mood/', async (req, res) =&gt; {
-&nbsp;
+router.get("/word/:lang/:word/tense/:tense/mood/:mood/", async (req, res) =&gt; {
   const word = req.params.word;
   const rawMood = req.params.mood;
   const rawTense = req.params.tense;
   const lang = req.params.lang;
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!isLanguage(lang)) {
-<span class="cstat-no" title="statement not covered" >    throw new Error('Invalid language parameter. Give either \'en\' or \'es\'');</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error("Invalid language parameter. Give either 'en' or 'es'");</span>
   }
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!rawMood || !rawTense) {
-<span class="cstat-no" title="statement not covered" >    throw new Error('Mood or tense missing');</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error("Mood or tense missing");</span>
   }
 &nbsp;
   const mood = rawMood.charAt(0).toUpperCase() + rawMood.slice(1);
   const tense = rawTense.charAt(0).toUpperCase() + rawTense.slice(1);
 &nbsp;
   <span class="missing-if-branch" title="if path not taken" >I</span>if (!isMood(mood) || !isTense(tense)) {
-<span class="cstat-no" title="statement not covered" >    throw new Error('Mood or tense invalid');</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error("Mood or tense invalid");</span>
   }
 &nbsp;
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (isString(word) &amp;&amp; word !== '-') {
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (isString(word) &amp;&amp; word !== "-") {
     // Get specific word
     const result = <span class="cstat-no" title="statement not covered" >await wordService.getWord(word, lang, tense, mood);</span>
 <span class="cstat-no" title="statement not covered" >    return res.send(result);</span>
-  } else <span class="missing-if-branch" title="else path not taken" >E</span>if (isString(word) &amp;&amp; word === '-') {
+  } else <span class="missing-if-branch" title="else path not taken" >E</span>if (isString(word) &amp;&amp; word === "-") {
     const word = await wordService.getRandomWord(tense, mood);
     return res.send(word);
   }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  throw new Error('Word invalid. Either give valid string word, or a dash (-) for random.');</span>
+<span class="cstat-no" title="statement not covered" >  throw new Error(</span>
+    "Word invalid. Either give valid string word, or a dash (-) for random."
+  );
 });
 &nbsp;
-router.get('/random', <span class="fstat-no" title="function not covered" >as</span>ync (_req, res, _next) =&gt; {
-  const word = <span class="cstat-no" title="statement not covered" >await wordService.getRandomWord('Present', 'Indicative');</span>
+router.get("/random", <span class="fstat-no" title="function not covered" >as</span>ync (_req, res, _next) =&gt; {
+  const word = <span class="cstat-no" title="statement not covered" >await wordService.getRandomWord("Present", "Indicative");</span>
 <span class="cstat-no" title="statement not covered" >  res.send(word);</span>
 });
 &nbsp;
-router.get('/verbdetails/:verb', <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
+router.get("/verbdetails/:verb", <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
   const verb = <span class="cstat-no" title="statement not covered" >req.params.verb;</span>
-  
   const result = <span class="cstat-no" title="statement not covered" >await wordService.getVerbDetails(verb);</span>
-  
 <span class="cstat-no" title="statement not covered" >  res.send(result);</span>
 });
 &nbsp;
-router.get('/allwordsstripped', <span class="fstat-no" title="function not covered" >as</span>ync (_req, res, _next) =&gt; {
+router.get("/allwordsstripped", <span class="fstat-no" title="function not covered" >as</span>ync (_req, res, _next) =&gt; {
   const result = <span class="cstat-no" title="statement not covered" >await wordService.getStrippedWords();</span>
 <span class="cstat-no" title="statement not covered" >  res.send(result);</span>
 });
 &nbsp;
-&nbsp;
-&nbsp;
-export default router;</pre></td></tr></table></pre>
+export default router;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at Sun Jul 31 2022 21:17:47 GMT+0300 (Eastern European Summer Time)
+                at Tue Aug 16 2022 09:40:11 GMT+0300 (Eastern European Summer Time)
             </div>
         <script src="../../prettify.js"></script>
         <script>
