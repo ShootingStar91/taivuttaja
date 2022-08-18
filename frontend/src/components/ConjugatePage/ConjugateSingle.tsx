@@ -37,10 +37,8 @@ export const ConjugateSingle = ({
   const [attempt, setAttempt] = useState<string>("");
   const [tense, setTense] = useState<Tense | null>(null);
   const [mood, setMood] = useState<Mood | null>(null);
-  const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [showingCorrect, setShowingCorrect] = useState<boolean>(false);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
-  const [timeoutId, setTimeoutId] = useState<number | null>(null);
 
   const user = useAppSelector(selectUser);
 
@@ -99,17 +97,19 @@ export const ConjugateSingle = ({
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
+    console.log(event.key);
+    
     if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();
-      if (!showingCorrect) {
-        onTry();
-      } else {
-        goNext();
-      }
+      onTry();
     }
   };
 
   const onTry = () => {
+    if (showingCorrect) {
+      goNext();
+      return;
+    }
     if (!answer) {
       errorToast("Invalid word data");
       return;
@@ -142,18 +142,9 @@ export const ConjugateSingle = ({
     const field = document.getElementsByName("attemptField")[0];
     field.style.backgroundColor = COLORS.CORRECT;
     setCorrectAnswers(correctAnswers + 1);
-    const newTimeoutId = window.setTimeout(() => {
-      goNext();
-    }, 2000);
-
-    setTimeoutId(newTimeoutId);
   };
 
   const goNext = () => {
-    if (timeoutId !== null) {
-      window.clearTimeout(timeoutId);
-      setTimeoutId(null);
-    }
     setShowingCorrect(false);
     const field = document.getElementsByName("attemptField")[0];
     void newWord();
@@ -168,10 +159,10 @@ export const ConjugateSingle = ({
     }
 
     if (settings.mode === ConjugateMode.Flashcard) {
-      if (!showAnswer) {
-        setShowAnswer(true);
+      if (!showingCorrect) {
+        setShowingCorrect(true);
       } else {
-        setShowAnswer(false);
+        setShowingCorrect(false);
         void newWord();
       }
       return;
@@ -179,13 +170,13 @@ export const ConjugateSingle = ({
 
     const field = document.getElementsByName("attemptField")[0];
 
-    if (!showAnswer) {
-      setShowAnswer(true);
+    if (!showingCorrect) {
+      setShowingCorrect(true);
       setAttempt(answer);
       field.style.backgroundColor = COLORS.SHOWANSWER;
     } else {
       field.style.backgroundColor = COLORS.BLANK;
-      setShowAnswer(false);
+      setShowingCorrect(false);
       void newWord();
       setAttempt("");
       next(settings.amount);
@@ -198,7 +189,7 @@ export const ConjugateSingle = ({
 
   const getContent = (mode: ConjugateMode) => {
     const getFlashcardPart = () => {
-      if (showAnswer) {
+      if (showingCorrect) {
         return <h1 className="text-center mb-8">{answer}</h1>;
       }
       return <h1 className="text-center mb-8">_____</h1>;
@@ -235,22 +226,21 @@ export const ConjugateSingle = ({
                     name="attemptField"
                     type="text"
                     onChange={onChange}
-                    value={attempt}
+                    value={showingCorrect ? answer : attempt}
                     autoComplete="off"
-                    disabled={showAnswer}
                   ></input>
                 </div>
               </form>
               <p>
-                <button className="btn w-[300px]" type="button" onClick={onTry}>
-                  Try
-                </button>
+                {!showingCorrect && <button className="btn w-[300px]" type="button" onClick={onTry}>
+                  {showingCorrect ? "Next" : "Try"}
+                </button>}
               </p>
             </>
           )}
           {mode === ConjugateMode.Flashcard && getFlashcardPart()}
           <button className="btn w-[300px]" type="button" onClick={onClickSkip}>
-            {showAnswer ? "Next" : "Show"}
+            {showingCorrect ? "Next" : "Show"}
           </button>
 
           <div id="correctanswers" style={{ display: "none" }}>
