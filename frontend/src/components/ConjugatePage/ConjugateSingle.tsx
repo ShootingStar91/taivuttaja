@@ -3,24 +3,20 @@ import { COLORS } from "../../config";
 import { useAppSelector } from "../../reducers/hooks";
 import { errorToast } from "../../reducers/toastApi";
 import { selectUser } from "../../reducers/user";
-import { wordService } from "../../services/words";
 import {
   ConjugateMode,
   ConjugateSettings,
-  Mood,
-  Tense,
-  Word,
 } from "../../types";
 import {
   deAccentify,
   forms,
   getForm,
   getFormDescription,
-  getRandomForm,
   getWordForm,
 } from "../../utils";
 import { EnglishFlag, SpanishFlag } from "../Flags";
 import { FullModal } from "../Modal";
+import { useWord } from "./useWord";
 
 export const ConjugateSingle = ({
   settings,
@@ -31,12 +27,10 @@ export const ConjugateSingle = ({
   next: (max: number) => void;
   stop: () => void;
 }) => {
-  const [word, setWord] = useState<Word | null>(null);
+  const { word, getWord } = useWord(settings);
   const [answer, setAnswer] = useState<string | null>(null);
   const [form, setForm] = useState<string | null>(null);
   const [attempt, setAttempt] = useState<string>("");
-  const [tense, setTense] = useState<Tense | null>(null);
-  const [mood, setMood] = useState<Mood | null>(null);
   const [showingCorrect, setShowingCorrect] = useState<boolean>(false);
   const [correctAnswers, setCorrectAnswers] = useState<number>(0);
 
@@ -48,35 +42,10 @@ export const ConjugateSingle = ({
   }, []);
 
   const newWord = async () => {
-    const { tense: randomedTense, mood: randomedMood } = getRandomForm(
-      settings.tenseSelections,
-      settings.moodSelections
-    );
-
-    setTense(randomedTense);
-    setMood(randomedMood);
-
-    // If wordlist exist, random a word from there
-    const word =
-      settings.wordlist === null
-        ? null
-        : settings.wordlist.words[
-            Math.floor(Math.random() * settings.wordlist.words.length)
-          ];
-    const wordParam = word ? word.infinitive_english : null;
-    const result = await wordService.getWord(
-      wordParam,
-      "en",
-      randomedMood,
-      randomedTense
-    );
-
+    const result = await getWord();
     if (!result) {
       return;
     }
-
-    setWord(result);
-
     // Random a form only from those that are not empty
     const validForms = forms.filter((f) => getWordForm(result, f) !== "");
     const randomedForm =
@@ -97,8 +66,6 @@ export const ConjugateSingle = ({
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLFormElement>) => {
-    console.log(event.key);
-    
     if (event.key === "Tab" || event.key === "Enter") {
       event.preventDefault();
       onTry();
@@ -205,10 +172,10 @@ export const ConjugateSingle = ({
         </div>
         <div className="mt-4 flex auto-flex gap-x-4">
           <h2 id="tense" className="text-amber-600">
-            {tense}
+            {word.tense_english}
           </h2>
           <h2 id="mood" className="text-sky-400">
-            {mood}
+            {word.mood_english.toLowerCase()}
           </h2>
         </div>
         <h2 id="personform" className="mt-4 text-orange-500">
@@ -232,9 +199,15 @@ export const ConjugateSingle = ({
                 </div>
               </form>
               <p>
-                {!showingCorrect && <button className="btn w-[300px]" type="button" onClick={onTry}>
-                  {showingCorrect ? "Next" : "Try"}
-                </button>}
+                {!showingCorrect && (
+                  <button
+                    className="btn w-[300px]"
+                    type="button"
+                    onClick={onTry}
+                  >
+                    {showingCorrect ? "Next" : "Try"}
+                  </button>
+                )}
               </p>
             </>
           )}

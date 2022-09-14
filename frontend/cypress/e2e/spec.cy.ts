@@ -195,8 +195,8 @@ const words = [{
 }];
 
 const getRightAnswer = (word: string, tense: string, mood: string, personform: string) => {
-  const w = words.find(w => w.infinitive === word && w.mood_english === mood);
-  if (!w) return 'error';
+  const w = words.find(w => w.infinitive === word && w.mood_english.toLowerCase() === mood.toLowerCase());
+  if (!w) return 'error_getting_word_in_tests';
   switch (personform) {
     case 'yo':
       return w.form_1s;
@@ -211,7 +211,7 @@ const getRightAnswer = (word: string, tense: string, mood: string, personform: s
     case 'ellas / ustedes':
       return w.form_3p;
   }
-  return '';
+  return 'error_getting_word_in_tests';
 };
 
 const openPage = (page: string) => {
@@ -457,7 +457,7 @@ describe('taivuttaja-app', () => {
         cy.get('#correctanswers').contains('1');
         cy.get('#answerfield').clear();
         wait();
-        cy.contains('Try').click();
+        cy.contains('Next').click();
         wait();
         cy.get('#answerfield').clear();
         cy.get('#answerfield').type('wronganswer');
