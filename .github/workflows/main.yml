@@ -40,8 +40,7 @@ jobs:
           start: npm start
           wait-on: http://localhost:3000
   deploy_to_server:
-    if: ${{!contains(join(toJson(github.event.commits.*.message)), '#skip') }} 
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: ${{!contains(join(toJson(github.event.commits.*.message)), '#skip') }} && github.event_name == 'push' && github.ref == 'refs/heads/main'
     timeout-minutes: 45
     runs-on: ubuntu-20.04
     needs: run_all_tests
