@@ -68,4 +68,5 @@
 | 7.8.  | 3   | Fixes to UX, refactorings, improvements |
 | 14.8. | 2   | Error handling moved completely to axios interceptor |
 | 14.9. | 2   | Refactoring code to share common logic |
-| Total hours | 179     | 
+| 11.11. | 2  | Continuous deployment through github added |
+| Total hours | 181     | 
