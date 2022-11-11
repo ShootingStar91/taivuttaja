@@ -3,10 +3,7 @@ import { COLORS } from "../../config";
 import { useAppSelector } from "../../reducers/hooks";
 import { errorToast } from "../../reducers/toastApi";
 import { selectUser } from "../../reducers/user";
-import {
-  ConjugateMode,
-  ConjugateSettings,
-} from "../../types";
+import { ConjugateMode, ConjugateSettings } from "../../types";
 import {
   deAccentify,
   forms,
@@ -54,7 +51,7 @@ export const ConjugateSingle = ({
     const rightAnswer = getWordForm(result, randomedForm);
     if (rightAnswer) {
       setAnswer(rightAnswer);
-      console.log(rightAnswer);
+      console.log("Correct answer: ", rightAnswer);
     }
   };
 
