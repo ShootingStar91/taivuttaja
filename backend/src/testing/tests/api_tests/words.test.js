@@ -4,6 +4,8 @@ const app = require('../../../app');
 const api = supertest(app);
 
 test('random word returned', async () => {
+    await new Promise((r) => setTimeout(r, 3000));
+
     const response = await api.get('/api/words/word/en/-/tense/Present/mood/Indicative');
 
     expect(response.body).toBeDefined();
