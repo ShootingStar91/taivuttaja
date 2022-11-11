@@ -33,21 +33,19 @@ Clone repository `git clone https://github.com/ShootingStar91/taivuttaja`
 
 Run mongo image with docker compose plugin and run backend in test mode
 
-´´´
-cd taivuttaja/backend
-docker compose -f docker-compose.yml up -d
-npm install
-npm run start:test
-cd ..
-´´´
+  cd taivuttaja/backend
+  docker compose -f docker-compose.yml up -d
+  npm install
+  npm run start:test
+  cd ..
 
 Run frontend
 
-´´´
-cd frontend
-npm install
-npm start
-´´´
+
+  cd frontend
+  npm install
+  npm start
+
 
 # Features
 
