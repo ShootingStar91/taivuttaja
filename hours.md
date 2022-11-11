@@ -67,4 +67,5 @@
 | 3.8.  | 2   | Code quality improvements, fixes |
 | 7.8.  | 3   | Fixes to UX, refactorings, improvements |
 | 14.8. | 2   | Error handling moved completely to axios interceptor |
-| Total hours | 177     | 
+| 14.9. | 2   | Refactoring code to share common logic |
+| Total hours | 179     | 

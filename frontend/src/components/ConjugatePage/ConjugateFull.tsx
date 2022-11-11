@@ -1,13 +1,11 @@
 import React, { FormEvent, KeyboardEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../reducers/hooks";
-import { wordService } from "../../services/words";
-import { ConjugateSettings, Word } from "../../types";
+import { ConjugateSettings } from "../../types";
 import {
   getWordForm,
   getForm,
   getFormDescription,
   forms,
-  getRandomForm,
   deAccentify,
 } from "../../utils";
 import { EnglishFlag, SpanishFlag } from "../Flags";
@@ -16,6 +14,7 @@ import { addDoneWord, selectUser } from "../../reducers/user";
 import { COLORS } from "../../config";
 import { FullModal } from "../Modal";
 import { errorToast, successToast } from "../../reducers/toastApi";
+import { useWord } from "./useWord";
 
 export const ConjugateFull = ({
   settings,
@@ -26,7 +25,7 @@ export const ConjugateFull = ({
   next: (max: number) => void;
   stop: () => void;
 }) => {
-  const [word, setWord] = useState<Word | null>(null);
+  const {word, getWord} = useWord(settings);
   const dispatch = useAppDispatch();
   const [emptyForms, setEmptyForms] = useState<string[]>([]);
   const initialState: { [fieldName: string]: string } = {};
@@ -38,9 +37,7 @@ export const ConjugateFull = ({
   });
 
   useEffect(() => {
-    if (!word) {
-      void getWord();
-    }
+    void getWord();
   }, []);
 
   useEffect(() => {
@@ -58,33 +55,6 @@ export const ConjugateFull = ({
     setEmptyForms(newEmptyForms);
   }, [word]);
 
-  const getWord = async () => {
-    const { tense, mood } = getRandomForm(
-      settings.tenseSelections,
-      settings.moodSelections
-    );
-
-    // If wordlist exist, random a word from there
-    const randomWord =
-      settings.wordlist === null
-        ? null
-        : settings.wordlist.words[
-            Math.floor(Math.random() * settings.wordlist.words.length)
-          ];
-    const wordParam = randomWord ? randomWord.infinitive_english : null;
-    const result = await wordService.getWord(wordParam, "en", mood, tense);
-    if (!result) {
-      return;
-    }
-    console.log("Correct answers: ");
-    console.log(result.form_1s);
-    console.log(result.form_2s);
-    console.log(result.form_3s);
-    console.log(result.form_1p);
-    console.log(result.form_2p);
-    console.log(result.form_3p);
-    setWord(result);
-  };
 
   const resetFormColors = () => {
     forms.forEach((form) => {

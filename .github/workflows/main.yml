@@ -39,3 +39,21 @@ jobs:
           command: npm run test:e2e
           start: npm start
           wait-on: http://localhost:3000
+  deploy_to_server:
+    timeout-minutes: 45
+    runs-on: ubuntu-20.04
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script_stop: true
+          script: |
+            cd ~/taivuttaja_deploy/taivuttaja
+            git pull
+            docker compose -f docker-compose.yml down --volumes
+            docker compose -f docker-compose.yml up -d
+            
