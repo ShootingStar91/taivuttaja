@@ -21,7 +21,7 @@ export const IndexPage = () => {
 
       <h2>About</h2>
       <p>
-        This app is a work in progress, but most of it should work.{" "}
+        This app is now finished, although minor fixes may be made.{" "}
         <a className="link" href="https://github.com/ShootingStar91/taivuttaja">
           Click here for the project repository
         </a>
@@ -37,7 +37,7 @@ export const IndexPage = () => {
         . Most of it is correct but{" "}
         <span className="font-bold">imperative forms have errors</span>: 3rd
         singular and 2nd plural forms are swapped, and 1st plural form is
-        missing. Some of this will be fixed.
+        missing. Some of this may be fixed.
       </p>
       <p></p>
     </div>
