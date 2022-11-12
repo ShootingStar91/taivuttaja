@@ -17,12 +17,12 @@ Css for toggle-item is borrowed form Flowbite: https://flowbite.com/docs/forms/t
 + Frontend written in **Typescript & React 17**
   + **Redux toolkit**
   + **Tailwind CSS**
-+ Backend in Typescript, **NodeJS Express**
++ Backend in Typescript, **NodeJS, Express**
   + **Mongoose & MongoDB**
 + **Unit and integration tests**
   + Jest, supertest, cypress
 + CI/CD
-  + **GitHub Actions** runs tests and uses [appleboy/ssh-action] to make an AWS Lightsail server pull and deploy the project
+  + **GitHub Actions** runs tests and uses [appleboy/ssh-action] to make an AWS Lightsail server pull and deploy the project if commit messages do not include "#skip"
   + **Docker** compose files for nginx reverse-proxy setup
 
 # Instructions to try server
