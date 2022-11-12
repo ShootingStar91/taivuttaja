@@ -25,26 +25,26 @@ Css for toggle-item is borrowed form Flowbite: https://flowbite.com/docs/forms/t
   + **GitHub Actions** runs tests and uses [appleboy/ssh-action] to make an AWS Lightsail server pull and deploy the project if commit messages do not include "#skip"
   + **Docker** compose files for nginx reverse-proxy setup
 
-# Instructions to try server
+# Instructions to run
 
-The project requires the mongoDB database ([repository of database](https://github.com/ghidinelli/fred-jehle-spanish-verbs)) to fully run, with appropriate secrets available for backend. However, the repository has a test version of the database with a few test words. There is a docker-compose.yml file in the backend folder to run the test database in a mongo image.
+The project requires the mongoDB database ([repository of database](https://github.com/ghidinelli/fred-jehle-spanish-verbs)) to fully run, with appropriate secret set (MONGODB_URI for backend). However, the repository has a test version of the database with a few test words. There is a docker-compose.yml file in the backend folder to run the test database in a mongo image.
 
 Clone repository `git clone https://github.com/ShootingStar91/taivuttaja`
 
 Run mongo image with docker compose plugin and run backend in test mode
 
-  cd taivuttaja/backend
-  docker compose -f docker-compose.yml up -d
-  npm install
-  npm run start:test
-  cd ..
+    cd taivuttaja/backend
+    docker compose -f docker-compose.yml up -d
+    npm install
+    npm run start:test
+    cd ..
 
 Run frontend
 
 
-  cd frontend
-  npm install
-  npm start
+    cd frontend
+    npm install
+    npm start
 
 
 # Features
