@@ -37,6 +37,10 @@
     @apply text-sm text-custom-text-color;
   }
 
+  body {
+    @apply bg-bg-color;
+  }
+
   .btn {
     @apply bg-menu-color text-lg text-black py-2 px-4;
   }
