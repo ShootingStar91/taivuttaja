@@ -2,7 +2,7 @@
 
 # Taivuttaja
 
-**Try the application here**: [http://conjugation.arttudev.studio](http://conjugation.arttudev.studio)
+**Project currently not deployed**
 
 **A website-app for practicing conjugating Spanish verbs.** Practice project for https://fullstackopen.com course. This project is completely non-profit and open-source and is authored by Arttu Kangas.
 
