@@ -1,0 +1,1 @@
+mongorestore --db=the_database --username=the_username --password=the_password mongodb://localhost:27017 /docker-entrypoint-initdb.d/verbs.bson

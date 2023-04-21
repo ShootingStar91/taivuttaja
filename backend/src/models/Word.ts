@@ -19,6 +19,6 @@ const wordSchema = new Schema<Word>({
   gerund_english: { type: String, required: true },
   pastparticiple: { type: String, required: true },
   pastparticiple_english: { type: String, required: true },
-}, { collection: 'jehle_verb_mongo'});
+}, { collection: 'verbs'});
 
 export const wordModel = model<Word>('Word', wordSchema);
