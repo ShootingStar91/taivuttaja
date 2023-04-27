@@ -31,8 +31,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "REACT_APP_LOCAL=true react-scripts start",
-    "build": "react-scripts build",
+    "start": "REACT_APP_LOCAL=true react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "jest --verbose",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .tsx .",
@@ -64,7 +64,8 @@
     "autoprefixer": "^10.4.5",
     "cypress": "^10.1.0",
     "eslint": "^8.9.0",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "react-app-rewired": "^2.2.1"
   },
   "jest": {
     "testEnvironment": "node"
