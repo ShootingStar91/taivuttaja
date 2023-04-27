@@ -6,6 +6,7 @@ axios.interceptors.response.use(
     return res;
   },
   (error) => {
+    console.log(error);
     const status = error.response?.status as number;
     if (status === 401) {
       // notice: will logout on ANY forbidden-error

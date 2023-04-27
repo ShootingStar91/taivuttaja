@@ -5,7 +5,7 @@ import middleware from './middleware';
 import wordsRouter from './routes/words';
 import userRouter from './routes/user';
 import wordlistsRouter from './routes/wordlists';
-import {  MONGODB_URI, TEST_MONGODB_URI, TEST_MODE } from './config';
+import { MONGODB_URI, TEST_MODE } from './config';
 import cors from 'cors';
 import { userModel } from './models/User';
 require('express-async-errors');
@@ -23,7 +23,11 @@ app.use(cors(options));
 
 app.use(express.json());
 app.use(express.static('build'));
-app.use(middleware.logger);
+
+if (TEST_MODE) {
+  app.use(middleware.logger);
+}
+
 app.use(middleware.tokenExtractor);
 
 if (TEST_MODE) { 
@@ -32,7 +36,8 @@ if (TEST_MODE) {
   console.log('Running in normal mode');
 }
 
-const mongo_url = TEST_MODE ? TEST_MONGODB_URI as string : MONGODB_URI as string;
+const mongo_url = MONGODB_URI as string
+
 mongoose.connect(
   mongo_url,
   {}).then(() => {
@@ -41,15 +46,11 @@ mongoose.connect(
     console.log('Error connecting to MongoDB: ' + error.message);
   });
 
-
 app.use('/api/words', wordsRouter);
 app.use('/api/user', userRouter);
 app.use('/api/wordlists', wordlistsRouter);
 app.get('/api/health', (_req, res) => {
   res.send('ok');
-});
-app.get('/api/version', (_req, res) => {
-  res.send('1.0.2');
 });
 app.get('/api/test/deleteall', async (_req, res) => {
   if (!TEST_MODE) {

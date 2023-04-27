@@ -13,10 +13,13 @@ export const LoginForm = () => {
 
   const tryLogin = async (event: FormEvent) => {
     event.preventDefault();
+
     const user = await userService.tryLogin(username, password);
+
     if (!user) {
       return;
     }
+
     successToast("Login successful!");
     window.localStorage.setItem("loggedUser", JSON.stringify(user));
 
@@ -26,7 +29,7 @@ export const LoginForm = () => {
 
   const tryNewUser = async () => {
     const result = await userService.createUser(username, password);
-    console.log(result);
+
     if (!result) {
       return;
     }

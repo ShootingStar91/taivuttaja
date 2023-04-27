@@ -32,12 +32,8 @@ const App = () => {
     if (loadedUser) {
       dispatch(setUser(loadedUser));
     } else {
-      dispatch(removeUser());
+      //dispatch(removeUser());
     }
-  }, []);
-
-  useEffect(() => {
-    document.getElementsByTagName("body")[0].className = "bg-bg-color";
   }, []);
 
   return (

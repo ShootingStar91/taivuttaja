@@ -4,11 +4,11 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "TEST_MODE=true TEST_MONGODB_URI=mongodb://the_username:the_password@localhost:3456/the_database jest --verbose --coverage",
+    "test": "TEST_MODE=true MONGODB_URI=mongodb://the_username:the_password@localhost:3456/the_test_database jest --verbose --coverage",
     "tsc": "tsc",
     "start": "node build/index.js",
-    "start:test": "TEST_MODE=true TEST_MONGODB_URI=mongodb://the_username:the_password@localhost:3456/the_database ts-node-dev src/index.ts",
-    "dev": "ts-node-dev src/index.ts",
+    "start:test": "TEST_MODE=true MONGODB_URI=mongodb://the_username:the_password@localhost:3456/the_database ts-node-dev src/index.ts",
+    "dev": "MONGODB_URI=mongodb://the_username:the_password@localhost:3456/the_database ts-node-dev src/index.ts",
     "lint": "eslint --ext .ts .",
     "lintfix": "eslint --fix --ext .ts src"
   },

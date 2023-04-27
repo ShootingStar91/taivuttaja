@@ -3,28 +3,40 @@ require("express-async-errors");
 
 import express from "express";
 import wordService from "../services/words";
-import { isMood, isString, isTense, isLanguage } from "../utils/validators";
+import { isMood, isTense, isLanguage, isString } from "../utils/validators";
 
 const router = express.Router();
 
 // /api/words/...
 
-/*
+router.get("/random/", async (req, res) => {
+  const rawTense = req.query.tense as string;
+  const rawMood = req.query.mood as string;
 
-  get / -path will return a single word in the desired tense and mood.
-  Omitting word will result in a random word.
-  omit by -, example
-  /api/words/word/en/-/tense/Present/mood/Indicative/
-  after /word/ comes language of the given word param: 'en' or 'es'
-*/
+  if (!rawMood || !rawTense) {
+    throw new Error("Mood or tense missing");
+  }
 
-router.get("/word/:lang/:word/tense/:tense/mood/:mood/", async (req, res) => {
-  const word = req.params.word;
-  const rawMood = req.params.mood;
-  const rawTense = req.params.tense;
-  const lang = req.params.lang;
+  const mood = rawMood.charAt(0).toUpperCase() + rawMood.slice(1);
+  const tense = rawTense.charAt(0).toUpperCase() + rawTense.slice(1);
 
-  if (!isLanguage(lang)) {
+  if (!isMood(mood) || !isTense(tense)) {
+    throw new Error("Mood or tense invalid");
+  }
+
+  const word = await wordService.getRandomWord(tense, mood);
+  res.send(word);
+});
+
+router.get("/word/", async (req, res) => {
+  const word = req.query.mood as unknown;
+  const rawMood = req.query.mood as unknown;
+  const rawTense = req.query.tense as unknown;
+  const language = req.query.language as unknown;
+  if (!isString(rawMood) || !isString(rawTense) || !isString(word) || !isString(language)) {
+    throw new Error("Invalid parameters, please supply strings");
+  }
+  if (!isLanguage(language)) {
     throw new Error("Invalid language parameter. Give either 'en' or 'es'");
   }
 
@@ -39,23 +51,11 @@ router.get("/word/:lang/:word/tense/:tense/mood/:mood/", async (req, res) => {
     throw new Error("Mood or tense invalid");
   }
 
-  if (isString(word) && word !== "-") {
-    // Get specific word
-    const result = await wordService.getWord(word, lang, tense, mood);
-    return res.send(result);
-  } else if (isString(word) && word === "-") {
-    const word = await wordService.getRandomWord(tense, mood);
-    return res.send(word);
+  const result = await wordService.getWord(word, language, tense, mood);
+  if (!result) {
+    throw new Error("Could not find word, or given word was invalid.")
   }
-
-  throw new Error(
-    "Word invalid. Either give valid string word, or a dash (-) for random."
-  );
-});
-
-router.get("/random", async (_req, res, _next) => {
-  const word = await wordService.getRandomWord("Present", "Indicative");
-  res.send(word);
+  return res.send(result);
 });
 
 router.get("/verbdetails/:verb", async (req, res) => {

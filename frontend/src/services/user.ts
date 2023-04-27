@@ -1,9 +1,14 @@
+//import bcrypt from "bcryptjs";
 import axios from "./index";
 import { baseUrl } from "../config";
 import { DoneWord, User } from "../types";
 import { getHeader } from "./util";
 const url = baseUrl + "user";
-
+/*
+const hashPassword = async (password: string) => {
+  return await bcrypt.hash(password, 10);
+};
+*/
 const createUser = async (username: string, password: string) => {
   const result = await axios.post<boolean>(`${url}/create`, {
     username,
@@ -98,7 +103,7 @@ const getDoneWords = async (token: string) => {
     `${url}/donewords/`,
     getHeader(token)
   );
-  
+
   return result && result.data;
 };
 

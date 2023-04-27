@@ -1,12 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { wordService } from "../../services/words";
 import { ConjugateSettings, Word } from "../../types";
 import { getRandomForm } from "../../utils";
 
-export const useWord = (settings: ConjugateSettings) => {
+export const useWord = (settings: ConjugateSettings | null) => {
   const [word, setWord] = useState<Word | null>(null);
 
+  useEffect(() => {
+    void getWord();
+  }, []);
+
   const getWord = async () => {
+    console.log({ settings });
+    if (!settings) {
+      const result = await wordService.getRandomWord("Indicative", "Present");
+
+      if (result) {
+        setWord(result);
+      }
+      return result;
+    }
     const { tense, mood } = getRandomForm(
       settings.tenseSelections,
       settings.moodSelections
@@ -19,8 +32,18 @@ export const useWord = (settings: ConjugateSettings) => {
         : settings.wordlist.words[
             Math.floor(Math.random() * settings.wordlist.words.length)
           ];
-    const wordParam = randomWord ? randomWord.infinitive_english : null;
-    const result = await wordService.getWord(wordParam, "en", mood, tense);
+    const word = randomWord ? randomWord.infinitive_english : null;
+
+    if (!word) {
+      const result = await wordService.getRandomWord(mood, tense);
+      if (result) {
+        setWord(result);
+      }
+      return result;
+    }
+
+    const result = await wordService.getWord(word, "en", mood, tense);
+
     if (!result) {
       return;
     }
@@ -35,5 +58,5 @@ export const useWord = (settings: ConjugateSettings) => {
     return result;
   };
 
-  return {word, getWord};
+  return { word, getWord };
 };

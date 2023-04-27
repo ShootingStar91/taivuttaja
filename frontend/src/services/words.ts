@@ -2,25 +2,26 @@ import axios from "./index";
 import { Mood, StrippedWord, Tense, Word } from "../types";
 import { baseUrl } from "../config";
 
-const url = baseUrl + "words"; // /api/words/
+const url = baseUrl + "words";
 
-/*
- * getWord: null word gives random word,
- * null tense or mood gives 'Present' and 'Indicative' defaults
- */
+// /api/words/
+
 const getWord = async (
-  wordParam: string | null,
-  langParam: string,
-  moodParam: Mood | null,
-  tenseParam: Tense | null
+  word: string,
+  language: string,
+  mood: Mood,
+  tense: Tense
 ) => {
-  const mood: Mood = moodParam !== null ? moodParam : "Indicative";
-  const tense: Tense = tenseParam !== null ? tenseParam : "Present";
-  const word: string = wordParam !== null ? wordParam : "-";
-  const lang = langParam;
-  const response = await axios.get<Word>(
-    `${url}/word/${lang}/${word}/tense/${tense}/mood/${mood}`
-  );
+  const response = await axios.get<Word>(`${url}/word/`, {
+    params: { word, language, mood, tense },
+  });
+  return response.data;
+};
+
+const getRandomWord = async (mood: Mood, tense: Tense) => {
+  const response = await axios.get<Word>(`${url}/random/`, {
+    params: { mood, tense },
+  });
   return response.data;
 };
 
@@ -36,6 +37,7 @@ const getVerbDetails = async (verb: string) => {
 
 export const wordService = {
   getWord,
+  getRandomWord,
   getStrippedWords,
   getVerbDetails,
 };

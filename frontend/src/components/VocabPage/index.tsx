@@ -1,30 +1,14 @@
-import React, { FormEvent, useEffect, useState, KeyboardEvent } from "react";
+import React, { FormEvent, useState, KeyboardEvent } from "react";
 import { COLORS } from "../../config";
-import { wordService } from "../../services/words";
-import { Word } from "../../types";
 import { deAccentify } from "../../utils";
 import { EnglishFlag, SpanishFlag } from "../Flags";
+import { useWord } from "../ConjugatePage/useWord";
 
 export const VocabPage = () => {
+  const { word, getWord } = useWord(null);
   const [currentTry, setCurrentTry] = useState<string>("");
-  const [word, setWord] = useState<Word | null>(null);
   const [showAnswer, setShowAnswer] = useState<boolean>(false);
   const [timeoutId, setTimeoutId] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (!word) {
-      void getWord();
-    }
-  }, []);
-
-  const getWord = async () => {
-    const result = await wordService.getWord(null, "en", null, null);
-    if (!result) {
-      return;
-    }
-    console.log(result.infinitive);
-    setWord(result);
-  };
 
   const onTry = () => {
     if (showAnswer && timeoutId !== null) {

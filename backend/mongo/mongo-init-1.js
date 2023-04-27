@@ -13,4 +13,5 @@ db.createUser({
 db.createCollection('jehle_verb_mongo');
 
 db.createCollection('users');
+db.createCollection('test_users');
 
