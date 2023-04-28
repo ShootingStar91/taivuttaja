@@ -32,7 +32,7 @@ const App = () => {
     if (loadedUser) {
       dispatch(setUser(loadedUser));
     } else {
-      //dispatch(removeUser());
+      dispatch(removeUser());
     }
   }, []);
 
