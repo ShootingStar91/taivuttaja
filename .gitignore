@@ -2,3 +2,7 @@ privatedoc.md
 .vscode
 .env
 todo.md
+frontend/build
+backend/build
+frontend/node_modules
+backend/node_modules

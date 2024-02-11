@@ -25,7 +25,7 @@ export const ConjugateFull = ({
   next: (max: number) => void;
   stop: () => void;
 }) => {
-  const {word, getWord} = useWord(settings);
+  const { word, getWord } = useWord(settings);
   const dispatch = useAppDispatch();
   const [emptyForms, setEmptyForms] = useState<string[]>([]);
   const initialState: { [fieldName: string]: string } = {};
@@ -35,10 +35,6 @@ export const ConjugateFull = ({
   const [formState, setFormState] = useState<{ [fieldName: string]: string }>({
     ...initialState,
   });
-
-  useEffect(() => {
-    void getWord();
-  }, []);
 
   useEffect(() => {
     // Check which forms are an empty string. Make those green and blocked from typing
@@ -54,7 +50,6 @@ export const ConjugateFull = ({
 
     setEmptyForms(newEmptyForms);
   }, [word]);
-
 
   const resetFormColors = () => {
     forms.forEach((form) => {

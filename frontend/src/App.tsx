@@ -36,10 +36,6 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    document.getElementsByTagName("body")[0].className = "bg-bg-color";
-  }, []);
-
   return (
     <div
       id="mainContainer"

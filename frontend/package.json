@@ -8,12 +8,15 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
+    "@types/bcrypt": "^5.0.0",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jest": "^27.4.0",
     "@types/node": "^16.11.25",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.23",
     "axios": "^0.26.0",
+    "bcryptjs": "^2.4.3",
     "country-flag-icons": "^1.4.25",
     "flag-icons": "^6.2.0",
     "flowbite-react": "^0.0.18",
@@ -31,8 +34,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "REACT_APP_LOCAL=true react-scripts start",
-    "build": "react-scripts build",
+    "start": "REACT_APP_LOCAL=true react-app-rewired start",
+    "build": "react-app-rewired build",
     "test": "jest --verbose",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .tsx .",
@@ -64,7 +67,8 @@
     "autoprefixer": "^10.4.5",
     "cypress": "^10.1.0",
     "eslint": "^8.9.0",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "react-app-rewired": "^2.2.1"
   },
   "jest": {
     "testEnvironment": "node"
